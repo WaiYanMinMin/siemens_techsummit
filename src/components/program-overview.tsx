@@ -433,6 +433,7 @@ const afternoonTrack3Agenda: AgendaItem[] = [
 export function ProgramOverview() {
   const [activeTab, setActiveTab] = useState<"morning" | "afternoon">("morning");
   const [activeTrack, setActiveTrack] = useState<TrackId>("track1");
+  const [isTrackMenuOpen, setIsTrackMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const afternoonTrackItems: Record<TrackId, AgendaItem[]> = {
@@ -441,6 +442,11 @@ export function ProgramOverview() {
     track3: afternoonTrack3Agenda,
   };
   const items = activeTab === "morning" ? morningAgenda : afternoonTrackItems[activeTrack];
+  const trackLabels: Record<TrackId, string> = {
+    track1: "Powering the Future of Autonomous Buildings",
+    track2: "Smart Manufacturing with Industrial AI",
+    track3: "Engineering the Industrial Metaverse",
+  };
 
   useEffect(() => {
     const syncTabFromHash = () => {
@@ -491,8 +497,11 @@ export function ProgramOverview() {
         <div className="inline-flex overflow-hidden rounded-md border border-white/25 bg-white text-[#111]">
           <button
             type="button"
-            onClick={() => setActiveTab("morning")}
-            className={`hitech-interactive px-4 py-2 text-sm font-semibold transition sm:text-base ${
+            onClick={() => {
+              setActiveTab("morning");
+              setIsTrackMenuOpen(false);
+            }}
+            className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
               activeTab === "morning" ? "bg-[#11d3b7]" : "bg-white"
             }`}
           >
@@ -501,7 +510,7 @@ export function ProgramOverview() {
           <button
             type="button"
             onClick={() => setActiveTab("afternoon")}
-            className={`hitech-interactive px-4 py-2 text-sm font-semibold transition sm:text-base ${
+            className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
               activeTab === "afternoon" ? "bg-[#11d3b7]" : "bg-white"
             }`}
           >
@@ -515,11 +524,11 @@ export function ProgramOverview() {
         >
           {activeTab === "afternoon" && (
             <div className="sticky top-0 z-20 bg-[#000029] pt-3">
-              <div className="mx-auto flex w-full max-w-4xl flex-wrap overflow-hidden rounded-md border border-white/25 bg-white text-[#111]">
+              <div className="mx-auto hidden w-full max-w-4xl flex-wrap overflow-hidden rounded-md border border-white/25 bg-white text-[#111] md:flex">
                 <button
                   type="button"
                   onClick={() => setActiveTrack("track1")}
-                  className={`hitech-interactive flex-1 px-3 py-2 text-center text-sm font-semibold leading-tight transition sm:text-base ${
+                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
                     activeTrack === "track1" ? "bg-[#11d3b7]" : "bg-white"
                   }`}
                 >
@@ -528,7 +537,7 @@ export function ProgramOverview() {
                 <button
                   type="button"
                   onClick={() => setActiveTrack("track2")}
-                  className={`hitech-interactive flex-1 px-3 py-2 text-center text-sm font-semibold leading-tight transition sm:text-base ${
+                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
                     activeTrack === "track2" ? "bg-[#11d3b7]" : "bg-white"
                   }`}
                 >
@@ -537,12 +546,51 @@ export function ProgramOverview() {
                 <button
                   type="button"
                   onClick={() => setActiveTrack("track3")}
-                  className={`hitech-interactive flex-1 px-3 py-2 text-center text-sm font-semibold leading-tight transition sm:text-base ${
+                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
                     activeTrack === "track3" ? "bg-[#11d3b7]" : "bg-white"
                   }`}
                 >
                   Engineering the Industrial Metaverse
                 </button>
+              </div>
+
+              <div className="relative md:hidden">
+                <button
+                  type="button"
+                  onClick={() => setIsTrackMenuOpen((prev) => !prev)}
+                  className="hitech-interactive inline-flex w-full items-center justify-between rounded-md border border-white/25 bg-white px-3 py-2 text-left text-xs font-semibold text-[#111]"
+                >
+                  <span className="pr-3">{trackLabels[activeTrack]}</span>
+                  <span>{isTrackMenuOpen ? "▲" : "≡"}</span>
+                </button>
+
+                {isTrackMenuOpen && (
+                  <div className="absolute left-0 right-0 top-[44px] z-30 rounded-md border border-white/20 bg-[#02023e] p-1 shadow-lg">
+                    {(
+                      [
+                        ["track1", trackLabels.track1],
+                        ["track2", trackLabels.track2],
+                        ["track3", trackLabels.track3],
+                      ] as const
+                    ).map(([trackId, label]) => (
+                      <button
+                        key={trackId}
+                        type="button"
+                        onClick={() => {
+                          setActiveTrack(trackId);
+                          setIsTrackMenuOpen(false);
+                        }}
+                        className={`hitech-interactive mb-1 block w-full rounded px-3 py-2 text-left text-xs font-semibold ${
+                          activeTrack === trackId
+                            ? "bg-[#11d3b7] text-[#03263b]"
+                            : "bg-transparent text-white"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           )}

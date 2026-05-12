@@ -2,27 +2,13 @@ import Image from "next/image";
 
 import { ProgramOverview } from "@/components/program-overview";
 import { RegistrationFormShell } from "@/components/registration-form-shell";
+import { SiteHeader } from "@/components/site-header";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 export default function Home() {
   return (
     <div className="bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#000029]">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
-          <p className="text-base font-semibold text-white sm:text-lg">Siemens Tech Summit 2026</p>
-          <nav className="flex items-center gap-7 text-base font-semibold text-[#00d7c7] sm:text-lg">
-            <a href="#highlights" className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]">
-              Highlights
-            </a>
-            <a href="#agenda" className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]">
-              Agenda
-            </a>
-            <a href="#register" className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]">
-              Register
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
       <main className="w-full">
         <ScrollReveal>
           <section className="bg-[#000029] px-5 py-10 text-white sm:px-8 sm:py-12 lg:px-12">

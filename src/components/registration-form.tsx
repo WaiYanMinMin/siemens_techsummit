@@ -139,11 +139,17 @@ export function RegistrationForm() {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, industry: event.target.value }))
           }
-          className={inputClassName}
+          className={`${inputClassName} cursor-pointer appearance-none pr-10`}
         >
-          <option value="">Select an industry</option>
+          <option value="" style={{ backgroundColor: "#02023e", color: "#cbd5e1" }}>
+            Select an industry
+          </option>
           {industries.map((industry) => (
-            <option key={industry} value={industry}>
+            <option
+              key={industry}
+              value={industry}
+              style={{ backgroundColor: "#02023e", color: "#ffffff" }}
+            >
               {industry}
             </option>
           ))}

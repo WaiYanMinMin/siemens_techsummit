@@ -144,7 +144,7 @@ export default function Home() {
 
               <article>
                 <Image
-                  src="/highlight-tech-deep-dive.jpg"
+                  src="/highlight-tech-deep-dive.png"
                   alt="Tech deep dive icon"
                   width={180}
                   height={130}
@@ -172,7 +172,7 @@ export default function Home() {
                   alt="Tech in action icon"
                   width={180}
                   height={130}
-                  className="h-[120px] w-auto"
+                  className="h-[132px] w-auto"
                 />
                 <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">Tech in action</h3>
                 <p className="mt-5 text-sm leading-7 text-white/90">

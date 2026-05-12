@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { sendRegistrationConfirmation } from "@/lib/email";
+import { sendInvitationEmail, sendRegistrationConfirmation } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { registrationSchema } from "@/lib/validation";
 
@@ -85,23 +85,44 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailResult = await sendRegistrationConfirmation({
+    const confirmationResult = await sendRegistrationConfirmation({
       firstName: data.firstName,
       email: data.email,
       registrationId: String(inserted.id),
     });
 
-    if (!emailResult.ok) {
-      console.error("Confirmation email send failed:", emailResult.error);
+    const invitationResult = await sendInvitationEmail({
+      firstName: data.firstName,
+      email: data.email,
+      invitationId: String(inserted.id),
+      ctaUrl: "https://siemenstechsummit.vercel.app/#register",
+    });
+
+    if (!confirmationResult.ok && !invitationResult.ok) {
+      console.error("Confirmation email send failed:", confirmationResult.error);
+      console.error("Invitation email send failed:", invitationResult.error);
       return NextResponse.json({
         message:
-          "Registration successful, but confirmation email is temporarily unavailable. We will contact you shortly.",
+          "Registration successful, but email delivery is temporarily unavailable. We will contact you shortly.",
+      });
+    }
+
+    if (!confirmationResult.ok || !invitationResult.ok) {
+      if (!confirmationResult.ok) {
+        console.error("Confirmation email send failed:", confirmationResult.error);
+      }
+      if (!invitationResult.ok) {
+        console.error("Invitation email send failed:", invitationResult.error);
+      }
+      return NextResponse.json({
+        message:
+          "Registration successful. Some email notifications are delayed, but your registration is recorded.",
       });
     }
 
     return NextResponse.json({
       message:
-        "Registration successful. We will send your QR access details closer to the event.",
+        "Registration successful. Confirmation and invitation emails have been sent.",
     });
   } catch (error) {
     console.error("Registration API error:", error);

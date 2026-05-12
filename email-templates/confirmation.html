@@ -3,33 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        supported-color-schemes: light dark;
+      }
+    </style>
     <title>Registration Confirmation</title>
   </head>
-  <body style="margin:0;padding:0;background:#000029;font-family:Arial,Helvetica,sans-serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000029;padding:24px 12px;">
+  <body bgcolor="#000029" style="margin:0;padding:0;background:#000029 !important;font-family:Arial,Helvetica,sans-serif;color:#ffffff !important;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000029" style="background:#000029 !important;padding:24px 12px;">
       <tr>
-        <td align="center">
+        <td align="center" bgcolor="#000029" style="background:#000029 !important;">
           <table
             role="presentation"
             width="100%"
             cellpadding="0"
             cellspacing="0"
-            style="max-width:620px;background:#000029;border:1px solid #24407a;border-radius:14px;overflow:hidden;"
+            bgcolor="#000029"
+            style="max-width:620px;background:#000029 !important;border:1px solid #24407a;border-radius:14px;overflow:hidden;"
           >
             <tr>
               <td
-                style="padding:28px 24px;background:#000029 url('https://siemenstechsummit.vercel.app/key_visual.png') no-repeat right center;background-size:46% auto;"
+                bgcolor="#000029"
+                style="padding:16px 18px 18px;background:#000029 !important;"
               >
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                   <tr>
-                    <td valign="middle" style="max-width:58%;padding-right:130px;">
-                      <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;line-height:1.2;">Siemens Tech Summit 2026</p>
-                      <p style="margin:8px 0 0;color:#7de6d5;font-size:14px;font-weight:700;">
-                        Experience the Future through Sustainable Digitalization
+                    <td style="padding-bottom:8px;">
+                      <p style="margin:0;color:#ffffff !important;font-weight:700;letter-spacing:0.5px;font-size:30px;">SIEMENS</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td valign="top" style="width:50%;padding-right:14px;">
+                      <p style="margin:0;color:#00d7c7 !important;font-size:22px;font-weight:700;line-height:1.2;">Powering the future</p>
+                      <p style="margin:4px 0 0;color:#ffffff !important;font-size:13px;line-height:1.35;">through Sustainable Digitalization</p>
+                      <p style="margin:14px 0 0;color:#ffffff !important;font-size:12px;line-height:1.4;">
+                        1 July 2026<br />
+                        Raffles City Convention Center
                       </p>
-                      <p style="margin:10px 0 0;color:#ffffffcc;font-size:12px;">
-                        Singapore, 1 July 2026 · Raffles City Convention Centre
-                      </p>
+                    </td>
+                    <td valign="middle" align="right" style="width:50%;">
+                      <img
+                        src="{{hero_image_url}}"
+                        alt="Siemens key visual"
+                        width="310"
+                        style="display:block;width:310px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"
+                      />
                     </td>
                   </tr>
                 </table>
@@ -38,13 +60,14 @@
 
             <tr>
               <td
-                style="padding:24px;background:#02023e url('{{hero_image_url}}') no-repeat right bottom;background-size:52% auto;"
+                bgcolor="#02023e"
+                style="padding:24px;background:#02023e url('{{hero_image_url}}') no-repeat right bottom !important;background-size:52% auto;"
               >
-                <p style="margin:0 0 14px;font-size:14px;color:#ffffff;">Dear {{first_name}},</p>
-                <h2 style="margin:0 0 14px;font-size:24px;line-height:1.25;color:#00d7c7;">
+                <p style="margin:0 0 14px;font-size:14px;color:#ffffff !important;">Dear {{first_name}},</p>
+                <h2 style="margin:0 0 14px;font-size:24px;line-height:1.25;color:#00d7c7 !important;">
                   Your Registration Is Confirmed
                 </h2>
-                <p style="margin:0 0 14px;font-size:14px;line-height:1.65;color:#e2e8f0;">
+                <p style="margin:0 0 14px;font-size:14px;line-height:1.65;color:#e2e8f0 !important;">
                   Thank you for registering for Siemens Tech Summit Singapore 2026.
                   Your registration has been successfully received.
                 </p>
@@ -54,17 +77,18 @@
                   width="100%"
                   cellpadding="0"
                   cellspacing="0"
-                  style="margin:12px 0 16px;background:#d8fbf5;border-radius:12px;"
+                  bgcolor="#d8fbf5"
+                  style="margin:12px 0 16px;background:#d8fbf5 !important;border-radius:12px;"
                 >
                   <tr>
-                    <td style="padding:14px 16px;font-size:13px;color:#0f172a;line-height:1.65;">
+                    <td style="padding:14px 16px;font-size:13px;color:#0f172a !important;line-height:1.65;">
                       <strong style="display:block;margin-bottom:4px;">What happens next?</strong>
                       Closer to the event date, we will send your QR code access details and additional event updates.
                     </td>
                   </tr>
                 </table>
 
-                <p style="margin:0;font-size:14px;line-height:1.6;color:#ffffff;">
+                <p style="margin:0;font-size:14px;line-height:1.6;color:#ffffff !important;">
                   Best regards,<br />
                   Siemens Singapore Team
                 </p>
@@ -72,8 +96,8 @@
             </tr>
 
             <tr>
-              <td style="padding:18px 24px;background:#000029;border-top:1px solid #24407a;">
-                <p style="margin:0;color:#cbd5e1;font-size:12px;">Siemens Tech Summit 2026. All rights reserved.</p>
+              <td bgcolor="#000029" style="padding:18px 24px;background:#000029 !important;border-top:1px solid #24407a;">
+                <p style="margin:0;color:#cbd5e1 !important;font-size:12px;">Siemens Tech Summit 2026. All rights reserved.</p>
               </td>
             </tr>
           </table>

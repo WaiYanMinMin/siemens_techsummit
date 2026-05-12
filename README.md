@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Siemens Tech Summit Microsite
 
-## Getting Started
+Responsive event microsite with a registration form backed by Supabase and
+confirmation emails via Resend.
 
-First, run the development server:
+## 1) Environment Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Update `.env.local` placeholders with real values:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
+RESEND_API_KEY=re_YOUR_RESEND_API_KEY
+FROM_EMAIL=events@yourdomain.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 2) Supabase Table
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run this in Supabase SQL Editor:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sql
+create table if not exists public.registrations (
+  id bigserial primary key,
+  first_name text not null,
+  last_name text not null,
+  email text not null,
+  mobile_number text not null,
+  job_title text not null,
+  company text not null,
+  industry text not null,
+  breakout_track text not null,
+  challenges text[] default '{}',
+  need_timeline text check (need_timeline in ('6_months', '12_months', 'exploring', 'no_requirement')),
+  consent boolean not null default false,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
 
-## Learn More
+create unique index if not exists registrations_email_unique
+on public.registrations (lower(email));
 
-To learn more about Next.js, take a look at the following resources:
+create unique index if not exists registrations_mobile_unique
+on public.registrations (mobile_number);
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+alter table public.registrations enable row level security;
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 3) Run Locally
 
-## Deploy on Vercel
+```bash
+npm install
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open `http://localhost:3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 4) What Is Implemented
+
+- Responsive landing page and registration section
+- Form validation on client and server
+- Duplicate registration protection (email/mobile)
+- Server API inserts into Supabase
+- Confirmation email: successful registration now, QR access later
+
+## 5) Deploy
+
+- Push repo to GitHub
+- Import into Vercel
+- Add the same environment variables in Vercel project settings
+- Connect your custom domain in Vercel and update DNS records

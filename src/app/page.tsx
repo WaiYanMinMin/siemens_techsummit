@@ -76,7 +76,7 @@ export default function Home() {
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[0.95fr_1.35fr] lg:items-start">
               <div>
-                <p className="mb-4 text-sm text-white/80">Embed the landscape video here</p>
+               
                 <video
                   className="w-full rounded-sm border border-white/10 bg-black"
                   controls
@@ -155,7 +155,7 @@ export default function Home() {
                 >
                   &#8250; View morning plenary program
                 </a>
-                <p className="mt-1 text-sm italic text-white/80">(link to morning agenda)</p>
+              
               </article>
 
               <article>
@@ -179,9 +179,7 @@ export default function Home() {
                 >
                   &#8250; View afternoon breakout tracks
                 </a>
-                <p className="mt-1 text-sm italic text-white/80">
-                  (link to afternoon agenda breakout tracks)
-                </p>
+            
               </article>
 
               <article>

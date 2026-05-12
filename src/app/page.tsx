@@ -12,9 +12,18 @@ export default function Home() {
       <main className="w-full">
         <ScrollReveal>
           <section className="bg-[#000029] px-5 py-10 text-white sm:px-8 sm:py-12 lg:px-12">
-          <div className="mx-auto w-full max-w-7xl">
-            <div className="relative rounded-sm lg:min-h-[560px]">
-              <div className="relative z-10 max-w-xl py-4 lg:absolute lg:left-2 lg:top-1/2 lg:w-[44%] lg:-translate-y-1/2">
+            <div className="mx-auto w-full max-w-7xl">
+              <div className="relative min-h-[420px] overflow-hidden rounded-sm sm:min-h-[520px] lg:min-h-[560px]">
+                <Image
+                  src="/key_visual.png"
+                  alt="Siemens Tech Summit infinity key visual"
+                  fill
+                  priority
+                  className="object-cover object-[74%_center]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#000029] via-[#000029]/88 to-[#000029]/30" />
+
+                <div className="relative z-10 max-w-xl py-4 lg:absolute lg:left-2 lg:top-1/2 lg:w-[44%] lg:-translate-y-1/2">
                 <h1 className="text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[62px]">
                 Siemens
                 <br />
@@ -37,19 +46,8 @@ export default function Home() {
                   Register Now
                 </a>
               </div>
-
-              <div className="relative mt-6 w-full lg:mt-0 lg:pl-[24%]">
-              <Image
-                src="/key_visual.png"
-                alt="Siemens Tech Summit infinity key visual"
-                width={2200}
-                height={1200}
-                priority
-                className="h-auto w-full object-contain"
-              />
               </div>
             </div>
-          </div>
           </section>
         </ScrollReveal>
 

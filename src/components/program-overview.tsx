@@ -520,7 +520,7 @@ export function ProgramOverview() {
 
         <div
           ref={scrollRef}
-          className="program-scroll mt-5 h-[88vh] overflow-y-auto rounded-md border border-white/20 px-4 pb-3"
+          className="program-scroll mt-5 h-[88vh] overflow-y-auto rounded-md px-4 pb-3"
         >
           {activeTab === "afternoon" && (
             <div className="sticky top-0 z-20 bg-[#000029] pt-3">

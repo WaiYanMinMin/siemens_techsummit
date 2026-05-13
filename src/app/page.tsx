@@ -169,7 +169,7 @@ export default function Home() {
                 </p>
                 <a
                   href="#agenda-afternoon"
-                  className="hitech-interactive mt-6 inline-flex rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+                  className="hitech-interactive mt-6 hidden rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5] md:inline-flex"
                 >
                   &#8250; View afternoon breakout tracks
                 </a>
@@ -193,6 +193,15 @@ export default function Home() {
                   emissions, and greater operational resilience.
                 </p>
               </article>
+            </div>
+
+            <div className="mt-8 md:hidden">
+              <a
+                href="#agenda-afternoon"
+                className="hitech-interactive inline-flex rounded px-1 text-lg font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+              >
+                &#8250; View afternoon breakout tracks
+              </a>
             </div>
 
           </div>

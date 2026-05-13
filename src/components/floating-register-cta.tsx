@@ -43,7 +43,7 @@ export function FloatingRegisterCta({ startId, endId }: FloatingRegisterCtaProps
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-3 left-0 right-0 z-40 flex justify-end px-4 py-2 sm:justify-center sm:px-8 lg:px-12">
+    <div className="fixed bottom-3 left-0 right-0 z-40 flex justify-center px-4 py-2 sm:px-8 lg:px-12">
       <a
         href="#register"
         className="hitech-interactive inline-flex h-9 items-center rounded-sm bg-[#7de6d5] px-5 text-[11px] font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"

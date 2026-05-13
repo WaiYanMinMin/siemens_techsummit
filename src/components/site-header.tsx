@@ -14,10 +14,10 @@ export function SiteHeader() {
         <Image
           src="/siemens-3-logo-png-transparent.png"
           alt="Siemens"
-          width={150}
-          height={38}
+          width={230}
+          height={58}
           priority
-          className="h-8 w-auto sm:h-9"
+          className="h-12 w-auto sm:h-14"
         />
 
         <nav className="hidden items-center gap-7 text-base font-semibold text-[#00d7c7] sm:flex sm:text-lg">

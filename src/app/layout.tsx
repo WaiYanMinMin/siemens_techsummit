@@ -16,14 +16,14 @@ export const metadata: Metadata = {
   title: "Siemens Tech Summit 2026",
   description: "Official registration microsite for Siemens Tech Summit 2026.",
   icons: {
-    icon: [{ url: "/logos.png", type: "image/png" }],
-    shortcut: ["/logos.png"],
-    apple: [{ url: "/logos.png", type: "image/png" }],
+    icon: [{ url: "/logos.png?v=3", type: "image/png" }],
+    shortcut: ["/logos.png?v=3"],
+    apple: [{ url: "/logos.png?v=3", type: "image/png" }],
   },
   openGraph: {
     title: "Siemens Tech Summit 2026",
     description: "Official registration microsite for Siemens Tech Summit 2026.",
-    images: [{ url: "/logos.png" }],
+    images: [{ url: "/logos.png?v=3" }],
   },
 };
 

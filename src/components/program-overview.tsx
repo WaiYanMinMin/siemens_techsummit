@@ -609,7 +609,7 @@ export function ProgramOverview() {
                 )}
 
                 <div className="mt-3 flex items-center gap-3 text-sm sm:text-base">
-                  <span className="inline-block h-6 w-6 bg-white" />
+                  <span className="inline-block h-3 w-3 rounded-full bg-[#00d7c7] shadow-[0_0_10px_rgba(0,215,199,0.55)]" />
                   <span>{item.time}</span>
                 </div>
 

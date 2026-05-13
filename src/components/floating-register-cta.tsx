@@ -2,36 +2,45 @@
 
 import { useEffect, useState } from "react";
 
-export function FloatingRegisterCta() {
-  const [showFloating, setShowFloating] = useState(false);
+type FloatingRegisterCtaProps = {
+  startId: string;
+  endId: string;
+};
+
+export function FloatingRegisterCta({ startId, endId }: FloatingRegisterCtaProps) {
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      const trigger = document.getElementById("highlight-register-trigger");
-      const agendaEnd = document.getElementById("agenda-register-end");
-      if (!trigger || !agendaEnd) return;
+    const updateVisibility = () => {
+      const startEl = document.getElementById(startId);
+      const endEl = document.getElementById(endId);
+      if (!startEl || !endEl) return;
 
-      const triggerBottom = trigger.getBoundingClientRect().bottom;
-      const agendaEndTop = agendaEnd.getBoundingClientRect().top;
-      const viewportHeight = window.innerHeight;
+      const startRect = startEl.getBoundingClientRect();
+      const endRect = endEl.getBoundingClientRect();
+      const stickyBottomOffset = 12; // bottom-3
+      const buttonHeight = 48; // h-12
+      const stopBuffer = 8;
 
-      const passedHighlightTrigger = triggerBottom < 0;
-      const reachedAgendaEnd = agendaEndTop <= viewportHeight;
-
-      setShowFloating(passedHighlightTrigger && !reachedAgendaEnd);
+      const stopLine = window.innerHeight - (stickyBottomOffset + buttonHeight + stopBuffer);
+      const ended = endRect.top <= stopLine;
+      
+      const startOffset = 100; // tweak this
+      const started = startRect.top <= window.innerHeight - startOffset;
+      setIsVisible(started && !ended);
     };
 
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
     };
-  }, []);
+  }, [startId, endId]);
 
-  if (!showFloating) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="fixed bottom-3 left-0 right-0 z-40 flex justify-center px-5 py-2 sm:px-8 lg:px-12">

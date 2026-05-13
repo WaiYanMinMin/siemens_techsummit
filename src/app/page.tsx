@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import { ProgramOverview } from "@/components/program-overview";
 import { FloatingRegisterCta } from "@/components/floating-register-cta";
+import { ProgramOverview } from "@/components/program-overview";
 import { RegistrationFormShell } from "@/components/registration-form-shell";
 import { SiteHeader } from "@/components/site-header";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -199,7 +199,7 @@ export default function Home() {
           </section>
         </ScrollReveal>
 
-        <div id="highlight-register-trigger" className="flex justify-center px-5 py-6 sm:px-8 lg:px-12">
+        <div id="sticky-start-marker" className="flex justify-center px-5 py-6 sm:px-8 lg:px-12">
           <a
             href="#register"
             className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
@@ -212,7 +212,7 @@ export default function Home() {
           <ProgramOverview />
         </ScrollReveal>
 
-        <div id="agenda-register-end" className="sticky bottom-3 z-30 flex justify-center px-5 py-2 sm:px-8 lg:px-12">
+        <div id="sticky-end-marker" className="flex justify-center px-5 py-8 sm:px-8 lg:px-12">
           <a
             href="#register"
             className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
@@ -221,7 +221,7 @@ export default function Home() {
           </a>
         </div>
         </div>
-        <FloatingRegisterCta />
+        <FloatingRegisterCta startId="sticky-start-marker" endId="sticky-end-marker" />
 
         <ScrollReveal>
           <section

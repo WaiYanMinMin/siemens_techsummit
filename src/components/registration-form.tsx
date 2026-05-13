@@ -233,7 +233,18 @@ export function RegistrationForm() {
           required
           className="mt-1 h-4 w-4 rounded accent-[#11d3b7]"
         />
-        I agree to the privacy policy and data processing terms.
+        <span>
+          I agree to the{" "}
+          <a
+            href="https://www.siemens.com/en-us/company/compliance/data-privacy/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-[#7de6d5] underline underline-offset-2"
+          >
+            privacy policy
+          </a>{" "}
+          and data processing terms.
+        </span>
       </label>
 
       {error && (

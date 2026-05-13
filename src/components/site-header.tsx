@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 export function SiteHeader() {
@@ -10,9 +11,14 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#000029]">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8 lg:px-12">
-        <p className="text-sm font-semibold text-white sm:text-lg">
-          Siemens Tech Summit 2026
-        </p>
+        <Image
+          src="/siemens-3-logo-png-transparent.png"
+          alt="Siemens"
+          width={150}
+          height={38}
+          priority
+          className="h-8 w-auto sm:h-9"
+        />
 
         <nav className="hidden items-center gap-7 text-base font-semibold text-[#00d7c7] sm:flex sm:text-lg">
           <a

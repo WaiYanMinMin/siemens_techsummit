@@ -19,7 +19,15 @@ export default function Home() {
                   alt="Siemens Tech Summit infinity key visual"
                   fill
                   priority
-                  className="object-cover object-[74%_center]"
+                  className="object-cover object-[74%_center] lg:hidden"
+                />
+                <Image
+                  src="/key_visual.png"
+                  alt="Siemens Tech Summit infinity key visual"
+                  width={1400}
+                  height={780}
+                  priority
+                  className="absolute right-[-20%] top-1/2 hidden h-auto w-[78%] -translate-y-1/2 object-contain lg:block"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#000029] via-[#000029]/88 to-[#000029]/30" />
 
@@ -41,7 +49,7 @@ export default function Home() {
                 </p>
                 <a
                   href="#register"
-                  className="hitech-interactive mt-8 inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-8 text-base font-bold text-[#00153b] transition hover:brightness-95"
+                  className="blink-cta hitech-interactive mt-8 inline-flex h-12 items-center rounded-full bg-[#7de6d5] px-8 text-base font-bold text-[#00153b] transition hover:brightness-95"
                 >
                   Register Now
                 </a>

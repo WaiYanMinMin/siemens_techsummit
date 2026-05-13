@@ -45,7 +45,7 @@ export default function Home() {
                 <p className="mt-7 text-base text-white/90 sm:text-lg">
                   Singapore, 1 July 2026
                   <br />
-                  Raffles City Convention Centre
+                  Raffles City Convention Centre, Level 4, Stamford Ballroom
                 </p>
                 <a
                   href="#register"
@@ -119,6 +119,7 @@ export default function Home() {
           </section>
         </ScrollReveal>
 
+        <div className="relative">
         <ScrollReveal>
           <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
           <div className="mx-auto w-full max-w-6xl">
@@ -209,6 +210,7 @@ export default function Home() {
         <ScrollReveal>
           <ProgramOverview />
         </ScrollReveal>
+        </div>
 
         <ScrollReveal>
           <section

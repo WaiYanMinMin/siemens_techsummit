@@ -75,15 +75,19 @@ button:active {
   100% {
     box-shadow: 0 0 0 0 rgba(125, 230, 213, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.12) inset;
     filter: brightness(1);
+    transform: scale(1);
   }
   50% {
     box-shadow: 0 0 0 6px rgba(125, 230, 213, 0.08), 0 0 20px rgba(125, 230, 213, 0.4);
     filter: brightness(1.08);
+    transform: scale(1.08);
   }
 }
 
 .blink-cta {
   animation: blinkCta 1.6s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, box-shadow, filter;
 }
 
 .reveal-on-scroll {

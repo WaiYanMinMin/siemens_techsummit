@@ -27,7 +27,7 @@ export default function Home() {
                   width={1400}
                   height={780}
                   priority
-                  className="absolute right-[-20%] top-1/2 hidden h-auto w-[78%] -translate-y-1/2 object-contain lg:block"
+                  className="absolute right-[-28%] top-1/2 hidden h-auto w-[90%] -translate-y-1/2 object-cover object-right lg:block"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#000029] via-[#000029]/88 to-[#000029]/30" />
 
@@ -193,17 +193,18 @@ export default function Home() {
               </article>
             </div>
 
-            <div className="mt-10 flex justify-center">
-              <a
-                href="#register"
-                className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
-              >
-                Register Now
-              </a>
-            </div>
           </div>
           </section>
         </ScrollReveal>
+
+        <div className="sticky bottom-3 z-30 flex justify-center px-5 py-2 sm:px-8 lg:px-12">
+          <a
+            href="#register"
+            className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
+          >
+            Register Now
+          </a>
+        </div>
 
         <ScrollReveal>
           <ProgramOverview />

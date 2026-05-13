@@ -520,7 +520,7 @@ export function ProgramOverview() {
 
         <div
           ref={scrollRef}
-          className="program-scroll mt-5 h-[78vh] overflow-y-auto rounded-md border border-white/20 px-4 pb-3"
+          className="program-scroll mt-5 h-[88vh] overflow-y-auto rounded-md border border-white/20 px-4 pb-3"
         >
           {activeTab === "afternoon" && (
             <div className="sticky top-0 z-20 bg-[#000029] pt-3">
@@ -595,7 +595,7 @@ export function ProgramOverview() {
             </div>
           )}
 
-          <div className="mt-6 pb-20">
+          <div className="mt-6 pb-6">
             {items.map((item) => (
               <article
                 key={`${item.title}-${item.time}`}
@@ -653,14 +653,6 @@ export function ProgramOverview() {
             ))}
           </div>
 
-          <div className="sticky bottom-3 z-20 flex justify-center py-2">
-            <a
-              href="#register"
-              className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
-            >
-              Register Now
-            </a>
-          </div>
         </div>
       </div>
     </section>

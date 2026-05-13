@@ -78,15 +78,15 @@ button:active {
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(125, 230, 213, 0.08), 0 0 20px rgba(125, 230, 213, 0.4);
+    box-shadow: 0 0 0 4px rgba(125, 230, 213, 0.08), 0 0 14px rgba(125, 230, 213, 0.32);
     filter: brightness(1.08);
-    transform: scale(1.08);
+    transform: scale(1.02);
   }
 }
 
 .blink-cta {
   animation: blinkCta 1.6s ease-in-out infinite;
-  transform-origin: center;
+  transform-origin: left center;
   will-change: transform, box-shadow, filter;
 }
 

@@ -12,8 +12,8 @@ export default function Home() {
       <SiteHeader />
       <main className="w-full">
         <ScrollReveal>
-          <section className="bg-[#000029] px-5 py-10 text-white sm:px-8 sm:py-12 lg:px-12">
-            <div className="mx-auto w-full max-w-7xl">
+          <section className="bg-[#000029] py-10 pl-3 text-white sm:py-12 sm:pl-5 lg:pl-6">
+            <div className="w-full">
               <div className="relative min-h-[420px] overflow-hidden rounded-sm sm:min-h-[520px] lg:min-h-[560px]">
                 <Image
                   src="/key_visual.png"
@@ -50,7 +50,7 @@ export default function Home() {
                 </p>
                 <a
                   href="#register"
-                  className="blink-cta hitech-interactive mt-8 inline-flex h-12 items-center rounded-full bg-[#7de6d5] px-8 text-base font-bold text-[#00153b] transition hover:brightness-95"
+                  className="blink-cta hitech-interactive ml-1 mt-8 inline-flex h-10 items-center rounded-full bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
                 >
                   Register Now
                 </a>
@@ -82,7 +82,7 @@ export default function Home() {
 
                 <a
                   href="#register"
-                  className="hitech-interactive mt-8 inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-8 text-base font-bold text-[#00153b] transition hover:brightness-95"
+                  className="hitech-interactive mt-8 inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
                 >
                   Register Now
                 </a>
@@ -202,7 +202,7 @@ export default function Home() {
         <div id="sticky-start-marker" className="flex justify-center px-5 py-6 sm:px-8 lg:px-12">
           <a
             href="#register"
-            className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
+            className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
           >
             Register Now
           </a>
@@ -215,7 +215,7 @@ export default function Home() {
         <div id="sticky-end-marker" className="flex justify-center px-5 py-8 sm:px-8 lg:px-12">
           <a
             href="#register"
-            className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
+            className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
           >
             Register Now
           </a>

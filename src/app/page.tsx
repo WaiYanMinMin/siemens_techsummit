@@ -210,6 +210,15 @@ export default function Home() {
         <ScrollReveal>
           <ProgramOverview />
         </ScrollReveal>
+
+        <div className="flex justify-center px-5 py-8 sm:px-8 lg:px-12">
+          <a
+            href="#register"
+            className="hitech-interactive inline-flex h-12 items-center rounded-sm bg-[#7de6d5] px-10 text-base font-bold text-[#00153b] transition hover:brightness-95"
+          >
+            Register Now
+          </a>
+        </div>
         </div>
 
         <ScrollReveal>

@@ -7,7 +7,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 
 export default function Home() {
   return (
-    <div className="bg-slate-50 text-slate-900">
+    <div className="bg-[#000029] text-slate-900">
       <SiteHeader />
       <main className="w-full">
         <ScrollReveal>

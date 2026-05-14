@@ -19,6 +19,13 @@ type EmailResult =
 
 let resendClient: Resend | null = null;
 
+const DEFAULT_EMAIL_LOGO_URL =
+  "https://siemenstechsummit.vercel.app/siemens-3-logo-png-transparent.png";
+
+function emailLogoUrl() {
+  return process.env.EMAIL_LOGO_URL?.trim() || DEFAULT_EMAIL_LOGO_URL;
+}
+
 function getResendClient() {
   if (resendClient) {
     return resendClient;
@@ -48,6 +55,7 @@ export async function sendRegistrationConfirmation({
   const resend = getResendClient();
   const confirmationTemplateId = process.env.RESEND_TEMPLATE_CONFIRMATION_ID;
   const heroImageUrl = process.env.EMAIL_HERO_IMAGE_URL?.trim() ?? "";
+  const logoUrl = emailLogoUrl();
 
   if (!confirmationTemplateId) {
     throw new Error("RESEND_TEMPLATE_CONFIRMATION_ID is missing.");
@@ -63,6 +71,7 @@ export async function sendRegistrationConfirmation({
         variables: {
           first_name: firstName || "Guest",
           hero_image_url: heroImageUrl,
+          logo_url: logoUrl,
         },
       },
     },
@@ -97,6 +106,7 @@ export async function sendInvitationEmail({
   const resend = getResendClient();
   const invitationTemplateId = process.env.RESEND_TEMPLATE_INVITATION_ID;
   const heroImageUrl = process.env.EMAIL_HERO_IMAGE_URL?.trim() ?? "";
+  const logoUrl = emailLogoUrl();
 
   if (!invitationTemplateId) {
     throw new Error("RESEND_TEMPLATE_INVITATION_ID is missing.");
@@ -113,6 +123,7 @@ export async function sendInvitationEmail({
           first_name: firstName || "Guest",
           cta_url: ctaUrl,
           hero_image_url: heroImageUrl,
+          logo_url: logoUrl,
         },
       },
     },

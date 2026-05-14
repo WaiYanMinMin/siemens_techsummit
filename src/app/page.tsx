@@ -12,24 +12,20 @@ export default function Home() {
       <SiteHeader />
       <main className="w-full">
         <ScrollReveal>
-          <section className="bg-[#000029] py-10 pl-3 text-white sm:py-12 sm:pl-5 lg:pl-6">
+          <section className="bg-[#000029] pb-10 pl-3 text-white sm:pb-12 sm:pl-5 lg:pl-6">
             <div className="w-full">
               <div className="relative min-h-[420px] overflow-hidden rounded-sm sm:min-h-[520px] lg:min-h-[560px]">
-                <Image
-                  src="/key_visual.png"
-                  alt="Siemens Tech Summit infinity key visual"
-                  fill
-                  priority
-                  className="object-cover object-[74%_center] lg:hidden"
-                />
-                <Image
-                  src="/key_visual.png"
-                  alt="Siemens Tech Summit infinity key visual"
-                  width={1400}
-                  height={780}
-                  priority
-                  className="absolute right-[-28%] top-1/2 hidden h-auto w-[90%] -translate-y-1/2 object-cover object-right lg:block"
-                />
+                <video
+                  className="absolute inset-0 h-full w-full object-cover object-[74%_center] lg:object-[88%_center]"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden
+                >
+                  <source src="/infinity.mp4" type="video/mp4" />
+                </video>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#000029] via-[#000029]/88 to-[#000029]/30" />
 
                 <div className="relative z-10 max-w-xl py-4 lg:absolute lg:left-2 lg:top-1/2 lg:w-[44%] lg:-translate-y-1/2">

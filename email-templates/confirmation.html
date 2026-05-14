@@ -13,45 +13,114 @@
     </style>
     <title>Registration Confirmation</title>
   </head>
-  <body bgcolor="#000029" style="margin:0;padding:0;background:#000029 url('https://siemenstechsummit.vercel.app/000029.png') repeat !important;font-family:Arial,Helvetica,sans-serif;color:#ffffff !important;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#000029" style="background:#000029 url('https://siemenstechsummit.vercel.app/000029.png') repeat !important;padding:24px 12px;">
+  <body
+    bgcolor="#f3f6fb"
+    style="
+      margin: 0;
+      padding: 0;
+      background: #f3f6fb !important;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #2c3b57 !important;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f3f6fb"
+      style="padding: 20px 8px; background: #f3f6fb !important"
+    >
       <tr>
-        <td align="center" bgcolor="#000029" style="background:#000029 !important;">
+        <td
+          align="center"
+          bgcolor="#f3f6fb"
+          style="background: #f3f6fb !important"
+        >
           <table
             role="presentation"
             width="100%"
             cellpadding="0"
             cellspacing="0"
-            bgcolor="#000029"
-            style="max-width:620px;background:#000029 url('https://siemenstechsummit.vercel.app/000029.png') repeat !important;border:1px solid #24407a;border-radius:14px;overflow:hidden;"
+            bgcolor="#ffffff"
+            style="
+              max-width: 620px;
+              background: #ffffff !important;
+              border: 1px solid #dbe2ec;
+            "
           >
             <tr>
               <td
                 bgcolor="#000029"
-                style="padding:16px 18px 18px;background:#000029 url('https://siemenstechsummit.vercel.app/000029.png') repeat !important;"
+                background="{{hero_image_url}}"
+                valign="middle"
+                style="
+                  background-color: #000029 !important;
+                  background-image:
+                    linear-gradient(
+                      to right,
+                      #000029 0%,
+                      rgba(0, 0, 41, 0.88) 46%,
+                      rgba(0, 0, 41, 0.3) 100%
+                    ),
+                    url('{{hero_image_url}}') !important;
+                  background-repeat: no-repeat, no-repeat !important;
+                  background-size: cover, cover !important;
+                  background-position:
+                    center,
+                    74% center !important;
+                  min-height: 400px;
+                  padding: 36px 22px 44px 20px;
+                  vertical-align: middle;
+                "
               >
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="max-width: 400px"
+                >
                   <tr>
-                    <td style="padding-bottom:8px;">
-                      <p style="margin:0;color:#ffffff !important;font-weight:700;letter-spacing:0.5px;font-size:30px;">SIEMENS</p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td valign="top" style="width:50%;padding-right:14px;">
-                      <p style="margin:0;color:#00d7c7 !important;font-size:22px;font-weight:700;line-height:1.2;">Powering the future</p>
-                      <p style="margin:4px 0 0;color:#ffffff !important;font-size:13px;line-height:1.35;">through Sustainable Digitalization</p>
-                      <p style="margin:14px 0 0;color:#ffffff !important;font-size:12px;line-height:1.4;">
-                        1 July 2026<br />
-                        Raffles City Convention Centre, Level 4, Stamford Ballroom
+                    <td style="padding: 0">
+                      <p
+                        style="
+                          margin: 0;
+                          color: #ffffff !important;
+                          font-weight: 700;
+                          font-size: 36px;
+                          line-height: 1.08;
+                          letter-spacing: -0.02em;
+                        "
+                      >
+                        Siemens<br />
+                        Tech Summit 2026
                       </p>
-                    </td>
-                    <td valign="middle" align="right" style="width:50%;">
-                      <img
-                        src="{{hero_image_url}}"
-                        alt="Siemens key visual"
-                        width="310"
-                        style="display:block;width:310px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"
-                      />
+                      <p
+                        style="
+                          margin: 18px 0 0;
+                          color: #009999 !important;
+                          font-size: 20px;
+                          font-weight: 700;
+                          line-height: 1.25;
+                        "
+                      >
+                        Experience the Future<br />
+                        through Sustainable Digitalization
+                      </p>
+                      <p
+                        style="
+                          margin: 22px 0 0;
+                          color: rgba(255, 255, 255, 0.92) !important;
+                          font-size: 15px;
+                          line-height: 1.45;
+                          font-weight: 400;
+                        "
+                      >
+                        Singapore, 1 July 2026<br />
+                        Raffles City Convention Centre, Level 4, Stamford
+                        Ballroom
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -60,35 +129,86 @@
 
             <tr>
               <td
-                bgcolor="#02023e"
-                style="padding:24px;background:#02023e url('{{hero_image_url}}') no-repeat right bottom, url('https://siemenstechsummit.vercel.app/02023d.png') repeat !important;background-size:52% auto, auto;"
+                bgcolor="#ffffff"
+                style="padding: 16px 18px 10px; background: #ffffff !important"
               >
-                <p style="margin:0 0 14px;font-size:14px;color:#ffffff !important;">Dear {{first_name}},</p>
-                <h2 style="margin:0 0 14px;font-size:24px;line-height:1.25;color:#00d7c7 !important;">
-                  Your Registration Is Confirmed
-                </h2>
-                <p style="margin:0 0 14px;font-size:14px;line-height:1.65;color:#e2e8f0 !important;">
-                  Thank you for registering for Siemens Tech Summit Singapore 2026.
-                  Your registration has been successfully received.
+                <p
+                  style="
+                    margin: 0 0 8px;
+                    color: #2b3a55 !important;
+                    font-size: 22px;
+                    font-weight: 700;
+                  "
+                >
+                  Dear {{first_name}},
                 </p>
+                <p
+                  style="
+                    margin: 0;
+                    color: #00a8a0 !important;
+                    font-size: 28px;
+                    font-weight: 800;
+                    line-height: 1.12;
+                  "
+                >
+                  Your Registration Is Confirmed
+                </p>
+              </td>
+            </tr>
 
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                style="padding: 4px 18px 0; background: #ffffff !important"
+              >
+                <p
+                  style="
+                    margin: 0 0 10px;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #2c3b57 !important;
+                  "
+                >
+                  Thank you for registering for Siemens Tech Summit Singapore
+                  2026. Your registration has been successfully received.
+                </p>
                 <table
                   role="presentation"
                   width="100%"
                   cellpadding="0"
                   cellspacing="0"
                   bgcolor="#d8fbf5"
-                  style="margin:12px 0 16px;background:#d8fbf5 url('https://siemenstechsummit.vercel.app/d7faf4.png') repeat !important;border-radius:12px;"
+                  style="
+                    margin: 4px 0 14px;
+                    background: #d8fbf5
+                      url('https://siemenstechsummit.vercel.app/d7faf4.png')
+                      repeat !important;
+                    border-radius: 12px;
+                  "
                 >
                   <tr>
-                    <td style="padding:14px 16px;font-size:13px;color:#0f172a !important;line-height:1.65;">
-                      <strong style="display:block;margin-bottom:4px;">What happens next?</strong>
-                      Closer to the event date, we will send your QR code access details and additional event updates.
+                    <td
+                      style="
+                        padding: 14px 16px;
+                        font-size: 13px;
+                        color: #0f172a !important;
+                        line-height: 1.65;
+                      "
+                    >
+                      <strong style="display: block; margin-bottom: 4px">What happens next?</strong>
+                      Closer to the event date, we will send your QR code access
+                      details and additional event updates.
                     </td>
                   </tr>
                 </table>
-
-                <p style="margin:0;font-size:14px;line-height:1.6;color:#ffffff !important;">
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #2c3b57 !important;
+                  "
+                >
                   Best regards,<br />
                   Siemens Singapore Team
                 </p>
@@ -96,8 +216,46 @@
             </tr>
 
             <tr>
-              <td bgcolor="#000029" style="padding:18px 24px;background:#000029 url('https://siemenstechsummit.vercel.app/000029.png') repeat !important;border-top:1px solid #24407a;">
-                <p style="margin:0;color:#cbd5e1 !important;font-size:12px;">Siemens Tech Summit 2026. All rights reserved.</p>
+              <td
+                bgcolor="#ffffff"
+                style="padding: 14px 18px 18px; background: #ffffff !important"
+              >
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  bgcolor="#000029"
+                  style="
+                    background: #000029
+                      url('https://siemenstechsummit.vercel.app/000029.png')
+                      repeat !important;
+                  "
+                >
+                  <tr>
+                    <td
+                      style="
+                        padding: 11px 16px;
+                        color: #ffffff !important;
+                        font-size: 13px;
+                        font-weight: 700;
+                      "
+                    >
+                      Siemens Tech Summit 2026
+                    </td>
+                    <td
+                      align="right"
+                      style="
+                        padding: 8px 12px;
+                        color: #7de6d5 !important;
+                        font-size: 12px;
+                        font-weight: 700;
+                      "
+                    >
+                      All rights reserved
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </table>

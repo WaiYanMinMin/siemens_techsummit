@@ -25,19 +25,19 @@ export function SiteHeader() {
             href="#highlights"
             className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
           >
-            Highlights
+            Summit Highlights
           </a>
           <a
             href="#agenda"
             className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
           >
-            Agenda
+            Program
           </a>
           <a
             href="#register"
             className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
           >
-            Register
+            Register Now
           </a>
         </nav>
 
@@ -60,21 +60,21 @@ export function SiteHeader() {
               onClick={closeMenu}
               className="hitech-interactive rounded px-3 py-2 hover:text-[#7de6d5]"
             >
-              Highlights
+              Summit Highlights
             </a>
             <a
               href="#agenda"
               onClick={closeMenu}
               className="hitech-interactive rounded px-3 py-2 hover:text-[#7de6d5]"
             >
-              Agenda
+              Program
             </a>
             <a
               href="#register"
               onClick={closeMenu}
               className="hitech-interactive rounded px-3 py-2 hover:text-[#7de6d5]"
             >
-              Register
+              Register Now
             </a>
           </div>
         </div>

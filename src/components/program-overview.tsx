@@ -12,7 +12,10 @@ type Speaker = {
 
 type AgendaItem = {
   title: string;
+  /** Short summary shown in the agenda list */
   description?: string;
+  /** Full synopsis from programme (opens in details modal) */
+  detailSynopsis?: string;
   time: string;
   speakers?: Speaker[];
   notes?: string[];
@@ -26,12 +29,12 @@ const morningAgenda: AgendaItem[] = [
     time: "9.00 – 10.00am",
   },
   {
-    title: "Welcome Address",
+    title: "Welcome address",
     time: "10.15 – 10.25am",
     speakers: [
       {
-        name: "Dr Thai Lai Pham",
-        title: "CEO & President, ASEAN",
+        name: "Dr Thai-Lai Pham",
+        title: "President & CEO, Siemens ASEAN",
         company: "Siemens",
         image: "/speaker-dr-thai-lai-pham.jpg",
       },
@@ -39,46 +42,52 @@ const morningAgenda: AgendaItem[] = [
   },
   {
     title:
-      "Opening Remarks: Paving the Way to the Data- and AI-driven Future of Industry and Infrastructure",
+      "Paving the way to the data- and AI-driven future of industry and infrastructure",
     description:
+      "How data and AI are shaping industry and infrastructure—and what organizations can do today to stay competitive.",
+    detailSynopsis:
       "Understand how data and AI are shaping the future of industry and infrastructure and gain practical strategies to what organizations can do today to stay competitive in an increasingly digital landscape.",
     time: "10.25 – 10.45am",
     speakers: [
       {
-        name: "Dirk Didascalou",
+        name: "Dr Dirk Didascalou",
         title: "Head of Foundational Technologies",
-        company: "Siemens",
+        company: "Siemens AG",
         image: "/speaker-dirk-didascalou.jpg",
       },
     ],
   },
   {
-    title: "Singapore's AI Mission",
+    title: "Keynote: Singapore's AI Mission",
     description:
-      "Learn more about Singapore's strategy in spearheading AI development and how organizations can align with national AI strategies to accelerate transformation and long-term competitiveness.",
+      "Singapore’s national AI strategy, advanced manufacturing, and how organizations can align for long-term competitiveness.",
+    detailSynopsis:
+      "Learn more about Singapore’s strategy in spearheading AI development and advanced manufacturing, and how organizations can align with the national AI strategy to accelerate transformation and long-term competitiveness.",
     time: "10.45 – 11.05am",
+  },
+  {
+    title: "The launch of Eigen Engineering Agent",
+    description:
+      "Our AI-powered engineering assistant for design, automation, and decision-making across industrial and infrastructure workflows.",
+    detailSynopsis:
+      "Witness our AI-powered engineering assistant designed to accelerate design, automation, and decision-making across industrial and infrastructure workflows.",
+    time: "11.05 – 11.20am",
     speakers: [
-      { name: "Speaker TBC", title: "Company" },
-      { name: "Cindy Koh (TBD)", title: "Executive Vice President", company: "EDB" },
       {
-        name: "Ang Wee Seng (TBD)",
-        title: "Executive Director",
-        company: "Singapore Semiconductor Industry Association",
+        name: "Michael Schrapp",
+        title: "Head of Industrial AI",
+        company: "Siemens Digital Industries",
       },
-      { name: "Tan Yew Kong (TBD)", title: "SVP, Asia Pacific", company: "Global Foundries" },
     ],
   },
   {
-    title: "Launch of Eigen Engineering Agent",
-    description:
-      "AI-powered engineering assistant designed to accelerate design, automation, and decision-making across industrial and infrastructure workflows.",
-    time: "11.05 – 11.20am",
-  },
-  {
     title:
-      "Executive Panel Discussion: Industrial AI at Scale: Powering Smart, Sustainable Manufacturing",
+      "Executive panel discussion: Industrial AI at Scale: Powering Smart, Sustainable Manufacturing",
     description:
-      "Gain insights into how enterprises are unlocking scalable AI adoption by breaking down data silos, transforming legacy systems, and enabling AI-ready operations.",
+      "From pilots to scale—smarter factories, sustainability, data silos, legacy systems, and an AI-ready workforce.",
+    detailSynopsis: `Industrial AI is redefining manufacturing — unlocking new levels of operational excellence while advancing sustainability at scale. In this executive panel, we explore how AI-powered factories are becoming smarter, more autonomous, and more resilient — driving productivity gains while reducing environmental impact.
+
+Moving beyond pilots, the discussion focuses on how organizations can successfully scale AI across the enterprise, overcoming challenges like data silos, legacy systems, and preparing the workforce for AI-driven operations. In line with the priorities of the World Economic Forum, this session highlights how Industrial AI is enabling more sustainable operations, strengthening supply chain resilience, and accelerating the transition to future-ready manufacturing.`,
     time: "11.20 – 11.50am",
     speakers: [
       {
@@ -86,45 +95,65 @@ const morningAgenda: AgendaItem[] = [
         title: "SVP Digital Industries, ASEAN",
         company: "Siemens",
       },
-      { name: "Tan Yew Kong (TBD)", title: "SVP, Asia Pacific", company: "Global Foundries" },
+      { name: "Tan Yew Kong", title: "SVP, Asia Pacific", company: "Global Foundries" },
       {
-        name: "Ang Wee Seng (TBD)",
+        name: "Ang Wee Seng",
         title: "Executive Director",
         company: "Singapore Semiconductor Industry Association",
       },
-      { name: "Cindy Koh (TBD)", title: "Executive Vice President", company: "EDB" },
+      { name: "Cindy Koh", title: "Executive Vice President", company: "EDB" },
     ],
   },
   {
     title: "Beyond Simulation: How Industrial AI Supercharges the Digital Twin",
     description:
-      "Discover how Industrial AI delivers seamless data connectivity and rapid simulation, generating automated insights, intelligent behavior, and real-time validation that leads to faster, more reliable decisions.",
+      "From fragmented data to high-fidelity digital twins—connectivity, simulation, and real-time validation for faster decisions.",
+    detailSynopsis:
+      "Industrial AI turns fragmented engineering data into high fidelity digital twins, enabling seamless data connectivity, rapid simulation, automated insights, intelligent behavior and real time validation for quicker, reliable decisions and smarter operations.",
     time: "11.50 – 12.10pm",
     speakers: [
-      { name: "TBD", title: "TBD", company: "TBD" },
+      {
+        name: "Simon Guerin",
+        title: "Head of AI/DA Pre-Sales, APAC",
+        company: "Siemens Digital Industries Software",
+      },
     ],
   },
   {
-    title: "Enabling Industrial AI: Financing Sustainable Infrastructure",
+    title: "Enabling Industrial AI: Financing sustainable infrastructure",
     description:
-      "Uncover how organizations can address investment and financing needs to scale critical infrastructure that supports the growth of Industrial AI such as data centers, storage and assets for renewable energy.",
-    time: "12.10pm – 12.30pm",
+      "Why financing matters for AI-enabled sustainable infrastructure—and how Siemens Financial Services bridges ambition and delivery.",
+    detailSynopsis:
+      "Industrial AI is transforming the factories, buildings and power grids that keep our economies running, but realizing its full potential demands more than technology. It demands smart investment. This presentation explores why financing is critical to deploying AI-enabled sustainable infrastructure, examines the strategies and models that help organizations invest while managing risk and preserving capital, and shows how Siemens Financial Services — with its unique combination of technology understanding and financial expertise — can bridge the gap between ambition and implementation, helping customers turn sustainable infrastructure visions into reality.",
+    time: "12.10 – 12.30pm",
     speakers: [
-      { name: "TBD", title: "TBD", company: "TBD" },
+      {
+        name: "Atul Kawatra",
+        title: "GM, Head of Corporate Lending and Project Finance",
+        company: "Siemens Bank / SFS",
+      },
+      {
+        name: "Mark Ee",
+        title: "Head of Equity Finance Asia/Australia",
+        company: "SFS",
+      },
     ],
   },
   {
-    title: "Lunch Networking & Siemens Technology Experience Zone",
-    description: "Engage, network & discover at the Siemens Technology Experience Zone",
+    title:
+      "Lunch networking & Siemens Technology Experience Zone — Engage, network & discover",
     time: "12.30 – 2.00pm",
   },
 ];
 
 const afternoonTrack1Agenda: AgendaItem[] = [
   {
-    title: "From Infrastructure to Intelligence: Transforming Modern Buildings",
+    title: "Track opening: From Infrastructure to Intelligence: Transforming Modern Buildings",
     description:
-      "Understand the shift to human-centric, outcome-driven design and how integrated building strategies across safety, security, energy, and comfort help future-proof buildings in a changing regulatory and sustainability landscape.",
+      "Human-centric design, digital innovation, and sustainability as outcomes—how Siemens reimagines the built environment.",
+    detailSynopsis: `What if your building could adapt to you — not the other way around? Siemens is reimagining the built environment as a dynamic ecosystem where human-centric design, digital innovation, and sustainability aren't just goals — they're outcomes.
+
+In this session, we show you how Siemens moves beyond traditional building management to enable environments that actively enhance occupant well-being, optimize operational efficiency and support decarbonization goals.`,
     time: "2.15 – 2.30pm",
     speakers: [
       {
@@ -138,12 +167,13 @@ const afternoonTrack1Agenda: AgendaItem[] = [
   {
     title: "From Data to Decisions: Enabling Autonomous Buildings",
     description:
-      "Learn how to unlock actionable insights from siloed building data and how to harness digital platforms to enable autonomous operations, improve efficiency, boost sustainability, and enhance occupant experience.",
+      "How Building X connects, analyzes, and optimizes building systems—and turns data into predictive intelligence.",
+    detailSynopsis: `Buildings are drowning in data, but starving for insight. The key to unlocking their full potential lies in turning that data into actionable intelligence. This is where Building X by Siemens comes in - an open, AI-enabled platform that connects, analyzes and optimizes everything from HVAC, energy and fire safety, to security in one unified ecosystem. This session shows how Building X turns raw data into real-time, predictive intelligence - driving smarter operations and better occupant experiences.`,
     time: "2.30 – 2.45pm",
     speakers: [
       {
         name: "Derek Del Nevo",
-        title: "Head of Software & Digital, Southeast Asia",
+        title: "Head of Digital and Software - Southeast Asia",
         company: "Siemens",
         image: "/speaker-derek-del-nevo.jpg",
       },
@@ -152,12 +182,13 @@ const afternoonTrack1Agenda: AgendaItem[] = [
   {
     title: "Sustainable Electrification",
     description:
-      "Unlock how to optimize energy networks for higher uptime, reliability, asset utilization, cybersecurity, and energy efficiency to meet sustainability goals, enabled by innovations such as blue GIS with Clean Air and Electrification X.",
+      "AI-ready electrification—from Clean Air blue GIS to Electrification X—for reliability, uptime, and future-proof operations.",
+    detailSynopsis: `AI-ready industry needs an AI-ready backbone. Siemens delivers it - with intelligent electrical infrastructure that's reliable, scalable, digital, and secure. In this session, we share about our AI-ready electrification portfolio - from Clean Air-powered blue GIS range to the Electrification X suite for condition monitoring - that are helping customers unlock capacity, maximize uptime, and future-proof their operations.`,
     time: "2.45 – 3.00pm",
     speakers: [
       {
         name: "Norman Ng",
-        title: "Head of Electrification and Automation, Singapore",
+        title: "Head of Electrification and Automation",
         company: "Siemens",
         image: "/speaker-norman-ng.jpg",
       },
@@ -166,12 +197,13 @@ const afternoonTrack1Agenda: AgendaItem[] = [
   {
     title: "Building Cybersecurity: From Risk to Resilience",
     description:
-      "Break down how and where to start in assessing and mitigating cybersecurity risks in smart buildings and discover how to turn cybersecurity into an enabler for digitalization and connectivity.",
+      "Assess and mitigate cyber risks in connected buildings—security that enables digitalization and diverse stakeholder perspectives.",
+    detailSynopsis: `As buildings become smarter and more connected, cybersecurity is no longer optional – it's essential. This session explores how organizations can assess and mitigate cyber risks while ensuring that security enables, rather than hinders, digitalization and connectivity. Featuring real-world insights from diverse stakeholder perspectives.`,
     time: "3.00 – 3.15pm",
     speakers: [
       {
         name: "Vardaan Arora",
-        title: "IT and Cybersecurity Lead, ASEAN",
+        title: "IT & Cybersecurity Lead",
         company: "Siemens",
         image: "/speaker-vardaan-arora.jpeg",
       },
@@ -182,29 +214,35 @@ const afternoonTrack1Agenda: AgendaItem[] = [
     time: "3.15 – 3.45pm",
   },
   {
-    title: "[Panel & Presentation] Beyond Quick Wins: Scaling Decarbonization for Real Impact",
+    title:
+      "Presentation + Panel Discussion: Beyond Quick Wins: Scaling Decarbonisation for Real Impact",
     description:
-      "Move beyond early decarbonization wins by learning how to engage C-level early, integrate strategy and execution, and build scalable long-term net zero strategies through digitalization.",
+      "After the low-hanging fruit—how Siemens Sustainability Advisory defines Net Zero pathways and turns ambition into scalable impact.",
+    detailSynopsis: `What happens after the low-hanging fruit of decarbonization is picked? That's where Siemens steps in. Our Sustainability Advisory Services engage with organizations at the C-suite level to define credible Net Zero pathways, and help them to translate ambition into scalable, measurable impact. This session provides insights to Siemens' role as a long-term Energy Transition partner, going well beyond audits to enable implementation, value creation, and sustained performance.`,
     time: "3.45 – 4.15pm",
     speakers: [
       {
-        name: "[Moderator] Bjoern Burbach",
-        title: "EVP, Sustainability & Energy Performance Services",
+        name: "Bjorn Burbach (presenter + moderator)",
+        title: "Head of Sustainability",
         company: "Siemens",
         image: "/speaker-bjoern-burbach.png",
       },
     ],
-    notes: ["Singapore Green Building Council", "Sustainable Energy Association of Singapore"],
   },
   {
-    title: "Future-Proof Your Data Center: Digital Twins for End-to-End Excellence",
+    title: "Intelligent by Design: Building Data Centers for the Age of Agentic AI",
     description:
-      "Learn how to tap into Siemens Digital Twin solutions to integrate data center systems, enabling full transparency, optimized design, and streamlined operations that support peak performance and sustainability.",
-    time: "3.45 – 4.15pm",
+      "Designing and retrofitting data centers where AI optimizes operations—from cooling to power—and how Siemens removes technical and financial barriers.",
+    detailSynopsis: `Data centers of tomorrow won't just house AI - they'll be run by AI. As we enter the age of agentic AI, where intelligent systems make autonomous decisions and continuously optimize operations, the question isn't if your data center will be AI-operated, but when - and whether you'll be ready. The good news? With Siemens' integrated technology and financing solutions, this transformation is more accessible than ever.
+
+This presentation reveals how forward-thinking organizations are designing and retrofitting data centers with intelligence built into their very foundation. We'll examine how autonomous operations - where AI independently optimizes every aspect from cooling to power distribution - represent the next frontier in data center excellence, and reveal the architectural principles and technologies needed to make this vision reality.
+
+Learn how Siemens is helping organizations worldwide create intelligent infrastructure that doesn't just respond to AI workloads - but harnesses AI to achieve unprecedented levels of efficiency, sustainability, and operational excellence. With integrated technology solutions and Siemens Financial Services, we remove both technical and financial barriers to transformation.`,
+    time: "4.15 – 4.30pm",
     speakers: [
       {
         name: "Imelda Zhang",
-        title: "Data Center Lead, ASEAN",
+        title: "Data Center Lead - ASEAN",
         company: "Siemens",
         image: "/speaker-imelda-zhang.jpeg",
       },
@@ -213,7 +251,10 @@ const afternoonTrack1Agenda: AgendaItem[] = [
   {
     title: "Ready or Not? Your Path to Autonomous Buildings",
     description:
-      "Uncover common gaps in existing building infrastructure and learn how to assess digital maturity through a simple framework, and understand key factors to consider before modernization.",
+      "Assess infrastructure, systems, and digital maturity—and the gaps to address before modernization.",
+    detailSynopsis: `Human-centric autonomous buildings are an exciting vision - but how do you move from idea to execution? This session focuses on the critical first step: understanding your current state. By taking a closer look at existing infrastructure, systems, and digital maturity, participants will gain a clearer view of where they stand today.
+
+The session will highlight common gaps and considerations, prompting organisations to reflect on their readiness and take a more deliberate approach to building modernisation.`,
     time: "4.30 – 4.45pm",
     speakers: [
       {
@@ -233,14 +274,17 @@ const afternoonTrack1Agenda: AgendaItem[] = [
 
 const afternoonTrack2Agenda: AgendaItem[] = [
   {
-    title: "The Future of Industrial Automation",
+    title: "The Future of Automation with Industrial AI",
     description:
-      "Discover how digitalization, industrial AI, and digital twins are transforming industrial automation into smarter, more resilient, and sustainable manufacturing ecosystems.",
+      "How digitalization, industrial AI, and digital twins are reshaping automation—smarter decisions, resilient production, sustainable operations.",
+    detailSynopsis: `Industrial automation is evolving beyond traditional systems into intelligent, connected, and data-driven environments. Discover how digitalization, industrial AI, and digital twins are shaping the next generation of manufacturing.
+
+Through real-world insights, Siemens Digital Industries highlights how integrating the physical and digital worlds enables smarter decision-making, resilient production, and more sustainable operations — opening new possibilities for the future of industrial automation.`,
     time: "2.15 – 2.30pm",
     speakers: [
       {
         name: "Isabel Chong",
-        title: "SVP Digital Industries, ASEAN",
+        title: "SVP Siemens Digital Industries, ASEAN",
         company: "Siemens",
       },
     ],
@@ -248,33 +292,41 @@ const afternoonTrack2Agenda: AgendaItem[] = [
   {
     title: "In the Age of Industrial AI: Reimagining the Future of Intelligent Enterprises",
     description:
-      "Learn how leading organizations are leveraging Industrial AI to unlock productivity, enhance resilience, and accelerate sustainable growth",
+      "From experimentation to enterprise-wide AI—productivity, resilience, adaptability, and sustainable growth.",
+    detailSynopsis: `Industrial AI is rapidly redefining how organizations compete, shifting advantage from scale and cost efficiency to intelligence, speed, and adaptability. As AI moves from experimentation to enterprise-wide deployment, it is becoming the backbone of modern industry — powering smarter decisions, autonomous operations, and connected value chains.
+
+Learn how leading organizations are leveraging Industrial AI to unlock productivity, enhance resilience, and accelerate sustainable growth.`,
     time: "2.30 – 2.45pm",
-    speakers: [{ name: "Dr. Ayesha Khanna" }],
   },
   {
     title: "Autonomous Manufacturing: Intelligence on the Factory Floor",
     description:
-      "Unlock smarter manufacturing outcomes through autonomous technologies that drive flexibility, resilience, and operational excellence.",
+      "Industrial AI, digital twins, and automation for self-optimizing systems—efficiency, resilience, and flexibility.",
+    detailSynopsis: `Autonomous manufacturing is redefining industrial production through intelligent, self-optimizing systems. By integrating industrial AI, digital twins, and advanced automation, manufacturers can enable factories that monitor, analyze, and adapt operations with minimal human intervention.
+
+This session highlights how autonomous technologies drive greater efficiency, resilience, and flexibility—accelerating the transformation toward the next generation of smart manufacturing.`,
     time: "2.45 – 3.00pm",
     speakers: [
       {
         name: "Sascha Maennl",
-        title: "VP Sales Automation Solutions, Asia Pacific",
-        company: "Siemens",
+        title: "VP Sales Automation Solutions",
+        company: "Siemens Asia Pacific",
       },
     ],
   },
   {
     title: "Software-Defined Automation: Powering Agile Manufacturing",
     description:
-      "Explore how software-defined automation enables agile manufacturing, accelerates digital transformation, and empowers organizations to build smarter, more adaptable factories.",
+      "Virtualized control, open architectures, and integrated engineering for agile, adaptable factories.",
+    detailSynopsis: `Software-defined automation is transforming industrial operations by decoupling hardware from software and enabling greater flexibility, scalability, and faster innovation. By leveraging virtualized control, open architectures, and integrated engineering environments, manufacturers can rapidly adapt production systems to changing demands while reducing complexity and downtime.
+
+This session explores how software-defined automation enables agile manufacturing, accelerates digital transformation, and empowers organizations to build smarter, more adaptable factories.`,
     time: "3.00 – 3.15pm",
     speakers: [
       {
         name: "Govin Manickam",
-        title: "Technology Business Development Manager, ASEAN",
-        company: "Siemens",
+        title: "Technology Business Development",
+        company: "Siemens ASEAN",
       },
     ],
   },
@@ -285,41 +337,46 @@ const afternoonTrack2Agenda: AgendaItem[] = [
   {
     title: "A Single Pane of Glass for Smarter Operational Decisions",
     description:
-      "See how manufacturers are leveraging unified digital platforms to optimize operations and accelerate data-driven decision-making.",
-    time: "4.00 – 4.30pm",
+      "Unified data and operations—visibility, collaboration, and faster responses across the industrial enterprise.",
+    detailSynopsis: `A "Single Pane of Glass" approach brings together data, systems, and operations into one unified view, enabling greater visibility and control across the industrial enterprise. By integrating production, engineering, and operational data into a centralized platform, organizations can simplify decision-making, improve collaboration, and respond faster to changing conditions.
+
+This session explores how unified digital environments help manufacturers streamline operations, enhance transparency, and drive more efficient, data-driven industrial performance.`,
+    time: "3.45 – 4.15pm",
     speakers: [
       {
         name: "Licheng Yan",
-        title: "Account Development Manager – Industry Application",
-        company: "Siemens",
+        title: "Solutions Consultant",
+        company: "Siemens Singapore",
       },
     ],
   },
   {
-    title: "Panel Discussion: Overcoming Challenges to Fast-Track Advanced Technology Adoption",
+    title: "Customer Panel Discussion: Overcoming challenges to Fast-Track Advanced Technology Adoption",
     description:
-      "This panel explores practical strategies for accelerating industrial AI and automation adoption by overcoming legacy systems, skill gaps, and organizational resistance through scalable innovation and strong partnerships.",
-    time: "4.30 – 4.45pm",
-    speakers: [
-      {
-        name: "Isabel Chong",
-        title: "SVP Digital Industries, ASEAN",
-        company: "Siemens",
-      },
-      { name: "Customer speaker TBD", title: "TBD", company: "TBD" },
-      { name: "Moderator TBD", title: "TBD", company: "TBD" },
-    ],
-    notes: ["TBD", "TBD", "TBD"],
+      "Legacy systems, skills, cost, and change—strategies, partnerships, and scalable adoption of industrial AI and automation.",
+    detailSynopsis: `This panel explores how organizations can accelerate the adoption of advanced technologies like industrial AI and automation while overcoming common barriers such as legacy systems, skill gaps, cost concerns, and resistance to change. Experts will share practical strategies to build organizational readiness, foster innovation, and align leadership with execution.
+
+The discussion will also highlight the importance of partnerships and scalable implementation approaches, offering actionable insights to drive faster, sustainable technology adoption.`,
+    time: "4.15 – 4.30pm",
   },
   {
     title: "Cybersecure Industry: Protecting the Digital Factory",
     description:
-      "Understand how secure-by-design strategies and continuous monitoring drive resilient, future-ready industrial operations.",
+      "Secure-by-design, continuous monitoring, and integrated security across the automation lifecycle.",
+    detailSynopsis: `As industrial systems become increasingly connected, cybersecurity is essential to ensure both secure and safe operations. Protecting industrial assets, production processes, and critical infrastructure requires a comprehensive approach that integrates cybersecurity across the entire automation lifecycle.
+
+This session explores how manufacturers can strengthen resilience through secure-by-design architectures, continuous monitoring, and integrated security strategies—enabling organizations to protect operations while confidently advancing digital transformation.`,
     time: "4.30 – 4.45pm",
-    speakers: [{ name: "Speaker TBD", title: "TBD", company: "TBD" }],
+    speakers: [
+      {
+        name: "Sander Rotmensen",
+        title: "Head of Business Cybersecurity",
+        company: "Siemens AG",
+      },
+    ],
   },
   {
-    title: "Happy Hour Networking",
+    title: "Happy Hour Networking Session",
     description: "Connect with industry leaders at Happy Hour Networking Session",
     time: "4.45 – 6.15pm",
   },
@@ -327,9 +384,10 @@ const afternoonTrack2Agenda: AgendaItem[] = [
 
 const afternoonTrack3Agenda: AgendaItem[] = [
   {
-    title: "Powering the next generation of AI with industrial metaverse",
+    title: "Track opening: Powering the Next Generation of AI with Industrial Metaverse",
     description:
-      "Harness AI-powered digital twins to create dynamic industrial models and tap into the continuous virtual-physical feedback loop to improve design, validation, and optimization.",
+      "Digital twins with physics-based simulation and real-time data—design, validate, and optimize faster across products and production.",
+    detailSynopsis: `AI-powered digital twins combine physics-based simulation with real-time operational data to create dynamic, evolving representations of products, machines, and entire production systems. By linking the virtual and physical worlds in a continuous feedback loop, they enable companies to design, validate, and optimize with far greater speed, confidence, and efficiency.`,
     time: "2.15 – 2.30pm",
     speakers: [
       {
@@ -341,9 +399,11 @@ const afternoonTrack3Agenda: AgendaItem[] = [
     ],
   },
   {
-    title: "Design, Simulate, Optimize with Digital Twin Composer",
+    title: "Design, simulate, optimize with Digital Twin Composer",
     description:
-      "Find out how to leverage the industrial metaverse through Siemens Digital Twin Composer to enable virtual building, testing, and optimization; accelerating innovation before implementation and reducing operational risks.",
+      "DTC unifies multi-disciplinary data for factory-level 3D visualization—faster decisions and collaboration across teams and partners.",
+    detailSynopsis: `Digital Twin Composer (DTC) brings decades of Siemens engineering expertise into a single, immersive environment where teams can design, simulate, and optimize the factory as one digital twin. It unifies multi‑disciplinary data across departments and formats, delivering high‑fidelity, factory‑level 3D visualization that turns complexity into clarity.
+By moving beyond metadata to the full visual context of the plant, DTC enables faster, more intuitive decisions and seamless collaboration—connecting internal teams and external partners to drive better technical and business outcomes.`,
     time: "2.30 – 2.45pm",
     speakers: [
       {
@@ -357,7 +417,8 @@ const afternoonTrack3Agenda: AgendaItem[] = [
   {
     title: "Human-Machine Collaboration and Validation in Immersive Mechatronic Environment",
     description:
-      "Experience immersive design in action through our live demonstration and see how immersive environments connect virtual design and physical prototypes to advance human-machine collaboration.",
+      "Immersive environments between virtual design and physical prototypes—live demo with Sony VR headset.",
+    detailSynopsis: `Human-machine collaboration and validation enable more intuitive interaction with complex mechatronic systems. This session will explore how immersive environments bridge the gap between virtual design and physical machine prototypes, accelerating the design cycle while improving the quality and safety of mechatronic products. Join us for a live demonstration featuring a Sony VR headset, showcasing firsthand how immersive design fosters this critical collaboration.`,
     time: "2.45 – 3.00pm",
     speakers: [
       {
@@ -371,7 +432,8 @@ const afternoonTrack3Agenda: AgendaItem[] = [
   {
     title: "AI-Powered Engineering for Simulation & Test",
     description:
-      "Witness how AI pushes the possibilities in simulation and testing, enhancing the accuracy, speed, and efficiency of engineering workflows to enable smarter designs and higher-quality products.",
+      "How AI enhances accuracy, speed, and efficiency in simulation and testing—and smarter, more robust products.",
+    detailSynopsis: `Dive into the world of AI-powered engineering, where artificial intelligence is revolutionizing simulation and testing processes. This presentation will showcase how integrating AI can dramatically enhance the accuracy, speed, and efficiency of engineering workflows, leading to smarter designs and more robust products. Discover how to leverage AI to push the boundaries of what's possible in simulation and testing.`,
     time: "3.00 – 3.15pm",
     speakers: [
       {
@@ -390,15 +452,15 @@ const afternoonTrack3Agenda: AgendaItem[] = [
     title:
       "Panel Discussion: Beyond the Pilot: How Singapore is Scaling Industrial AI for Measurable Impact Across Diverse Industries",
     description:
-      "Delve into best practices for deploying Industrial AI to drive ROI, support upskilling, and accelerate the move toward autonomous operations and incremental business value.",
+      "ROI, upskilling, and autonomous operations—how Singapore organizations deploy Industrial AI for tangible value.",
+    detailSynopsis: `Join our expert panel to explore how leading companies in Singapore are actively deploying Industrial AI to achieve tangible business value. This discussion will delve into real-world applications, focusing on how AI is driving significant returns on investment (ROI), facilitating crucial upskilling initiatives, and paving the way for more autonomous industrial operations. Gain insights from industry leaders on navigating the AI landscape.`,
     time: "3.45 – 4.15pm",
-    speakers: [{ name: "TBD", title: "TBD", company: "TBD" }],
-    notes: ["TBD", "TBD", "TBD"],
   },
   {
     title: "AI Fabric for Industrial",
     description:
-      "Explore how Altair RapidMiner helps organizations unify siloed data and build future-ready AI capabilities designed for the genAI era.",
+      "Graph-powered data fabric, unified data and AI, and Altair RapidMiner for a future-ready, genAI-ready platform.",
+    detailSynopsis: `An AI fabric is a cutting-edge integration of data, AI, and automation structured around a graph powered data fabric. This advanced ecosystem unifies siloed data, empowering organizations to tackle today's needs and power tomorrow's possibilities. Think of it as the future of business operating systems that connect systems, processes, and decisions in a seamless, intelligent network. To harness the potential of an AI fabric, organizations need a unified platform that supports advanced data and AI capabilities. Altair RapidMiner offers an integrated data fabric and AI platform that delivers ease of use, speed, and a future-ready architecture designed for genAI.`,
     time: "4.15 – 4.30pm",
     speakers: [
       {
@@ -412,7 +474,9 @@ const afternoonTrack3Agenda: AgendaItem[] = [
   {
     title: "Build Faster, Integrate Smarter: Low-Code Manufacturing with Mendix",
     description:
-      "Explore how Mendix, the low-code engine of Siemens Xcelerator, enables manufacturers to modernize and scale operations without core system disruption.",
+      "Extend PLM, MES, ERP, and SCM without replacing cores—Mendix as the low-code engine of Siemens Xcelerator.",
+    detailSynopsis: `You don't need to replace your existing systems—just make them smarter, more adaptive, and ready to scale.
+As the low‑code engine of Siemens Xcelerator, Mendix lets you extend PLM, MES, ERP, and SCM without disrupting the core. Build AI‑powered, agentic applications that automate workflows across systems—faster, with less risk, and without the complexity that stalls transformation.`,
     time: "4.30 – 4.45pm",
     speakers: [
       {
@@ -434,7 +498,9 @@ export function ProgramOverview() {
   const [activeTab, setActiveTab] = useState<"morning" | "afternoon">("morning");
   const [activeTrack, setActiveTrack] = useState<TrackId>("track1");
   const [isTrackMenuOpen, setIsTrackMenuOpen] = useState(false);
+  const [detailItem, setDetailItem] = useState<AgendaItem | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const detailCloseRef = useRef<HTMLButtonElement | null>(null);
 
   const afternoonTrackItems: Record<TrackId, AgendaItem[]> = {
     track1: afternoonTrack1Agenda,
@@ -487,9 +553,45 @@ export function ProgramOverview() {
     return () => observer.disconnect();
   }, [activeTab, activeTrack]);
 
+  useEffect(() => {
+    if (!detailItem) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDetailItem(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    queueMicrotask(() => detailCloseRef.current?.focus());
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [detailItem]);
+
+  useEffect(() => {
+    const panel = scrollRef.current;
+    if (!panel) return;
+
+    const scrollPanelToTopForAgendaHash = () => {
+      if (window.location.hash === "#agenda") {
+        panel.scrollTop = 0;
+      }
+    };
+
+    scrollPanelToTopForAgendaHash();
+    window.addEventListener("hashchange", scrollPanelToTopForAgendaHash);
+    return () => window.removeEventListener("hashchange", scrollPanelToTopForAgendaHash);
+  }, []);
+
   return (
-    <section id="agenda" className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
+    <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
       <div className="mx-auto w-full max-w-6xl">
+        <div
+          id="agenda"
+          className="scroll-mt-[72px] sm:scroll-mt-[84px]"
+        />
         <span id="agenda-morning" className="block h-0 w-0" />
         <span id="agenda-afternoon" className="block h-0 w-0" />
       
@@ -520,7 +622,7 @@ export function ProgramOverview() {
 
         <div
           ref={scrollRef}
-          className="program-scroll mt-5 h-[88vh] overflow-y-auto rounded-md px-4 pb-3"
+          className="program-scroll mt-5 h-[min(88vh,calc(100dvh-11rem))] overflow-y-auto rounded-md px-4 pb-3 md:h-[88vh]"
         >
           {activeTab === "afternoon" && (
             <div className="sticky top-0 z-20 bg-[#000029] pt-3">
@@ -558,14 +660,16 @@ export function ProgramOverview() {
                 <button
                   type="button"
                   onClick={() => setIsTrackMenuOpen((prev) => !prev)}
-                  className="hitech-interactive inline-flex w-full items-center justify-between rounded-md border border-white/25 bg-white px-3 py-2 text-left text-xs font-semibold text-[#111]"
+                  className="hitech-interactive inline-flex min-w-0 w-full items-center justify-between gap-2 rounded-md border border-white/25 bg-white px-3 py-2 text-left text-xs font-semibold text-[#111]"
                 >
-                  <span className="pr-3">{trackLabels[activeTrack]}</span>
-                  <span>{isTrackMenuOpen ? "▲" : "≡"}</span>
+                  <span className="min-w-0 flex-1 pr-1 leading-snug max-md:line-clamp-2">
+                    {trackLabels[activeTrack]}
+                  </span>
+                  <span className="shrink-0">{isTrackMenuOpen ? "▲" : "≡"}</span>
                 </button>
 
                 {isTrackMenuOpen && (
-                  <div className="absolute left-0 right-0 top-[44px] z-30 rounded-md border border-white/20 bg-[#02023e] p-1 shadow-lg">
+                  <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[20dvh] overflow-y-auto overscroll-contain rounded-md border border-white/20 bg-[#02023e] p-1 shadow-lg">
                     {(
                       [
                         ["track1", trackLabels.track1],
@@ -580,7 +684,7 @@ export function ProgramOverview() {
                           setActiveTrack(trackId);
                           setIsTrackMenuOpen(false);
                         }}
-                        className={`hitech-interactive mb-1 block w-full rounded px-3 py-2 text-left text-xs font-semibold ${
+                        className={`hitech-interactive mb-1 block w-full rounded px-3 py-2 text-left text-xs font-semibold leading-snug break-words ${
                           activeTrack === trackId
                             ? "bg-[#11d3b7] text-[#03263b]"
                             : "bg-transparent text-white"
@@ -596,16 +700,24 @@ export function ProgramOverview() {
           )}
 
           <div className="mt-6 pb-6">
-            {items.map((item) => (
+            {items.map((item, index) => (
               <article
-                key={`${item.title}-${item.time}`}
+                key={`${activeTab}-${activeTrack}-${index}-${item.time}`}
                 className="agenda-item border-b border-white/35 py-6 first:pt-0"
               >
                 <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">{item.title}</h3>
                 {item.description && (
-                  <p className="mt-2 text-sm leading-7 text-white/95 sm:text-base">
-                    {item.description}
-                  </p>
+                  <p className="mt-2 text-sm leading-7 text-white/95 sm:text-base">{item.description}</p>
+                )}
+
+                {item.detailSynopsis && (
+                  <button
+                    type="button"
+                    onClick={() => setDetailItem(item)}
+                    className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00d7c7] underline decoration-[#00d7c7]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
+                  >
+                    View details
+                  </button>
                 )}
 
                 <div className="mt-3 flex items-center gap-3 text-sm sm:text-base">
@@ -644,8 +756,8 @@ export function ProgramOverview() {
 
                 {item.notes && item.notes.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/90 sm:text-base">
-                    {item.notes.map((note, index) => (
-                      <p key={`${item.title}-${note}-${index}`}>{note}</p>
+                    {item.notes.map((note, noteIndex) => (
+                      <p key={`${item.title}-${note}-${noteIndex}`}>{note}</p>
                     ))}
                   </div>
                 )}
@@ -655,6 +767,84 @@ export function ProgramOverview() {
 
         </div>
       </div>
+
+      {detailItem && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            aria-label="Close session details"
+            onClick={() => setDetailItem(null)}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="agenda-detail-title"
+            className="relative z-10 flex max-h-[min(90vh,880px)] w-full max-w-2xl flex-col rounded-xl border border-[#00d7c7]/30 bg-[#000029] shadow-[0_0_0_1px_rgba(0,215,199,0.08),0_24px_80px_rgba(0,0,0,0.55)]"
+          >
+            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/10 bg-[#02023e]/90 px-5 py-4 sm:px-6">
+              <div className="min-w-0 pr-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">Session synopsis</p>
+                <h2 id="agenda-detail-title" className="mt-1 text-lg font-bold leading-snug text-white sm:text-xl">
+                  {detailItem.title}
+                </h2>
+                <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
+                  <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#00d7c7]" aria-hidden />
+                  {detailItem.time}
+                </p>
+              </div>
+              <button
+                ref={detailCloseRef}
+                type="button"
+                onClick={() => setDetailItem(null)}
+                className="hitech-interactive shrink-0 rounded border border-white/25 px-3 py-1.5 text-sm font-semibold text-white transition hover:border-[#00d7c7]/60 hover:text-[#00d7c7]"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6">
+              {detailItem.detailSynopsis && (
+                <div className="whitespace-pre-wrap text-sm leading-relaxed text-white/92 sm:text-base">
+                  {detailItem.detailSynopsis}
+                </div>
+              )}
+
+              {detailItem.speakers && detailItem.speakers.length > 0 && (
+                <div className="mt-8 border-t border-white/10 pt-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">Speakers</p>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    {detailItem.speakers.map((speaker) => (
+                      <div key={`modal-${detailItem.title}-${speaker.name}`} className="flex items-center gap-3">
+                        {speaker.image ? (
+                          <Image
+                            src={speaker.image}
+                            alt={speaker.name}
+                            width={64}
+                            height={64}
+                            className="h-16 w-16 rounded-full object-cover"
+                          />
+                        ) : (
+                          <span className="inline-block h-16 w-16 shrink-0 rounded-full bg-white/12" />
+                        )}
+                        <div className="min-w-0 text-white">
+                          <p className="font-semibold leading-tight">{speaker.name}</p>
+                          {speaker.title && (
+                            <p className="mt-0.5 text-sm leading-snug text-white/88">{speaker.title}</p>
+                          )}
+                          {speaker.company && (
+                            <p className="mt-0.5 text-sm leading-snug text-white/75">{speaker.company}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

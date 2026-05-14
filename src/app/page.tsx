@@ -21,228 +21,263 @@ export default function Home() {
                   muted
                   loop
                   playsInline
+                  webkit-playsinline="true"
                   preload="auto"
-                  aria-hidden
+                  aria-hidden="true"
                 >
                   <source src="/infinity.mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#000029] via-[#000029]/88 to-[#000029]/30" />
 
                 <div className="relative z-10 max-w-xl py-4 lg:absolute lg:left-2 lg:top-1/2 lg:w-[44%] lg:-translate-y-1/2">
-                <h1 className="text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[62px]">
-                Siemens
-                <br />
-                Tech Summit 2026
-                </h1>
-                <p className="mt-5 max-w-md text-lg font-semibold leading-tight text-[#009999] sm:text-2xl">
-                  Experience the Future
-                  <br />
-                  through Sustainable Digitalization
-                </p>
-                <p className="mt-7 text-base text-white/90 sm:text-lg">
-                  Singapore, 1 July 2026
-                  <br />
-                  Raffles City Convention Centre, Level 4, Stamford Ballroom
-                </p>
-                <a
-                  href="#register"
-                  className="blink-cta hitech-interactive ml-1 mt-8 inline-flex h-10 items-center rounded-full bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
-                >
-                  Register Now
-                </a>
-              </div>
+                  <h1 className="text-4xl font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[62px]">
+                    Siemens
+                    <br />
+                    Tech Summit 2026
+                  </h1>
+                  <p className="mt-5 max-w-md text-lg font-semibold leading-tight text-[#009999] sm:text-2xl">
+                    Experience the Future
+                    <br />
+                    through Sustainable Digitalization
+                  </p>
+                  <p className="mt-7 text-base text-white/90 sm:text-lg">
+                    Singapore, 1 July 2026
+                    <br />
+                    Raffles City Convention Centre, Level 4, Stamford Ballroom
+                  </p>
+                  <a
+                    href="#register"
+                    className="blink-cta hitech-interactive ml-1 mt-8 inline-flex h-10 items-center rounded-full bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
+                  >
+                    Register Now
+                  </a>
+                </div>
               </div>
             </div>
           </section>
         </ScrollReveal>
 
         <ScrollReveal>
-          <section id="highlights" className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
-          <div className="mx-auto w-full max-w-6xl">
-            <h2 className="text-center text-3xl font-bold leading-tight text-[#00d7c7] sm:text-4xl">
-              Powering the Future through Sustainable Digitalization
-            </h2>
+          <section
+            id="highlights"
+            className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
+          >
+            <div className="mx-auto w-full max-w-6xl">
+              <h2 className="text-center text-3xl font-bold leading-tight text-[#00d7c7] sm:text-4xl">
+                Powering the Future through Sustainable Digitalization
+              </h2>
 
-            <div className="mt-10 grid gap-10 lg:grid-cols-[0.95fr_1.35fr] lg:items-start">
-              <div>
-               
-                <video
-                  className="w-full rounded-sm border border-white/10 bg-black"
-                  controls
-                  playsInline
-                  preload="metadata"
-                >
-                  <source src="/siemens-trailer-16x9.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+              <div className="mt-10 grid gap-10 lg:grid-cols-[0.95fr_1.35fr] lg:items-start">
+                <div>
+                  <video
+                    className="w-full rounded-sm border border-white/10 bg-black"
+                    controls
+                    playsInline
+                    preload="metadata"
+                  >
+                    <source src="/siemens-trailer-16x9.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
 
-                <a
-                  href="#register"
-                  className="hitech-interactive mt-8 inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
-                >
-                  Register Now
-                </a>
-              </div>
+                  <a
+                    href="#register"
+                    className="hitech-interactive mt-8 inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-7 sm:text-sm"
+                  >
+                    Register Now
+                  </a>
+                </div>
 
-              <div className="space-y-6 text-sm leading-7 text-white/95 sm:text-base">
-                <p>
-                  In today&apos;s rapidly evolving landscape, digital transformation and
-                  sustainability are not just priorities, they are competitive advantages.
-                  <span className="text-[#00d7c7]"> Siemens Tech Summit </span>
-                  is where forward-thinking leaders come to turn these imperatives into action.
-                </p>
+                <div className="space-y-6 text-sm leading-7 text-white/95 sm:text-base">
+                  <p>
+                    In today&apos;s rapidly evolving landscape, digital
+                    transformation and sustainability are not just priorities,
+                    they are competitive advantages.
+                    <span className="text-[#00d7c7]">
+                      {" "}
+                      Siemens Tech Summit{" "}
+                    </span>
+                    is where forward-thinking leaders come to turn these
+                    imperatives into action.
+                  </p>
 
-                <p>
-                  At <span className="text-[#00d7c7]">Siemens Tech Summit</span>, you will not
-                  just hear about the future, you will see it in experience it. Through
-                  immersive live demonstrations, expert-led deep dive sessions, and proven
-                  customer success stories, you will gain practical strategies to accelerate
-                  your digital journey and meet your sustainability targets with confidence.
-                </p>
+                  <p>
+                    At{" "}
+                    <span className="text-[#00d7c7]">Siemens Tech Summit</span>,
+                    you will not just hear about the future, you will see it in
+                    experience it. Through immersive live demonstrations,
+                    expert-led deep dive sessions, and proven customer success
+                    stories, you will gain practical strategies to accelerate
+                    your digital journey and meet your sustainability targets
+                    with confidence.
+                  </p>
 
-                <p>
-                  Whether you are looking to optimize operations, drive growth, or lead your
-                  industry in environmental responsibility, this is your opportunity to connect,
-                  learn, and transform.
-                </p>
+                  <p>
+                    Whether you are looking to optimize operations, drive
+                    growth, or lead your industry in environmental
+                    responsibility, this is your opportunity to connect, learn,
+                    and transform.
+                  </p>
 
-                <p className="text-[#00d7c7]">
-                  Join us to unlock innovation, power smarter decisions, and build a greener,
-                  more resilient future. <span className="text-xl font-semibold">Starting today.</span>
-                </p>
+                  <p className="text-[#00d7c7]">
+                    Join us to unlock innovation, power smarter decisions, and
+                    build a greener, more resilient future.{" "}
+                    <span className="text-xl font-semibold">
+                      Starting today.
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
           </section>
         </ScrollReveal>
 
         <div className="relative">
-        <ScrollReveal>
-          <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
-          <div className="mx-auto w-full max-w-6xl">
-            <h2 className="text-center text-2xl font-bold sm:text-3xl">Siemens Tech Summit Highlights</h2>
+          <ScrollReveal>
+            <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
+              <div className="mx-auto w-full max-w-6xl">
+                <h2 className="text-center text-2xl font-bold sm:text-3xl">
+                  Siemens Tech Summit Highlights
+                </h2>
 
-            <div className="mt-10 grid gap-10 md:grid-cols-3">
-              <article>
-                <Image
-                  src="/highlight-opening-plenary.png"
-                  alt="Opening plenary icon"
-                  width={180}
-                  height={130}
-                  className="h-[120px] w-auto"
-                />
-                <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">Opening plenary</h3>
-                <p className="mt-5 text-sm leading-7 text-white/90">
-                  Gain insights from industry leaders as they share how sustainable
-                  digitalization is transforming Singapore&apos;s built environment and
-                  manufacturing sectors. Discover how innovation, data, and green
-                  technologies are driving smarter, more efficient, and future-ready
-                  industries.
-                </p>
-                <a
-                  href="#agenda-morning"
-                  className="hitech-interactive mt-6 inline-flex rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
-                >
-                  &#8250; View morning plenary program
-                </a>
-              
-              </article>
+                <div className="mt-10 grid gap-10 md:grid-cols-3">
+                  <article>
+                    <Image
+                      src="/highlight-opening-plenary.png"
+                      alt="Opening plenary icon"
+                      width={180}
+                      height={130}
+                      className="h-[120px] w-auto"
+                    />
+                    <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">
+                      Opening plenary
+                    </h3>
+                    <p className="mt-5 text-sm leading-7 text-white/90">
+                      Gain insights from industry leaders as they share how
+                      sustainable digitalization is transforming
+                      Singapore&apos;s built environment and manufacturing
+                      sectors. Discover how innovation, data, and green
+                      technologies are driving smarter, more efficient, and
+                      future-ready industries.
+                    </p>
+                    <a
+                      href="#agenda-morning"
+                      className="hitech-interactive mt-6 inline-flex rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+                    >
+                      &#8250; View morning plenary program
+                    </a>
+                  </article>
 
-              <article>
-                <Image
-                  src="/highlight-tech-deep-dive.png"
-                  alt="Tech deep dive icon"
-                  width={180}
-                  height={130}
-                  className="h-[120px] w-auto"
-                />
-                <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">Tech deep dive</h3>
-                <p className="mt-5 text-sm leading-7 text-white/90">
-                  Select from three dynamic breakout tracks, each designed to match your
-                  domain expertise and strategic priorities. Dive into high-impact topics
-                  and discover forward-thinking ideas, connect with experts, and turn
-                  insights into action.
-                </p>
-                <a
-                  href="#agenda-afternoon"
-                  className="hitech-interactive mt-6 hidden rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5] md:inline-flex"
-                >
-                  &#8250; View afternoon breakout tracks
-                </a>
-            
-              </article>
+                  <article>
+                    <Image
+                      src="/highlight-tech-deep-dive.png"
+                      alt="Tech deep dive icon"
+                      width={180}
+                      height={130}
+                      className="h-[120px] w-auto"
+                    />
+                    <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">
+                      Tech deep dive
+                    </h3>
+                    <p className="mt-5 text-sm leading-7 text-white/90">
+                      Select from three dynamic breakout tracks, each designed
+                      to match your domain expertise and strategic priorities.
+                      Dive into high-impact topics and discover forward-thinking
+                      ideas, connect with experts, and turn insights into
+                      action.
+                    </p>
+                    <a
+                      href="#agenda-afternoon"
+                      className="hitech-interactive mt-6 hidden rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5] md:inline-flex"
+                    >
+                      &#8250; View afternoon breakout tracks
+                    </a>
+                  </article>
 
-              <article>
-                <Image
-                  src="/highlight-tech-in-action.png"
-                  alt="Tech in action icon"
-                  width={180}
-                  height={130}
-                  className="h-[132px] w-auto"
-                />
-                <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">Tech in action</h3>
-                <p className="mt-5 text-sm leading-7 text-white/90">
-                  Explore immersive, interactive zones that demonstrate how organizations
-                  can streamline operations, boost productivity, and reduce environmental
-                  impact at the same time. Experience real-world solutions in action,
-                  delivering measurable results such as higher efficiency, lower carbon
-                  emissions, and greater operational resilience.
-                </p>
-              </article>
-            </div>
+                  <article>
+                    <Image
+                      src="/highlight-tech-in-action.png"
+                      alt="Tech in action icon"
+                      width={180}
+                      height={130}
+                      className="h-[132px] w-auto"
+                    />
+                    <h3 className="mt-8 text-xl font-semibold leading-tight sm:text-2xl">
+                      Tech in action
+                    </h3>
+                    <p className="mt-5 text-sm leading-7 text-white/90">
+                      Explore immersive, interactive zones that demonstrate how
+                      organizations can streamline operations, boost
+                      productivity, and reduce environmental impact at the same
+                      time. Experience real-world solutions in action,
+                      delivering measurable results such as higher efficiency,
+                      lower carbon emissions, and greater operational
+                      resilience.
+                    </p>
+                  </article>
+                </div>
 
-            <div className="mt-8 md:hidden">
-              <a
-                href="#agenda-afternoon"
-                className="hitech-interactive inline-flex rounded px-1 text-lg font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
-              >
-                &#8250; View afternoon breakout tracks
-              </a>
-            </div>
+                <div className="mt-8 md:hidden">
+                  <a
+                    href="#agenda-afternoon"
+                    className="hitech-interactive inline-flex rounded px-1 text-lg font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+                  >
+                    &#8250; View afternoon breakout tracks
+                  </a>
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
 
+          <div
+            id="sticky-start-marker"
+            className="flex justify-center px-5 py-6 sm:px-8 lg:px-12"
+          >
+            <a
+              href="#register"
+              className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
+            >
+              Register Now
+            </a>
           </div>
-          </section>
-        </ScrollReveal>
 
-        <div id="sticky-start-marker" className="flex justify-center px-5 py-6 sm:px-8 lg:px-12">
-          <a
-            href="#register"
-            className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
+          <ScrollReveal>
+            <ProgramOverview />
+          </ScrollReveal>
+
+          <div
+            id="sticky-end-marker"
+            className="flex justify-center px-5 py-8 sm:px-8 lg:px-12"
           >
-            Register Now
-          </a>
+            <a
+              href="#register"
+              className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
+            >
+              Register Now
+            </a>
+          </div>
         </div>
-
-        <ScrollReveal>
-          <ProgramOverview />
-        </ScrollReveal>
-
-        <div id="sticky-end-marker" className="flex justify-center px-5 py-8 sm:px-8 lg:px-12">
-          <a
-            href="#register"
-            className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
-          >
-            Register Now
-          </a>
-        </div>
-        </div>
-        <FloatingRegisterCta startId="sticky-start-marker" endId="sticky-end-marker" />
+        <FloatingRegisterCta
+          startId="sticky-start-marker"
+          endId="sticky-end-marker"
+        />
 
         <ScrollReveal>
           <section
-          id="register"
-          className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
-        >
-          <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 sm:p-8">
-            <h2 className="text-2xl font-bold text-[#00d7c7]">Summit Registration</h2>
-            <p className="mt-2 text-sm text-white/85">
-              Complete the form below. After successful registration, we will send
-              your QR access details closer to the event date.
-            </p>
-            <div className="mt-6">
-              <RegistrationFormShell />
+            id="register"
+            className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
+          >
+            <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 sm:p-8">
+              <h2 className="text-2xl font-bold text-[#00d7c7]">
+                Summit Registration
+              </h2>
+              <p className="mt-2 text-sm text-white/85">
+                Complete the form below. After successful registration, we will
+                send your QR access details closer to the event date.
+              </p>
+              <div className="mt-6">
+                <RegistrationFormShell />
+              </div>
             </div>
-          </div>
           </section>
         </ScrollReveal>
       </main>

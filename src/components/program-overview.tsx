@@ -405,7 +405,7 @@ const afternoonTrack3Agenda: AgendaItem[] = [
         name: "Shidan Murphy",
         title: "Presales Head, Banking & Financial Services APAC",
         company: "Siemens",
-        image: "/speaker-shidan-murphy.jfif",
+        image: "/speaker-shidan-murphy.png",
       },
     ],
   },

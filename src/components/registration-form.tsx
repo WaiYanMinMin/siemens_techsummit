@@ -19,7 +19,7 @@ type FormState = {
   industry: string;
   breakoutTrack: string;
   challenges: string[];
-  needTimeline: string;
+  needTimeline: "" | "6_months" | "12_months" | "exploring" | "no_requirement";
   consent: boolean;
 };
 
@@ -33,7 +33,7 @@ const initialState: FormState = {
   industry: "",
   breakoutTrack: "",
   challenges: [],
-  needTimeline: "exploring",
+  needTimeline: "",
   consent: false,
 };
 
@@ -64,6 +64,15 @@ export function RegistrationForm() {
     setSuccess("");
 
     try {
+      if (formData.challenges.length === 0) {
+        setError("Please select at least one challenge.");
+        return;
+      }
+      if (!formData.needTimeline) {
+        setError("Please select whether you need digitalization solutions.");
+        return;
+      }
+
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -78,8 +87,8 @@ export function RegistrationForm() {
       }
 
       setSuccess(
-        body.message ??
-          "Registration successful. We will share QR access details closer to the event.",
+          body.message ??
+          "Thank you for your interest in Siemens Tech Summit 2026. We will be sending you an email with the event details shortly.",
       );
       setFormData(initialState);
     } catch {
@@ -183,7 +192,7 @@ export function RegistrationForm() {
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
         <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
-          What digital transformation challenges are you facing?
+          What digital transformation challenges are you facing? *
         </legend>
         {digitalChallenges.map((challenge) => (
           <label
@@ -203,9 +212,9 @@ export function RegistrationForm() {
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
         <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
-          Do you have a need for digitalization solutions?
+          Do you have a need for digitalization solutions? *
         </legend>
-        {timelineNeeds.map((option) => (
+        {timelineNeeds.map((option, index) => (
           <label
             key={option.value}
             className="hitech-interactive flex items-start gap-3 rounded-md p-2 text-sm text-white/90 transition hover:bg-white/5"
@@ -216,8 +225,12 @@ export function RegistrationForm() {
               value={option.value}
               checked={formData.needTimeline === option.value}
               onChange={(event) =>
-                setFormData((prev) => ({ ...prev, needTimeline: event.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  needTimeline: event.target.value as FormState["needTimeline"],
+                }))
               }
+              required={index === 0}
               className="mt-1 h-4 w-4 accent-[#11d3b7]"
             />
             {option.label}
@@ -225,7 +238,11 @@ export function RegistrationForm() {
         ))}
       </fieldset>
 
-      <label className="flex items-start gap-3 rounded-md border border-white/20 bg-white/5 p-4 text-sm text-white/90">
+      <label className="flex flex-col gap-2 rounded-md border border-white/20 bg-white/5 p-4 text-sm text-white/90">
+        <span className="font-medium text-white/95">
+          Privacy agreement & consent *
+        </span>
+        <span className="flex items-start gap-3">
         <input
           type="checkbox"
           checked={formData.consent}
@@ -236,14 +253,15 @@ export function RegistrationForm() {
         <span>
           I agree to the{" "}
           <a
-            href="https://www.siemens.com/en-us/company/compliance/data-privacy/"
+            href="https://www.siemens.com/en-us/privacy-notice/"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold text-[#7de6d5] underline underline-offset-2"
           >
-            privacy policy
+            data privacy notice
           </a>{" "}
           and data processing terms.
+        </span>
         </span>
       </label>
 

@@ -71,22 +71,24 @@ export default function Home() {
 
         <ScrollReveal>
           <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
-            <div className="mx-auto w-full max-w-6xl">
-              <div className="flex flex-col gap-6 md:gap-10 lg:grid lg:grid-cols-[0.95fr_1.35fr] lg:items-start lg:gap-10">
+            <div className="mx-auto w-full max-w-6xl lg:max-w-[88rem] xl:max-w-[96rem]">
+              <div className="flex flex-col gap-6 md:gap-10 lg:grid lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:items-start lg:gap-12 xl:gap-14">
                 <h2 className="text-center text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-4xl lg:col-start-2 lg:row-start-1 lg:text-left lg:text-5xl">
                   Make <span className="text-[#00d7c7]">AI</span> Real
                 </h2>
 
                 <div className="lg:col-start-1 lg:row-span-2 lg:row-start-1">
-                  <video
-                    className="w-full rounded-sm border border-white/10 bg-black"
-                    controls
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source src="/siemens-trailer-16x9.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
+                  <div className="relative aspect-video w-full overflow-hidden rounded-sm border border-white/10 bg-black shadow-[0_24px_48px_rgba(0,0,0,0.35)]">
+                    <video
+                      className="absolute inset-0 block h-full w-full object-contain object-center"
+                      controls
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src="/siemens-trailer-16x9.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
 
                   <a
                     href="#register"
@@ -309,8 +311,7 @@ export default function Home() {
                 Summit Registration
               </h2>
               <p className="mt-2 text-sm text-white/85">
-                Complete the form below. After successful registration, we will
-                send your QR access details closer to the event date.
+                Please complete the form below.
               </p>
               <div className="mt-6">
                 <RegistrationFormShell />

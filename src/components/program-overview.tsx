@@ -89,20 +89,6 @@ const morningAgenda: AgendaItem[] = [
 
 Moving beyond pilots, the discussion focuses on how organizations can successfully scale AI across the enterprise, overcoming challenges like data silos, legacy systems, and preparing the workforce for AI-driven operations. In line with the priorities of the World Economic Forum, this session highlights how Industrial AI is enabling more sustainable operations, strengthening supply chain resilience, and accelerating the transition to future-ready manufacturing.`,
     time: "11.20 – 11.50am",
-    speakers: [
-      {
-        name: "Isabel Chong",
-        title: "SVP Digital Industries, ASEAN",
-        company: "Siemens",
-      },
-      { name: "Tan Yew Kong", title: "SVP, Asia Pacific", company: "Global Foundries" },
-      {
-        name: "Ang Wee Seng",
-        title: "Executive Director",
-        company: "Singapore Semiconductor Industry Association",
-      },
-      { name: "Cindy Koh", title: "Executive Vice President", company: "EDB" },
-    ],
   },
   {
     title: "Beyond Simulation: How Industrial AI Supercharges the Digital Twin",
@@ -500,6 +486,7 @@ export function ProgramOverview() {
   const [isTrackMenuOpen, setIsTrackMenuOpen] = useState(false);
   const [detailItem, setDetailItem] = useState<AgendaItem | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const tabSwitcherRef = useRef<HTMLDivElement | null>(null);
   const detailCloseRef = useRef<HTMLButtonElement | null>(null);
 
   const afternoonTrackItems: Record<TrackId, AgendaItem[]> = {
@@ -572,31 +559,58 @@ export function ProgramOverview() {
 
   useEffect(() => {
     const panel = scrollRef.current;
-    if (!panel) return;
 
-    const scrollPanelToTopForAgendaHash = () => {
-      if (window.location.hash === "#agenda") {
-        panel.scrollTop = 0;
+    const alignAgendaToTabSwitcher = () => {
+      const h = window.location.hash;
+      if (h !== "#agenda" && h !== "#agenda-morning" && h !== "#agenda-afternoon") {
+        return;
       }
+
+      if (panel) panel.scrollTop = 0;
+
+      const run = () => {
+        const header = document.querySelector("header");
+        const headerH = header?.getBoundingClientRect().height ?? 0;
+        const reserve = Math.max(headerH + 36, 140);
+
+        const el = tabSwitcherRef.current;
+        if (!el) return;
+
+        const top = window.scrollY + el.getBoundingClientRect().top;
+        window.scrollTo({
+          top: Math.max(0, top - reserve),
+          behavior: "auto",
+        });
+      };
+
+      requestAnimationFrame(() => requestAnimationFrame(run));
     };
 
-    scrollPanelToTopForAgendaHash();
-    window.addEventListener("hashchange", scrollPanelToTopForAgendaHash);
-    return () => window.removeEventListener("hashchange", scrollPanelToTopForAgendaHash);
+    alignAgendaToTabSwitcher();
+    window.addEventListener("hashchange", alignAgendaToTabSwitcher);
+    return () => window.removeEventListener("hashchange", alignAgendaToTabSwitcher);
   }, []);
 
   return (
     <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
       <div className="mx-auto w-full max-w-6xl">
-        <div
-          id="agenda"
-          className="scroll-mt-[72px] sm:scroll-mt-[84px]"
+        <div id="agenda" className="scroll-mt-[140px] sm:scroll-mt-[152px]" />
+        <span
+          id="agenda-morning"
+          className="block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
+          aria-hidden
         />
-        <span id="agenda-morning" className="block h-0 w-0" />
-        <span id="agenda-afternoon" className="block h-0 w-0" />
+        <span
+          id="agenda-afternoon"
+          className="-mt-px block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
+          aria-hidden
+        />
       
 
-        <div className="inline-flex overflow-hidden rounded-md border border-white/25 bg-white text-[#111]">
+        <div
+          ref={tabSwitcherRef}
+          className="inline-flex overflow-hidden rounded-md border border-white/25 bg-white text-[#111]"
+        >
           <button
             type="button"
             onClick={() => {
@@ -665,7 +679,7 @@ export function ProgramOverview() {
                   <span className="min-w-0 flex-1 pr-1 leading-snug max-md:line-clamp-2">
                     {trackLabels[activeTrack]}
                   </span>
-                  <span className="shrink-0">{isTrackMenuOpen ? "▲" : "≡"}</span>
+                  <span className="shrink-0">{isTrackMenuOpen ? "▲" : "▼"}</span>
                 </button>
 
                 {isTrackMenuOpen && (

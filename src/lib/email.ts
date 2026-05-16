@@ -65,7 +65,8 @@ export async function sendRegistrationConfirmation({
     {
       from: fromEmail,
       to: email,
-      subject: "Registration Confirmation: Siemens Tech Summit Singapore 2026",
+      subject:
+        "Registration Confirmation & Ticket: Siemens Tech Summit 2026",
       template: {
         id: confirmationTemplateId,
         variables: {

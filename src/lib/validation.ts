@@ -16,10 +16,14 @@ export const registrationSchema = z.object({
   company: z.string().trim().min(1, "Organization / company is required"),
   industry: z.enum(industries, { message: "Please select an industry" }),
   breakoutTrack: z.enum(breakoutTracks, { message: "Please select one track" }),
-  challenges: z.array(z.enum(digitalChallenges)).default([]),
-  needTimeline: z.enum(["6_months", "12_months", "exploring", "no_requirement"]),
+  challenges: z
+    .array(z.enum(digitalChallenges))
+    .min(1, "Please select at least one challenge"),
+  needTimeline: z.enum(["6_months", "12_months", "exploring", "no_requirement"], {
+    message: "Please select whether you need digitalization solutions",
+  }),
   consent: z.literal(true, {
-    message: "You must agree to the privacy policy and data processing terms",
+    message: "You must agree to the data privacy notice and data processing terms",
   }),
 });
 

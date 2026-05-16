@@ -42,10 +42,12 @@ export const breakoutTracks = [
 
 export const digitalChallenges = [
   "Optimize building operations to improve performance",
-  "Difficulty turning building data into actionable insights",
+  "Difficulty in turning building data into actionable insights",
   "Lack of end-to-end data visibility and siloed systems",
   "Integrating modern digital tools into legacy IT and OT infrastructure",
   "Legacy and unpatched systems leading to higher cyber risks",
+  "Older systems often lack security features",
+  "Managing compliance with new regulations like the EU Cyber Resilience Act (CRA)",
   "Leveraging AI/ML for product innovation",
   "Fragmented software and data silos",
 ] as const;

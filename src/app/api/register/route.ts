@@ -4,6 +4,9 @@ import { sendInvitationEmail, sendRegistrationConfirmation } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { registrationSchema } from "@/lib/validation";
 
+const registrationSuccessMessage =
+  "Thank you for your interest in Siemens Tech Summit 2026. We will be sending you an email with the event details shortly.";
+
 export async function POST(request: Request) {
   try {
     const isDev = process.env.NODE_ENV !== "production";
@@ -101,10 +104,7 @@ export async function POST(request: Request) {
     if (!confirmationResult.ok && !invitationResult.ok) {
       console.error("Confirmation email send failed:", confirmationResult.error);
       console.error("Invitation email send failed:", invitationResult.error);
-      return NextResponse.json({
-        message:
-          "Registration successful, but email delivery is temporarily unavailable. We will contact you shortly.",
-      });
+      return NextResponse.json({ message: registrationSuccessMessage });
     }
 
     if (!confirmationResult.ok || !invitationResult.ok) {
@@ -114,15 +114,11 @@ export async function POST(request: Request) {
       if (!invitationResult.ok) {
         console.error("Invitation email send failed:", invitationResult.error);
       }
-      return NextResponse.json({
-        message:
-          "Registration successful. Some email notifications are delayed, but your registration is recorded.",
-      });
+      return NextResponse.json({ message: registrationSuccessMessage });
     }
 
     return NextResponse.json({
-      message:
-        "Registration successful. Confirmation and invitation emails have been sent.",
+      message: registrationSuccessMessage,
     });
   } catch (error) {
     console.error("Registration API error:", error);

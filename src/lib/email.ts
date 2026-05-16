@@ -4,6 +4,7 @@ type ConfirmationEmailInput = {
   firstName: string;
   email: string;
   registrationId: string;
+  idempotencyKey?: string;
 };
 
 type InvitationEmailInput = {
@@ -13,6 +14,7 @@ type InvitationEmailInput = {
   ctaUrl: string;
   invitationType?: "default" | "csuites" | "associates";
   associationName?: string;
+  idempotencyKey?: string;
 };
 
 type EmailResult =
@@ -54,6 +56,7 @@ export async function sendRegistrationConfirmation({
   firstName,
   email,
   registrationId,
+  idempotencyKey,
 }: ConfirmationEmailInput) {
   const fromEmail = process.env.FROM_EMAIL;
 
@@ -86,7 +89,7 @@ export async function sendRegistrationConfirmation({
       },
     },
     {
-      idempotencyKey: `registration-confirmation/${registrationId}`,
+      idempotencyKey: idempotencyKey ?? `registration-confirmation/${registrationId}`,
     },
   );
 
@@ -108,6 +111,7 @@ export async function sendInvitationEmail({
   ctaUrl,
   invitationType = "default",
   associationName,
+  idempotencyKey,
 }: InvitationEmailInput) {
   const fromEmail = process.env.FROM_EMAIL;
 
@@ -150,7 +154,8 @@ export async function sendInvitationEmail({
       },
     },
     {
-      idempotencyKey: `invitation-email/${invitationId}`,
+      idempotencyKey:
+        idempotencyKey ?? `invitation-email/${invitationId}/${invitationType}`,
     },
   );
 

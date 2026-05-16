@@ -58,12 +58,14 @@ export async function POST(request: Request) {
 
     for (const row of rows) {
       try {
+        const perSendKey = `admin-bulk/${emailTemplate}/${row.id}/${Date.now()}`;
         const result =
           emailTemplate === "confirmation"
             ? await sendRegistrationConfirmation({
                 firstName: row.first_name ?? "Guest",
                 email: row.email,
                 registrationId: String(row.id),
+                idempotencyKey: perSendKey,
               })
             : await sendInvitationEmail({
                 firstName: row.first_name ?? "Guest",
@@ -71,6 +73,7 @@ export async function POST(request: Request) {
                 invitationId: String(row.id),
                 invitationType: emailTemplate === "invitation" ? "default" : emailTemplate,
                 ctaUrl,
+                idempotencyKey: perSendKey,
               });
 
         if (result.ok) {

@@ -22,8 +22,15 @@ let resendClient: Resend | null = null;
 const DEFAULT_EMAIL_LOGO_URL =
   "https://siemenstechsummit.vercel.app/siemens-3-logo-png-transparent.png";
 
+const DEFAULT_EMAIL_HERO_IMAGE_URL =
+  "https://siemenstechsummit.vercel.app/key_visual_mobile.png";
+
 function emailLogoUrl() {
   return process.env.EMAIL_LOGO_URL?.trim() || DEFAULT_EMAIL_LOGO_URL;
+}
+
+function emailHeroImageUrl() {
+  return process.env.EMAIL_HERO_IMAGE_URL?.trim() || DEFAULT_EMAIL_HERO_IMAGE_URL;
 }
 
 function getResendClient() {
@@ -54,7 +61,7 @@ export async function sendRegistrationConfirmation({
 
   const resend = getResendClient();
   const confirmationTemplateId = process.env.RESEND_TEMPLATE_CONFIRMATION_ID;
-  const heroImageUrl = process.env.EMAIL_HERO_IMAGE_URL?.trim() ?? "";
+  const heroImageUrl = emailHeroImageUrl();
   const logoUrl = emailLogoUrl();
 
   if (!confirmationTemplateId) {
@@ -106,7 +113,7 @@ export async function sendInvitationEmail({
 
   const resend = getResendClient();
   const invitationTemplateId = process.env.RESEND_TEMPLATE_INVITATION_ID;
-  const heroImageUrl = process.env.EMAIL_HERO_IMAGE_URL?.trim() ?? "";
+  const heroImageUrl = emailHeroImageUrl();
   const logoUrl = emailLogoUrl();
 
   if (!invitationTemplateId) {

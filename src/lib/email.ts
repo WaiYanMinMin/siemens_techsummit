@@ -11,6 +11,8 @@ type InvitationEmailInput = {
   email: string;
   invitationId: string;
   ctaUrl: string;
+  invitationType?: "default" | "csuites" | "associates";
+  associationName?: string;
 };
 
 type EmailResult =
@@ -104,6 +106,8 @@ export async function sendInvitationEmail({
   email,
   invitationId,
   ctaUrl,
+  invitationType = "default",
+  associationName,
 }: InvitationEmailInput) {
   const fromEmail = process.env.FROM_EMAIL;
 
@@ -112,7 +116,16 @@ export async function sendInvitationEmail({
   }
 
   const resend = getResendClient();
-  const invitationTemplateId = process.env.RESEND_TEMPLATE_INVITATION_ID;
+  const invitationTemplateIdByType = {
+    default: process.env.RESEND_TEMPLATE_INVITATION_ID,
+    csuites:
+      process.env.RESEND_TEMPLATE_INVITATION_CSUITES_ID ??
+      process.env.RESEND_TEMPLATE_INVITATION_ID,
+    associates:
+      process.env.RESEND_TEMPLATE_INVITATION_ASSOCIATES_ID ??
+      process.env.RESEND_TEMPLATE_INVITATION_ID,
+  } as const;
+  const invitationTemplateId = invitationTemplateIdByType[invitationType];
   const heroImageUrl = emailHeroImageUrl();
   const logoUrl = emailLogoUrl();
 
@@ -130,6 +143,7 @@ export async function sendInvitationEmail({
         variables: {
           first_name: firstName || "Guest",
           cta_url: ctaUrl,
+          association_name: associationName || "",
           hero_image_url: heroImageUrl,
           logo_url: logoUrl,
         },

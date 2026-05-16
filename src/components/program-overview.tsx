@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Speaker = {
   name: string;
@@ -12,9 +13,8 @@ type Speaker = {
 
 type AgendaItem = {
   title: string;
-  /** Short summary shown in the agenda list */
   description?: string;
-  /** Full synopsis from programme (opens in details modal) */
+  /** Full synopsis from programme (opens in synopsis modal) */
   detailSynopsis?: string;
   time: string;
   speakers?: Speaker[];
@@ -77,6 +77,7 @@ const morningAgenda: AgendaItem[] = [
         name: "Michael Schrapp",
         title: "Head of Industrial AI",
         company: "Siemens Digital Industries",
+        image: "/speaker-michael-schrapp.jpg",
       },
     ],
   },
@@ -102,6 +103,7 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
         name: "Simon Guerin",
         title: "Head of AI/DA Pre-Sales, APAC",
         company: "Siemens Digital Industries Software",
+        image: "/speaker-simon-guerin.jpg",
       },
     ],
   },
@@ -117,11 +119,13 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
         name: "Atul Kawatra",
         title: "GM, Head of Corporate Lending and Project Finance",
         company: "Siemens Bank / SFS",
+        image: "/speaker-atul-kawatra.jpg",
       },
       {
         name: "Mark Ee",
         title: "Head of Equity Finance Asia/Australia",
         company: "SFS",
+        image: "/speaker-mark-ee.jpg",
       },
     ],
   },
@@ -134,7 +138,8 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
 
 const afternoonTrack1Agenda: AgendaItem[] = [
   {
-    title: "Track opening: From Infrastructure to Intelligence: Transforming Modern Buildings",
+    title:
+      "Track opening: From Infrastructure to Intelligence: Transforming Modern Buildings",
     description:
       "Human-centric design, digital innovation, and sustainability as outcomes—how Siemens reimagines the built environment.",
     detailSynopsis: `What if your building could adapt to you — not the other way around? Siemens is reimagining the built environment as a dynamic ecosystem where human-centric design, digital innovation, and sustainability aren't just goals — they're outcomes.
@@ -216,7 +221,8 @@ In this session, we show you how Siemens moves beyond traditional building manag
     ],
   },
   {
-    title: "Intelligent by Design: Building Data Centers for the Age of Agentic AI",
+    title:
+      "Intelligent by Design: Building Data Centers for the Age of Agentic AI",
     description:
       "Designing and retrofitting data centers where AI optimizes operations—from cooling to power—and how Siemens removes technical and financial barriers.",
     detailSynopsis: `Data centers of tomorrow won't just house AI - they'll be run by AI. As we enter the age of agentic AI, where intelligent systems make autonomous decisions and continuously optimize operations, the question isn't if your data center will be AI-operated, but when - and whether you'll be ready. The good news? With Siemens' integrated technology and financing solutions, this transformation is more accessible than ever.
@@ -253,7 +259,8 @@ The session will highlight common gaps and considerations, prompting organisatio
   },
   {
     title: "Happy Hour Networking Session",
-    description: "Connect with industry leaders at Happy Hour Networking Session",
+    description:
+      "Connect with industry leaders at Happy Hour Networking Session",
     time: "4.45 – 6.15pm",
   },
 ];
@@ -272,11 +279,13 @@ Through real-world insights, Siemens Digital Industries highlights how integrati
         name: "Isabel Chong",
         title: "SVP Siemens Digital Industries, ASEAN",
         company: "Siemens",
+        image: "/speaker-isabel-chong.jpg",
       },
     ],
   },
   {
-    title: "In the Age of Industrial AI: Reimagining the Future of Intelligent Enterprises",
+    title:
+      "In the Age of Industrial AI: Reimagining the Future of Intelligent Enterprises",
     description:
       "From experimentation to enterprise-wide AI—productivity, resilience, adaptability, and sustainable growth.",
     detailSynopsis: `Industrial AI is rapidly redefining how organizations compete, shifting advantage from scale and cost efficiency to intelligence, speed, and adaptability. As AI moves from experimentation to enterprise-wide deployment, it is becoming the backbone of modern industry — powering smarter decisions, autonomous operations, and connected value chains.
@@ -297,6 +306,7 @@ This session highlights how autonomous technologies drive greater efficiency, re
         name: "Sascha Maennl",
         title: "VP Sales Automation Solutions",
         company: "Siemens Asia Pacific",
+        image: "/speaker-sascha-maennl.jpg",
       },
     ],
   },
@@ -313,6 +323,7 @@ This session explores how software-defined automation enables agile manufacturin
         name: "Govin Manickam",
         title: "Technology Business Development",
         company: "Siemens ASEAN",
+        image: "/speaker-govin-manickam.jpg",
       },
     ],
   },
@@ -327,23 +338,25 @@ This session explores how software-defined automation enables agile manufacturin
     detailSynopsis: `A "Single Pane of Glass" approach brings together data, systems, and operations into one unified view, enabling greater visibility and control across the industrial enterprise. By integrating production, engineering, and operational data into a centralized platform, organizations can simplify decision-making, improve collaboration, and respond faster to changing conditions.
 
 This session explores how unified digital environments help manufacturers streamline operations, enhance transparency, and drive more efficient, data-driven industrial performance.`,
-    time: "3.45 – 4.15pm",
+    time: "3.45 – 4.00pm",
     speakers: [
       {
         name: "Licheng Yan",
         title: "Solutions Consultant",
         company: "Siemens Singapore",
+        image: "/speaker-licheng-yan.jpg",
       },
     ],
   },
   {
-    title: "Customer Panel Discussion: Overcoming challenges to Fast-Track Advanced Technology Adoption",
+    title:
+      "Customer Panel Discussion: Overcoming Challenges in the Adoption of Smart Manufacturing Advanced Technologies",
     description:
       "Legacy systems, skills, cost, and change—strategies, partnerships, and scalable adoption of industrial AI and automation.",
-    detailSynopsis: `This panel explores how organizations can accelerate the adoption of advanced technologies like industrial AI and automation while overcoming common barriers such as legacy systems, skill gaps, cost concerns, and resistance to change. Experts will share practical strategies to build organizational readiness, foster innovation, and align leadership with execution.
+    detailSynopsis: `As industries worldwide continue to embrace Industry 4.0, organizations are increasingly integrating technologies such as digital twins, Industrial AI and advanced analytics into manufacturing operations. While these technologies offer significant benefits in efficiency, productivity, quality, and sustainability, many companies still face substantial barriers to adoption.
 
-The discussion will also highlight the importance of partnerships and scalable implementation approaches, offering actionable insights to drive faster, sustainable technology adoption.`,
-    time: "4.15 – 4.30pm",
+Today, our distinguished panelists will share insights, experiences, and practical strategies to help organizations navigate these challenges and accelerate successful digital transformation.”`,
+    time: "4.00 – 4.30pm",
   },
   {
     title: "Cybersecure Industry: Protecting the Digital Factory",
@@ -358,19 +371,22 @@ This session explores how manufacturers can strengthen resilience through secure
         name: "Sander Rotmensen",
         title: "Head of Business Cybersecurity",
         company: "Siemens AG",
+        image: "/speaker-sander-rotmensen.png",
       },
     ],
   },
   {
     title: "Happy Hour Networking Session",
-    description: "Connect with industry leaders at Happy Hour Networking Session",
+    description:
+      "Connect with industry leaders at Happy Hour Networking Session",
     time: "4.45 – 6.15pm",
   },
 ];
 
 const afternoonTrack3Agenda: AgendaItem[] = [
   {
-    title: "Track opening: Powering the Next Generation of AI with Industrial Metaverse",
+    title:
+      "Track opening: Powering the Next Generation of AI with Industrial Metaverse",
     description:
       "Digital twins with physics-based simulation and real-time data—design, validate, and optimize faster across products and production.",
     detailSynopsis: `AI-powered digital twins combine physics-based simulation with real-time operational data to create dynamic, evolving representations of products, machines, and entire production systems. By linking the virtual and physical worlds in a continuous feedback loop, they enable companies to design, validate, and optimize with far greater speed, confidence, and efficiency.`,
@@ -401,7 +417,8 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
     ],
   },
   {
-    title: "Human-Machine Collaboration and Validation in Immersive Mechatronic Environment",
+    title:
+      "Human-Machine Collaboration and Validation in Immersive Mechatronic Environment",
     description:
       "Immersive environments between virtual design and physical prototypes—live demo with Sony VR headset.",
     detailSynopsis: `Human-machine collaboration and validation enable more intuitive interaction with complex mechatronic systems. This session will explore how immersive environments bridge the gap between virtual design and physical machine prototypes, accelerating the design cycle while improving the quality and safety of mechatronic products. Join us for a live demonstration featuring a Sony VR headset, showcasing firsthand how immersive design fosters this critical collaboration.`,
@@ -458,7 +475,8 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
     ],
   },
   {
-    title: "Build Faster, Integrate Smarter: Low-Code Manufacturing with Mendix",
+    title:
+      "Build Faster, Integrate Smarter: Low-Code Manufacturing with Mendix",
     description:
       "Extend PLM, MES, ERP, and SCM without replacing cores—Mendix as the low-code engine of Siemens Xcelerator.",
     detailSynopsis: `You don't need to replace your existing systems—just make them smarter, more adaptive, and ready to scale.
@@ -475,16 +493,20 @@ As the low‑code engine of Siemens Xcelerator, Mendix lets you extend PLM, MES,
   },
   {
     title: "Happy Hour Networking Session",
-    description: "Connect with industry leaders at Happy Hour Networking Session",
+    description:
+      "Connect with industry leaders at Happy Hour Networking Session",
     time: "4.45 – 6.15pm",
   },
 ];
 
 export function ProgramOverview() {
-  const [activeTab, setActiveTab] = useState<"morning" | "afternoon">("morning");
+  const [activeTab, setActiveTab] = useState<"morning" | "afternoon">(
+    "morning",
+  );
   const [activeTrack, setActiveTrack] = useState<TrackId>("track1");
   const [isTrackMenuOpen, setIsTrackMenuOpen] = useState(false);
   const [detailItem, setDetailItem] = useState<AgendaItem | null>(null);
+  const [portalReady] = useState(() => typeof window !== "undefined");
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const tabSwitcherRef = useRef<HTMLDivElement | null>(null);
   const detailCloseRef = useRef<HTMLButtonElement | null>(null);
@@ -494,7 +516,8 @@ export function ProgramOverview() {
     track2: afternoonTrack2Agenda,
     track3: afternoonTrack3Agenda,
   };
-  const items = activeTab === "morning" ? morningAgenda : afternoonTrackItems[activeTrack];
+  const items =
+    activeTab === "morning" ? morningAgenda : afternoonTrackItems[activeTrack];
   const trackLabels: Record<TrackId, string> = {
     track1: "Powering the Future of Autonomous Buildings",
     track2: "Smart Manufacturing with Industrial AI",
@@ -520,7 +543,9 @@ export function ProgramOverview() {
     const root = scrollRef.current;
     if (!root) return;
 
-    const nodes = Array.from(root.querySelectorAll<HTMLElement>(".agenda-item"));
+    const nodes = Array.from(
+      root.querySelectorAll<HTMLElement>(".agenda-item"),
+    );
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -562,7 +587,11 @@ export function ProgramOverview() {
 
     const alignAgendaToTabSwitcher = () => {
       const h = window.location.hash;
-      if (h !== "#agenda" && h !== "#agenda-morning" && h !== "#agenda-afternoon") {
+      if (
+        h !== "#agenda" &&
+        h !== "#agenda-morning" &&
+        h !== "#agenda-afternoon"
+      ) {
         return;
       }
 
@@ -588,10 +617,111 @@ export function ProgramOverview() {
 
     alignAgendaToTabSwitcher();
     window.addEventListener("hashchange", alignAgendaToTabSwitcher);
-    return () => window.removeEventListener("hashchange", alignAgendaToTabSwitcher);
+    return () =>
+      window.removeEventListener("hashchange", alignAgendaToTabSwitcher);
   }, []);
 
+  const synopsisModal =
+    detailItem && portalReady
+      ? createPortal(
+          <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 sm:p-6">
+            <button
+              type="button"
+              className="absolute inset-0 bg-[#000029]/70 backdrop-blur-md"
+              aria-label="Close session synopsis"
+              onClick={() => setDetailItem(null)}
+            />
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="agenda-detail-title"
+              className="relative z-10 flex max-h-[min(90vh,880px)] w-full max-w-2xl flex-col rounded-xl border border-[#00d7c7]/30 bg-[#000029] shadow-[0_0_0_1px_rgba(0,215,199,0.08),0_24px_80px_rgba(0,0,0,0.55)]"
+            >
+              <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/10 bg-[#02023e]/90 px-5 py-4 sm:px-6">
+                <div className="min-w-0 pr-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">
+                    Session synopsis
+                  </p>
+                  <h2
+                    id="agenda-detail-title"
+                    className="mt-1 text-lg font-bold leading-snug text-white sm:text-xl"
+                  >
+                    {detailItem.title}
+                  </h2>
+                  <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
+                    <span
+                      className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#00d7c7]"
+                      aria-hidden
+                    />
+                    {detailItem.time}
+                  </p>
+                </div>
+                <button
+                  ref={detailCloseRef}
+                  type="button"
+                  onClick={() => setDetailItem(null)}
+                  className="hitech-interactive shrink-0 rounded border border-white/25 px-3 py-1.5 text-sm font-semibold text-white transition hover:border-[#00d7c7]/60 hover:text-[#00d7c7]"
+                >
+                  Close
+                </button>
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6">
+                {detailItem.detailSynopsis && (
+                  <div className="whitespace-pre-wrap text-sm leading-relaxed text-white/92 sm:text-base">
+                    {detailItem.detailSynopsis}
+                  </div>
+                )}
+                {detailItem.speakers && detailItem.speakers.length > 0 && (
+                  <div className="mt-8 border-t border-white/10 pt-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">
+                      Speakers
+                    </p>
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      {detailItem.speakers.map((speaker) => (
+                        <div
+                          key={`modal-${detailItem.title}-${speaker.name}`}
+                          className="flex items-center gap-3"
+                        >
+                          {speaker.image ? (
+                            <Image
+                              src={speaker.image}
+                              alt={speaker.name}
+                              width={64}
+                              height={64}
+                              className="h-16 w-16 rounded-full object-cover"
+                            />
+                          ) : (
+                            <span className="inline-block h-16 w-16 shrink-0 rounded-full bg-white/12" />
+                          )}
+                          <div className="min-w-0 text-white">
+                            <p className="font-semibold leading-tight">
+                              {speaker.name}
+                            </p>
+                            {speaker.title && (
+                              <p className="mt-0.5 text-sm leading-snug text-white/88">
+                                {speaker.title}
+                              </p>
+                            )}
+                            {speaker.company && (
+                              <p className="mt-0.5 text-sm leading-snug text-white/75">
+                                {speaker.company}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>,
+          document.body,
+        )
+      : null;
+
   return (
+    <>
     <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
       <div className="mx-auto w-full max-w-6xl">
         <div id="agenda" className="scroll-mt-[140px] sm:scroll-mt-[152px]" />
@@ -605,7 +735,6 @@ export function ProgramOverview() {
           className="-mt-px block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
           aria-hidden
         />
-      
 
         <div
           ref={tabSwitcherRef}
@@ -679,7 +808,9 @@ export function ProgramOverview() {
                   <span className="min-w-0 flex-1 pr-1 leading-snug max-md:line-clamp-2">
                     {trackLabels[activeTrack]}
                   </span>
-                  <span className="shrink-0">{isTrackMenuOpen ? "▲" : "▼"}</span>
+                  <span className="shrink-0">
+                    {isTrackMenuOpen ? "▲" : "▼"}
+                  </span>
                 </button>
 
                 {isTrackMenuOpen && (
@@ -719,10 +850,9 @@ export function ProgramOverview() {
                 key={`${activeTab}-${activeTrack}-${index}-${item.time}`}
                 className="agenda-item border-b border-white/35 py-6 first:pt-0"
               >
-                <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">{item.title}</h3>
-                {item.description && (
-                  <p className="mt-2 text-sm leading-7 text-white/95 sm:text-base">{item.description}</p>
-                )}
+                <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">
+                  {item.title}
+                </h3>
 
                 {item.detailSynopsis && (
                   <button
@@ -730,7 +860,7 @@ export function ProgramOverview() {
                     onClick={() => setDetailItem(item)}
                     className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00d7c7] underline decoration-[#00d7c7]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
                   >
-                    View details
+                    View synopsis
                   </button>
                 )}
 
@@ -742,7 +872,10 @@ export function ProgramOverview() {
                 {item.speakers && item.speakers.length > 0 && (
                   <div className="mt-4 grid gap-4 sm:grid-cols-2">
                     {item.speakers.map((speaker) => (
-                      <div key={`${item.title}-${speaker.name}`} className="flex items-center gap-3">
+                      <div
+                        key={`${item.title}-${speaker.name}`}
+                        className="flex items-center gap-3"
+                      >
                         {speaker.image ? (
                           <Image
                             src={speaker.image}
@@ -755,12 +888,18 @@ export function ProgramOverview() {
                           <span className="inline-block h-[72px] w-[72px] rounded-full bg-white/15" />
                         )}
                         <div className="text-white">
-                          <p className="text-base font-semibold leading-tight sm:text-lg">{speaker.name}</p>
+                          <p className="text-base font-semibold leading-tight sm:text-lg">
+                            {speaker.name}
+                          </p>
                           {speaker.title && (
-                            <p className="text-sm leading-tight text-white/90 sm:text-base">{speaker.title}</p>
+                            <p className="text-sm leading-tight text-white/90 sm:text-base">
+                              {speaker.title}
+                            </p>
                           )}
                           {speaker.company && (
-                            <p className="text-sm leading-tight text-white/90 sm:text-base">{speaker.company}</p>
+                            <p className="text-sm leading-tight text-white/90 sm:text-base">
+                              {speaker.company}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -778,87 +917,11 @@ export function ProgramOverview() {
               </article>
             ))}
           </div>
-
         </div>
       </div>
 
-      {detailItem && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            aria-label="Close session details"
-            onClick={() => setDetailItem(null)}
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="agenda-detail-title"
-            className="relative z-10 flex max-h-[min(90vh,880px)] w-full max-w-2xl flex-col rounded-xl border border-[#00d7c7]/30 bg-[#000029] shadow-[0_0_0_1px_rgba(0,215,199,0.08),0_24px_80px_rgba(0,0,0,0.55)]"
-          >
-            <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/10 bg-[#02023e]/90 px-5 py-4 sm:px-6">
-              <div className="min-w-0 pr-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">Session synopsis</p>
-                <h2 id="agenda-detail-title" className="mt-1 text-lg font-bold leading-snug text-white sm:text-xl">
-                  {detailItem.title}
-                </h2>
-                <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
-                  <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#00d7c7]" aria-hidden />
-                  {detailItem.time}
-                </p>
-              </div>
-              <button
-                ref={detailCloseRef}
-                type="button"
-                onClick={() => setDetailItem(null)}
-                className="hitech-interactive shrink-0 rounded border border-white/25 px-3 py-1.5 text-sm font-semibold text-white transition hover:border-[#00d7c7]/60 hover:text-[#00d7c7]"
-              >
-                Close
-              </button>
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6 sm:py-6">
-              {detailItem.detailSynopsis && (
-                <div className="whitespace-pre-wrap text-sm leading-relaxed text-white/92 sm:text-base">
-                  {detailItem.detailSynopsis}
-                </div>
-              )}
-
-              {detailItem.speakers && detailItem.speakers.length > 0 && (
-                <div className="mt-8 border-t border-white/10 pt-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">Speakers</p>
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    {detailItem.speakers.map((speaker) => (
-                      <div key={`modal-${detailItem.title}-${speaker.name}`} className="flex items-center gap-3">
-                        {speaker.image ? (
-                          <Image
-                            src={speaker.image}
-                            alt={speaker.name}
-                            width={64}
-                            height={64}
-                            className="h-16 w-16 rounded-full object-cover"
-                          />
-                        ) : (
-                          <span className="inline-block h-16 w-16 shrink-0 rounded-full bg-white/12" />
-                        )}
-                        <div className="min-w-0 text-white">
-                          <p className="font-semibold leading-tight">{speaker.name}</p>
-                          {speaker.title && (
-                            <p className="mt-0.5 text-sm leading-snug text-white/88">{speaker.title}</p>
-                          )}
-                          {speaker.company && (
-                            <p className="mt-0.5 text-sm leading-snug text-white/75">{speaker.company}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </section>
+    {synopsisModal}
+    </>
   );
 }

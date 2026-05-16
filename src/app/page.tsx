@@ -14,28 +14,25 @@ export default function Home() {
         <ScrollReveal>
           <section className="bg-[#000029] pb-10 text-white sm:pb-12">
             <div className="relative isolate lg:grid lg:min-h-[560px] lg:grid-cols-[minmax(0,40%)_minmax(0,60%)]">
-              {/* Mobile: key visual visible behind copy; left scrim for text contrast */}
               <div
                 className="pointer-events-none absolute inset-0 overflow-hidden bg-[#000029] lg:hidden"
                 aria-hidden
               >
-                <div className="absolute inset-0 flex items-start justify-end pr-1 pt-12 sm:pr-2 sm:pt-14">
-                  <div className="relative h-[min(32vh,240px)] w-[min(88vw,320px)] sm:h-[min(36vh,280px)]">
-                    <Image
-                      src="/key_visual.png"
-                      alt=""
-                      fill
-                      className="object-contain object-right object-top"
-                      sizes="100vw"
-                      priority
-                    />
-                  </div>
+                <div className="absolute -right-[8%] top-0 h-[min(58vh,440px)] w-[min(105vw,520px)] sm:-right-[4%] sm:h-[min(62vh,500px)] sm:w-[min(100vw,560px)]">
+                  <Image
+                    src="/key_visual_mobile.png"
+                    alt=""
+                    fill
+                    className="object-contain object-right object-top"
+                    sizes="100vw"
+                    priority
+                  />
                 </div>
-                <div className="absolute inset-0 bg-[linear-gradient(105deg,#000029_0%,#000029_22%,rgba(0,0,41,0.82)_42%,rgba(0,0,41,0.38)_62%,rgba(0,0,41,0.12)_82%,transparent_100%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(to_top,#000029_0%,transparent_28%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(105deg,#000029_0%,#000029_20%,rgba(0,0,41,0.9)_38%,rgba(0,0,41,0.55)_55%,rgba(0,0,41,0.2)_72%,transparent_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(to_top,#000029_0%,rgba(0,0,41,0.75)_18%,transparent_42%)]" />
               </div>
 
-              <div className="relative z-10 flex min-h-[min(460px,76svh)] flex-col justify-start px-6 py-12 sm:px-10 sm:py-14 lg:min-h-[560px] lg:justify-center lg:bg-[#000029] lg:pl-12 lg:pr-10 lg:py-16 xl:pl-16">
+              <div className="relative z-10 flex min-h-[min(480px,78svh)] flex-col justify-start px-6 py-12 sm:px-10 sm:py-14 lg:min-h-[560px] lg:justify-center lg:bg-[#000029] lg:pl-12 lg:pr-10 lg:py-16 xl:pl-16">
                 <h1 className="max-lg:[text-shadow:0_2px_24px_rgba(0,0,41,0.95)] text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[52px] xl:text-[58px]">
                   Make <span className="text-[#00d7c7]">AI</span> Real
                 </h1>

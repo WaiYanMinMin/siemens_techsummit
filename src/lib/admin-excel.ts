@@ -162,3 +162,40 @@ export function invitationTemplateBuffer() {
     "invitations",
   );
 }
+
+type RegistrationExportRow = {
+  id: string | number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string | null;
+  job_title: string | null;
+  company: string | null;
+  industry: string | null;
+  breakout_track: string | null;
+  challenges: string[] | null;
+  need_timeline: string | null;
+  consent: boolean | null;
+  created_at: string | null;
+};
+
+export function registrationsExportBuffer(rows: RegistrationExportRow[]) {
+  return toWorkbookBuffer(
+    rows.map((row) => ({
+      id: row.id,
+      first_name: row.first_name,
+      last_name: row.last_name,
+      email: row.email,
+      mobile_number: row.mobile_number ?? "",
+      job_title: row.job_title ?? "",
+      company: row.company ?? "",
+      industry: row.industry ?? "",
+      breakout_track: row.breakout_track ?? "",
+      challenges: (row.challenges ?? []).join("|"),
+      need_timeline: row.need_timeline ?? "",
+      consent: row.consent ?? false,
+      created_at: row.created_at ?? "",
+    })),
+    "registrations",
+  );
+}

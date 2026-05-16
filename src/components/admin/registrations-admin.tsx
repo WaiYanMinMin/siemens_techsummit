@@ -306,13 +306,24 @@ export function RegistrationsAdmin() {
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">Registered users</h2>
-          <button
-            type="button"
-            onClick={onToggleSelectAllFiltered}
-            className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-          >
-            {areAllFilteredSelected ? "Unselect filtered" : "Select all filtered"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = "/api/admin/registrations/export";
+              }}
+              className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+            >
+              Export registrations
+            </button>
+            <button
+              type="button"
+              onClick={onToggleSelectAllFiltered}
+              className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+            >
+              {areAllFilteredSelected ? "Unselect filtered" : "Select all filtered"}
+            </button>
+          </div>
         </div>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <input

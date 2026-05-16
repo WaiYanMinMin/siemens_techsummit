@@ -35,10 +35,12 @@ export function RegistrationsAdmin() {
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
-  const [invitationType, setInvitationType] = useState<"default" | "csuites" | "associates">(
-    "default",
+  const [emailTemplate, setEmailTemplate] = useState<
+    "invitation" | "csuites" | "associates" | "confirmation"
+  >(
+    "invitation",
   );
-  const [ctaUrl, setCtaUrl] = useState("https://siemenstechsummit.vercel.app/#register");
+  const [ctaUrl, setCtaUrl] = useState("https://www.siemenstechsummit2026.com/#register");
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
   const filteredRows = useMemo(() => {
@@ -217,7 +219,7 @@ export function RegistrationsAdmin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ids: selectedIds,
-          invitationType,
+          emailTemplate,
           ctaUrl,
         }),
       });
@@ -246,25 +248,30 @@ export function RegistrationsAdmin() {
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Bulk invitation email</h2>
+        <h2 className="text-lg font-semibold text-slate-900">Bulk email sender</h2>
         <p className="mt-1 text-xs text-slate-600">
-          Select rows from the table first, then send invitation emails.
+          Select rows from the table first, choose a template, then send.
         </p>
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <label className="flex flex-col gap-1 text-xs font-medium text-slate-700">
-            Invitation template
+            Email template
             <select
-              value={invitationType}
+              value={emailTemplate}
               onChange={(event) =>
-                setInvitationType(
-                  event.target.value as "default" | "csuites" | "associates",
+                setEmailTemplate(
+                  event.target.value as
+                    | "invitation"
+                    | "csuites"
+                    | "associates"
+                    | "confirmation",
                 )
               }
               className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
             >
-              <option value="default">Default invitation</option>
+              <option value="invitation">Invitation (default)</option>
               <option value="csuites">C-suites invitation</option>
               <option value="associates">Associates invitation</option>
+              <option value="confirmation">Confirmation email</option>
             </select>
           </label>
           <label className="sm:col-span-2 flex flex-col gap-1 text-xs font-medium text-slate-700">
@@ -273,6 +280,7 @@ export function RegistrationsAdmin() {
               type="url"
               value={ctaUrl}
               onChange={(event) => setCtaUrl(event.target.value)}
+              disabled={emailTemplate === "confirmation"}
               className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
             />
           </label>

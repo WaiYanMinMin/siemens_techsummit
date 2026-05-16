@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       firstName: data.firstName,
       email: data.email,
       invitationId: String(inserted.id),
-      ctaUrl: "https://siemenstechsummit.vercel.app/#register",
+      ctaUrl: "https://www.siemenstechsummit2026.com/#register",
     });
 
     if (!confirmationResult.ok && !invitationResult.ok) {

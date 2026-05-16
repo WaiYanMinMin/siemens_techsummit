@@ -1,24 +1,24 @@
 import { NextResponse } from "next/server";
 
-import { sendInvitationEmail } from "@/lib/email";
+import { sendInvitationEmail, sendRegistrationConfirmation } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-type InvitationType = "default" | "csuites" | "associates";
+type EmailTemplate = "invitation" | "csuites" | "associates" | "confirmation";
 
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as {
       ids?: Array<string | number>;
-      invitationType?: InvitationType;
+      emailTemplate?: EmailTemplate;
       ctaUrl?: string;
     };
 
     const ids = Array.isArray(payload.ids)
       ? payload.ids.map((id) => String(id)).filter(Boolean)
       : [];
-    const invitationType = payload.invitationType ?? "default";
+    const emailTemplate = payload.emailTemplate ?? "invitation";
     const ctaUrl =
-      payload.ctaUrl?.trim() || "https://siemenstechsummit.vercel.app/#register";
+      payload.ctaUrl?.trim() || "https://www.siemenstechsummit2026.com/#register";
 
     if (ids.length === 0) {
       return NextResponse.json(
@@ -43,13 +43,20 @@ export async function POST(request: Request) {
     const errors: string[] = [];
 
     for (const row of rows) {
-      const result = await sendInvitationEmail({
-        firstName: row.first_name ?? "Guest",
-        email: row.email,
-        invitationId: String(row.id),
-        invitationType,
-        ctaUrl,
-      });
+      const result =
+        emailTemplate === "confirmation"
+          ? await sendRegistrationConfirmation({
+              firstName: row.first_name ?? "Guest",
+              email: row.email,
+              registrationId: String(row.id),
+            })
+          : await sendInvitationEmail({
+              firstName: row.first_name ?? "Guest",
+              email: row.email,
+              invitationId: String(row.id),
+              invitationType: emailTemplate === "invitation" ? "default" : emailTemplate,
+              ctaUrl,
+            });
 
       if (result.ok) {
         sent += 1;

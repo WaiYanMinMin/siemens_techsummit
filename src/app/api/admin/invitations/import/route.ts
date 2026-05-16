@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       .toLowerCase() as InvitationType;
     const ctaUrl =
       formData.get("ctaUrl")?.toString().trim() ||
-      "https://siemenstechsummit.vercel.app/#register";
+      "https://www.siemenstechsummit2026.com/#register";
 
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "File is required." }, { status: 400 });

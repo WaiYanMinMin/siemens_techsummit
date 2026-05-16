@@ -42,7 +42,7 @@ export default function Home() {
                 <p className="mt-8 max-w-md max-lg:[text-shadow:0_1px_14px_rgba(0,0,41,0.9)] text-base leading-relaxed text-white sm:text-lg">
                   Singapore, 1 July 2026
                   <br />
-                  Raffles City Convention Center
+                  Raffles City Convention Centre
                 </p>
                 <a
                   href="#register"

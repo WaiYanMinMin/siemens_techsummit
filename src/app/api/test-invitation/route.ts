@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const email = payload.email?.trim();
     const firstName = payload.firstName?.trim() || "Guest";
     const ctaUrl =
-      payload.ctaUrl?.trim() || "https://siemenstechsummit.vercel.app/#register";
+      payload.ctaUrl?.trim() || "https://www.siemenstechsummit2026.com/#register";
 
     if (!email) {
       return NextResponse.json(

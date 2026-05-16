@@ -22,27 +22,53 @@ type RegistrationFormState = {
   company: string;
 };
 
-const emptyForm: RegistrationFormState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  mobileNumber: "",
-  jobTitle: "",
-  company: "",
-};
-
 export function RegistrationsAdmin() {
   const [rows, setRows] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [importing, setImporting] = useState(false);
+  const [sendingEmails, setSendingEmails] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
-  const [form, setForm] = useState<RegistrationFormState>(emptyForm);
+  const [form, setForm] = useState<RegistrationFormState | null>(null);
   const [editingId, setEditingId] = useState<string | number | null>(null);
-  const [importFile, setImportFile] = useState<File | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [filterName, setFilterName] = useState("");
+  const [filterEmail, setFilterEmail] = useState("");
+  const [filterCompany, setFilterCompany] = useState("");
+  const [invitationType, setInvitationType] = useState<"default" | "csuites" | "associates">(
+    "default",
+  );
+  const [ctaUrl, setCtaUrl] = useState("https://siemenstechsummit.vercel.app/#register");
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
+  const filteredRows = useMemo(() => {
+    const nameFilter = filterName.trim().toLowerCase();
+    const emailFilter = filterEmail.trim().toLowerCase();
+    const companyFilter = filterCompany.trim().toLowerCase();
+
+    return rows.filter((row) => {
+      const fullName = `${row.first_name} ${row.last_name}`.toLowerCase();
+      const email = (row.email || "").toLowerCase();
+      const company = (row.company || "").toLowerCase();
+
+      return (
+        (!nameFilter || fullName.includes(nameFilter)) &&
+        (!emailFilter || email.includes(emailFilter)) &&
+        (!companyFilter || company.includes(companyFilter))
+      );
+    });
+  }, [rows, filterName, filterEmail, filterCompany]);
+  const filteredIds = useMemo(
+    () => filteredRows.map((row) => String(row.id)),
+    [filteredRows],
+  );
+  const areAllFilteredSelected = useMemo(() => {
+    if (filteredIds.length === 0) {
+      return false;
+    }
+    const selectedSet = new Set(selectedIds);
+    return filteredIds.every((id) => selectedSet.has(id));
+  }, [filteredIds, selectedIds]);
 
   async function loadRegistrations(options?: { keepLoadingState?: boolean }) {
     if (!options?.keepLoadingState) {
@@ -62,6 +88,10 @@ export function RegistrationsAdmin() {
       }
 
       setRows(body.registrations ?? []);
+      setSelectedIds((prev) => {
+        const available = new Set((body.registrations ?? []).map((row) => String(row.id)));
+        return prev.filter((id) => available.has(id));
+      });
     } catch {
       setError("Network error while loading registrations.");
     } finally {
@@ -90,20 +120,21 @@ export function RegistrationsAdmin() {
 
   function resetForm() {
     setEditingId(null);
-    setForm(emptyForm);
+    setForm(null);
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!editingId || !form) {
+      return;
+    }
     setSaving(true);
     setError("");
     setInfo("");
 
     try {
-      const endpoint = editingId
-        ? `/api/admin/registrations/${editingId}`
-        : "/api/admin/registrations";
-      const method = editingId ? "PUT" : "POST";
+      const endpoint = `/api/admin/registrations/${editingId}`;
+      const method = "PUT";
 
       const response = await fetch(endpoint, {
         method,
@@ -117,7 +148,7 @@ export function RegistrationsAdmin() {
         return;
       }
 
-      setInfo(editingId ? "Registration updated." : "Registration created.");
+      setInfo("Registration updated.");
       resetForm();
       await loadRegistrations();
     } catch {
@@ -146,142 +177,118 @@ export function RegistrationsAdmin() {
       }
 
       setInfo("Registration deleted.");
+      setSelectedIds((prev) => prev.filter((value) => value !== String(id)));
       await loadRegistrations();
     } catch {
       setError("Network error while deleting registration.");
     }
   }
 
-  async function onImport() {
-    if (!importFile) {
-      setError("Please select an XLSX file first.");
+  function onToggleSelect(id: string) {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((value) => value !== id) : [...prev, id],
+    );
+  }
+
+  function onToggleSelectAllFiltered() {
+    if (areAllFilteredSelected) {
+      const filteredSet = new Set(filteredIds);
+      setSelectedIds((prev) => prev.filter((id) => !filteredSet.has(id)));
       return;
     }
 
-    setImporting(true);
+    setSelectedIds((prev) => Array.from(new Set([...prev, ...filteredIds])));
+  }
+
+  async function onSendEmails() {
+    if (selectedIds.length === 0) {
+      setError("Please select at least one registration before sending emails.");
+      setInfo("");
+      return;
+    }
+
+    setSendingEmails(true);
     setError("");
     setInfo("");
 
     try {
-      const formData = new FormData();
-      formData.set("file", importFile);
-
-      const response = await fetch("/api/admin/registrations/import", {
+      const response = await fetch("/api/admin/registrations/send-email", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ids: selectedIds,
+          invitationType,
+          ctaUrl,
+        }),
       });
 
       const body = (await response.json()) as {
         error?: string;
-        imported?: number;
+        sent?: number;
         failed?: number;
-        emailsSent?: number;
       };
 
       if (!response.ok) {
-        setError(body.error ?? "Import failed.");
+        setError(body.error ?? "Failed to send emails.");
         return;
       }
 
       setInfo(
-        `Import done: ${body.imported ?? 0} imported, ${body.failed ?? 0} failed, ${body.emailsSent ?? 0} confirmation emails sent.`,
+        `Email send complete: ${body.sent ?? 0} sent, ${body.failed ?? 0} failed.`,
       );
-      setImportFile(null);
-      await loadRegistrations();
     } catch {
-      setError("Network error while importing registrations.");
+      setError("Network error while sending emails.");
     } finally {
-      setImporting(false);
+      setSendingEmails(false);
     }
   }
 
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">
-          {isEditing ? "Edit registration" : "Add registration"}
-        </h2>
-        <form onSubmit={onSubmit} className="mt-4 grid gap-3 sm:grid-cols-2">
-          <Input
-            label="First name"
-            value={form.firstName}
-            onChange={(value) => setForm((prev) => ({ ...prev, firstName: value }))}
-          />
-          <Input
-            label="Last name"
-            value={form.lastName}
-            onChange={(value) => setForm((prev) => ({ ...prev, lastName: value }))}
-          />
-          <Input
-            label="Email"
-            type="email"
-            value={form.email}
-            onChange={(value) => setForm((prev) => ({ ...prev, email: value }))}
-          />
-          <Input
-            label="Mobile number"
-            value={form.mobileNumber}
-            onChange={(value) => setForm((prev) => ({ ...prev, mobileNumber: value }))}
-          />
-          <Input
-            label="Job title"
-            value={form.jobTitle}
-            onChange={(value) => setForm((prev) => ({ ...prev, jobTitle: value }))}
-          />
-          <Input
-            label="Company"
-            value={form.company}
-            onChange={(value) => setForm((prev) => ({ ...prev, company: value }))}
-          />
-
-          <div className="sm:col-span-2 flex items-center gap-2 pt-1">
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+        <h2 className="text-lg font-semibold text-slate-900">Bulk invitation email</h2>
+        <p className="mt-1 text-xs text-slate-600">
+          Select rows from the table first, then send invitation emails.
+        </p>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700">
+            Invitation template
+            <select
+              value={invitationType}
+              onChange={(event) =>
+                setInvitationType(
+                  event.target.value as "default" | "csuites" | "associates",
+                )
+              }
+              className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
             >
-              {saving ? "Saving..." : isEditing ? "Update" : "Create"}
-            </button>
-            {isEditing ? (
-              <button
-                type="button"
-                onClick={resetForm}
-                className="rounded border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
-              >
-                Cancel
-              </button>
-            ) : null}
-          </div>
-        </form>
-      </section>
-
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">Import registrations</h2>
-          <button
-            type="button"
-            onClick={() => {
-              window.location.href = "/api/admin/registrations/template";
-            }}
-            className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-          >
-            Download Excel template
-          </button>
+              <option value="default">Default invitation</option>
+              <option value="csuites">C-suites invitation</option>
+              <option value="associates">Associates invitation</option>
+            </select>
+          </label>
+          <label className="sm:col-span-2 flex flex-col gap-1 text-xs font-medium text-slate-700">
+            CTA URL
+            <input
+              type="url"
+              value={ctaUrl}
+              onChange={(event) => setCtaUrl(event.target.value)}
+              className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+            />
+          </label>
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={(event) => setImportFile(event.target.files?.[0] ?? null)}
-            className="max-w-xs rounded border border-slate-300 px-2 py-1 text-xs"
-          />
           <button
-            onClick={onImport}
-            disabled={importing}
+            type="button"
+            onClick={onSendEmails}
+            disabled={sendingEmails || selectedIds.length === 0}
             className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
           >
-            {importing ? "Importing..." : "Import + send confirmation emails"}
+            {sendingEmails ? "Sending..." : `Send email to selected (${selectedIds.length})`}
           </button>
+          <span className="text-xs text-slate-500">
+            {selectedIds.length === 0 ? "No row selected" : `${selectedIds.length} row(s) selected`}
+          </span>
         </div>
       </section>
 
@@ -297,7 +304,104 @@ export function RegistrationsAdmin() {
       ) : null}
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Registered users</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-lg font-semibold text-slate-900">Registered users</h2>
+          <button
+            type="button"
+            onClick={onToggleSelectAllFiltered}
+            className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+          >
+            {areAllFilteredSelected ? "Unselect filtered" : "Select all filtered"}
+          </button>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <input
+            placeholder="Filter by name"
+            value={filterName}
+            onChange={(event) => setFilterName(event.target.value)}
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+          />
+          <input
+            placeholder="Filter by email"
+            value={filterEmail}
+            onChange={(event) => setFilterEmail(event.target.value)}
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+          />
+          <input
+            placeholder="Filter by company"
+            value={filterCompany}
+            onChange={(event) => setFilterCompany(event.target.value)}
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+          />
+        </div>
+
+        {isEditing && form ? (
+          <form
+            onSubmit={onSubmit}
+            className="mt-4 grid gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:grid-cols-2"
+          >
+            <Input
+              label="First name"
+              value={form.firstName}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, firstName: value } : prev))
+              }
+            />
+            <Input
+              label="Last name"
+              value={form.lastName}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, lastName: value } : prev))
+              }
+            />
+            <Input
+              label="Email"
+              type="email"
+              value={form.email}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, email: value } : prev))
+              }
+            />
+            <Input
+              label="Mobile number"
+              value={form.mobileNumber}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, mobileNumber: value } : prev))
+              }
+            />
+            <Input
+              label="Job title"
+              value={form.jobTitle}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, jobTitle: value } : prev))
+              }
+            />
+            <Input
+              label="Company"
+              value={form.company}
+              onChange={(value) =>
+                setForm((prev) => (prev ? { ...prev, company: value } : prev))
+              }
+            />
+            <div className="sm:col-span-2 flex items-center gap-2 pt-1">
+              <button
+                type="submit"
+                disabled={saving}
+                className="rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+              >
+                {saving ? "Saving..." : "Update"}
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="rounded border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        ) : null}
+
         {loading ? (
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
@@ -305,6 +409,7 @@ export function RegistrationsAdmin() {
             <table className="min-w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
+                  <th className="px-2 py-2">Select</th>
                   <th className="px-2 py-2">Name</th>
                   <th className="px-2 py-2">Email</th>
                   <th className="px-2 py-2">Company</th>
@@ -313,8 +418,16 @@ export function RegistrationsAdmin() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => (
+                {filteredRows.map((row) => (
                   <tr key={String(row.id)} className="border-b border-slate-100">
+                    <td className="px-2 py-2">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.includes(String(row.id))}
+                        onChange={() => onToggleSelect(String(row.id))}
+                        className="h-4 w-4 rounded border-slate-300"
+                      />
+                    </td>
                     <td className="px-2 py-2">{`${row.first_name} ${row.last_name}`}</td>
                     <td className="px-2 py-2">{row.email}</td>
                     <td className="px-2 py-2">{row.company}</td>
@@ -341,10 +454,10 @@ export function RegistrationsAdmin() {
                     </td>
                   </tr>
                 ))}
-                {rows.length === 0 ? (
+                {filteredRows.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-2 py-4 text-center text-slate-500">
-                      No registrations yet.
+                    <td colSpan={6} className="px-2 py-4 text-center text-slate-500">
+                      No registrations found for current filters.
                     </td>
                   </tr>
                 ) : null}

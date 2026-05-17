@@ -7,6 +7,13 @@ type ConfirmationEmailInput = {
   idempotencyKey?: string;
 };
 
+type RejectionEmailInput = {
+  firstName: string;
+  email: string;
+  registrationId: string;
+  idempotencyKey?: string;
+};
+
 type InvitationEmailInput = {
   firstName: string;
   email: string;
@@ -90,6 +97,57 @@ export async function sendRegistrationConfirmation({
     },
     {
       idempotencyKey: idempotencyKey ?? `registration-confirmation/${registrationId}`,
+    },
+  );
+
+  if (error) {
+    return { ok: false, error: error.message } satisfies EmailResult;
+  }
+
+  if (!data?.id) {
+    return { ok: false, error: "Email API did not return a message id." } satisfies EmailResult;
+  }
+
+  return { ok: true, id: data.id } satisfies EmailResult;
+}
+
+export async function sendRegistrationRejection({
+  firstName,
+  email,
+  registrationId,
+  idempotencyKey,
+}: RejectionEmailInput) {
+  const fromEmail = process.env.FROM_EMAIL;
+
+  if (!fromEmail) {
+    throw new Error("FROM_EMAIL is missing.");
+  }
+
+  const resend = getResendClient();
+  const rejectionTemplateId = process.env.RESEND_TEMPLATE_REJECTION_ID;
+  const heroImageUrl = emailHeroImageUrl();
+  const logoUrl = emailLogoUrl();
+
+  if (!rejectionTemplateId) {
+    throw new Error("RESEND_TEMPLATE_REJECTION_ID is missing.");
+  }
+
+  const { data, error } = await resend.emails.send(
+    {
+      from: fromEmail,
+      to: email,
+      subject: "Registration Update: Siemens Tech Summit 2026",
+      template: {
+        id: rejectionTemplateId,
+        variables: {
+          first_name: firstName || "Guest",
+          hero_image_url: heroImageUrl,
+          logo_url: logoUrl,
+        },
+      },
+    },
+    {
+      idempotencyKey: idempotencyKey ?? `registration-rejection/${registrationId}`,
     },
   );
 

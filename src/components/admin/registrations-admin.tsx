@@ -37,11 +37,18 @@ export function RegistrationsAdmin() {
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
   const [emailTemplate, setEmailTemplate] = useState<
-    "invitation" | "csuites" | "associates" | "confirmation"
+    "invitation" | "csuites" | "associates" | "confirmation" | "rejection"
   >(
     "invitation",
   );
   const [ctaUrl, setCtaUrl] = useState("https://www.siemenstechsummit2026.com/#register");
+  const isInvitationTemplate = useMemo(
+    () =>
+      emailTemplate === "invitation" ||
+      emailTemplate === "csuites" ||
+      emailTemplate === "associates",
+    [emailTemplate],
+  );
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
   const filteredRows = useMemo(() => {
@@ -268,7 +275,8 @@ export function RegistrationsAdmin() {
                     | "invitation"
                     | "csuites"
                     | "associates"
-                    | "confirmation",
+                    | "confirmation"
+                    | "rejection",
                 )
               }
               className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
@@ -277,6 +285,7 @@ export function RegistrationsAdmin() {
               <option value="csuites">C-suites invitation</option>
               <option value="associates">Associates invitation</option>
               <option value="confirmation">Confirmation email</option>
+              <option value="rejection">Rejection email</option>
             </select>
           </label>
           <label className="sm:col-span-2 flex flex-col gap-1 text-xs font-medium text-slate-700">
@@ -285,7 +294,7 @@ export function RegistrationsAdmin() {
               type="url"
               value={ctaUrl}
               onChange={(event) => setCtaUrl(event.target.value)}
-              disabled={emailTemplate === "confirmation"}
+              disabled={!isInvitationTemplate}
               className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
             />
           </label>

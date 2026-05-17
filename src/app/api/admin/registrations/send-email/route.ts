@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 
-import { sendInvitationEmail, sendRegistrationConfirmation } from "@/lib/email";
+import {
+  sendInvitationEmail,
+  sendRegistrationConfirmation,
+  sendRegistrationRejection,
+} from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-type EmailTemplate = "invitation" | "csuites" | "associates" | "confirmation";
+type EmailTemplate =
+  | "invitation"
+  | "csuites"
+  | "associates"
+  | "confirmation"
+  | "rejection";
 
 export async function POST(request: Request) {
   try {
@@ -67,6 +76,13 @@ export async function POST(request: Request) {
                 registrationId: String(row.id),
                 idempotencyKey: perSendKey,
               })
+            : emailTemplate === "rejection"
+              ? await sendRegistrationRejection({
+                  firstName: row.first_name ?? "Guest",
+                  email: row.email,
+                  registrationId: String(row.id),
+                  idempotencyKey: perSendKey,
+                })
             : await sendInvitationEmail({
                 firstName: row.first_name ?? "Guest",
                 email: row.email,

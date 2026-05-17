@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { sendInvitationEmail, sendRegistrationConfirmation } from "@/lib/email";
+import { sendRegistrationConfirmation } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 import { registrationSchema } from "@/lib/validation";
 
@@ -94,26 +94,8 @@ export async function POST(request: Request) {
       registrationId: String(inserted.id),
     });
 
-    const invitationResult = await sendInvitationEmail({
-      firstName: data.firstName,
-      email: data.email,
-      invitationId: String(inserted.id),
-      ctaUrl: "https://www.siemenstechsummit2026.com/#register",
-    });
-
-    if (!confirmationResult.ok && !invitationResult.ok) {
+    if (!confirmationResult.ok) {
       console.error("Confirmation email send failed:", confirmationResult.error);
-      console.error("Invitation email send failed:", invitationResult.error);
-      return NextResponse.json({ message: registrationSuccessMessage });
-    }
-
-    if (!confirmationResult.ok || !invitationResult.ok) {
-      if (!confirmationResult.ok) {
-        console.error("Confirmation email send failed:", confirmationResult.error);
-      }
-      if (!invitationResult.ok) {
-        console.error("Invitation email send failed:", invitationResult.error);
-      }
       return NextResponse.json({ message: registrationSuccessMessage });
     }
 

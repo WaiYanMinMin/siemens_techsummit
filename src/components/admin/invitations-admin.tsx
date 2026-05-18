@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type InvitationRow = {
   id: string | number;
@@ -12,6 +12,17 @@ type InvitationRow = {
   last_error: string | null;
   created_at?: string;
 };
+
+type SortKey =
+  | "first_name"
+  | "email"
+  | "association_name"
+  | "invitation_type"
+  | "sent_at"
+  | "status"
+  | "created_at";
+
+type SortDirection = "asc" | "desc";
 
 export function InvitationsAdmin() {
   const [rows, setRows] = useState<InvitationRow[]>([]);
@@ -29,6 +40,8 @@ export function InvitationsAdmin() {
   >(
     "default",
   );
+  const [sortKey, setSortKey] = useState<SortKey>("created_at");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   async function loadInvitations(options?: { keepLoadingState?: boolean }) {
     if (!options?.keepLoadingState) {
@@ -151,6 +164,59 @@ export function InvitationsAdmin() {
     } finally {
       setSendingIndividual(false);
     }
+  }
+
+  const sortedRows = useMemo(() => {
+    const rowsCopy = [...rows];
+
+    const getStatusRank = (row: InvitationRow) => {
+      if (row.last_error) {
+        return 0;
+      }
+      if (row.sent_at) {
+        return 2;
+      }
+      return 1;
+    };
+
+    const getValue = (row: InvitationRow): string | number => {
+      switch (sortKey) {
+        case "status":
+          return getStatusRank(row);
+        case "sent_at":
+        case "created_at":
+          return row[sortKey] ? new Date(row[sortKey] as string).getTime() : 0;
+        default:
+          return String(row[sortKey] ?? "");
+      }
+    };
+
+    rowsCopy.sort((a, b) => {
+      const left = getValue(a);
+      const right = getValue(b);
+
+      if (typeof left === "number" && typeof right === "number") {
+        return sortDirection === "asc" ? left - right : right - left;
+      }
+
+      const compared = String(left).localeCompare(String(right), undefined, {
+        sensitivity: "base",
+        numeric: true,
+      });
+      return sortDirection === "asc" ? compared : -compared;
+    });
+
+    return rowsCopy;
+  }, [rows, sortDirection, sortKey]);
+
+  function onToggleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+      return;
+    }
+
+    setSortKey(key);
+    setSortDirection("asc");
   }
 
   return (
@@ -281,21 +347,56 @@ export function InvitationsAdmin() {
             <table className="min-w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
-                  <th className="px-2 py-2">Name</th>
-                  <th className="px-2 py-2">Email</th>
-                  <th className="px-2 py-2">Template</th>
-                  <th className="px-2 py-2">Sent at</th>
-                  <th className="px-2 py-2">Status</th>
+                  <SortableHeader
+                    label="Name"
+                    columnKey="first_name"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Email"
+                    columnKey="email"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Association"
+                    columnKey="association_name"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Template"
+                    columnKey="invitation_type"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Sent at"
+                    columnKey="sent_at"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Status"
+                    columnKey="status"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => (
+                {sortedRows.map((row) => (
                   <tr key={String(row.id)} className="border-b border-slate-100">
-                    <td className="px-2 py-2">
-                      {row.first_name}
-                      {row.association_name ? ` (${row.association_name})` : ""}
-                    </td>
+                    <td className="px-2 py-2">{row.first_name}</td>
                     <td className="px-2 py-2">{row.email}</td>
+                    <td className="px-2 py-2">{row.association_name || "-"}</td>
                     <td className="px-2 py-2">{row.invitation_type}</td>
                     <td className="px-2 py-2">
                       {row.sent_at ? new Date(row.sent_at).toLocaleString() : "-"}
@@ -311,9 +412,9 @@ export function InvitationsAdmin() {
                     </td>
                   </tr>
                 ))}
-                {rows.length === 0 ? (
+                {sortedRows.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="px-2 py-4 text-center text-slate-500">
+                    <td colSpan={6} className="px-2 py-4 text-center text-slate-500">
                       No invitation records yet.
                     </td>
                   </tr>
@@ -324,5 +425,44 @@ export function InvitationsAdmin() {
         )}
       </section>
     </div>
+  );
+}
+
+type SortableHeaderProps = {
+  label: string;
+  columnKey: SortKey;
+  sortKey: SortKey;
+  sortDirection: SortDirection;
+  onToggleSort: (key: SortKey) => void;
+};
+
+function SortableHeader({
+  label,
+  columnKey,
+  sortKey,
+  sortDirection,
+  onToggleSort,
+}: SortableHeaderProps) {
+  const isActive = sortKey === columnKey;
+  const indicator = isActive ? (sortDirection === "asc" ? "↑" : "↓") : "↕";
+
+  return (
+    <th className="px-2 py-2">
+      <button
+        type="button"
+        onClick={() => onToggleSort(columnKey)}
+        className={`inline-flex items-center gap-1 whitespace-nowrap rounded border px-2 py-1 text-left text-xs font-semibold transition ${
+          isActive
+            ? "border-[#00d7c7] bg-[#e9fffb] text-slate-900"
+            : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"
+        }`}
+        aria-label={`Sort by ${label}`}
+      >
+        <span>{label}</span>
+        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-current px-0.5 text-[10px] leading-none">
+          {indicator}
+        </span>
+      </button>
+    </th>
   );
 }

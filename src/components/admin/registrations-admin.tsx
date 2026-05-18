@@ -683,17 +683,24 @@ function SortableHeader({
   onToggleSort,
 }: SortableHeaderProps) {
   const isActive = sortKey === columnKey;
-  const indicator = isActive ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
+  const indicator = isActive ? (sortDirection === "asc" ? "↑" : "↓") : "↕";
 
   return (
     <th className="px-2 py-2">
       <button
         type="button"
         onClick={() => onToggleSort(columnKey)}
-        className="whitespace-nowrap text-left text-xs font-semibold text-slate-600 hover:text-slate-900"
+        className={`inline-flex items-center gap-1 whitespace-nowrap rounded border px-2 py-1 text-left text-xs font-semibold transition ${
+          isActive
+            ? "border-[#00d7c7] bg-[#e9fffb] text-slate-900"
+            : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"
+        }`}
+        aria-label={`Sort by ${label}`}
       >
-        {label}
-        {indicator}
+        <span>{label}</span>
+        <span className="inline-flex h-4 min-w-4 items-center justify-center rounded border border-current px-0.5 text-[10px] leading-none">
+          {indicator}
+        </span>
       </button>
     </th>
   );

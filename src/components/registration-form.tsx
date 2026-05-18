@@ -79,15 +79,20 @@ export function RegistrationForm() {
         body: JSON.stringify(formData),
       });
 
-      const body = (await response.json()) as { error?: string; message?: string };
+      const body = (await response.json()) as {
+        error?: string;
+        message?: string;
+      };
 
       if (!response.ok) {
-        setError(body.error ?? "Unable to submit registration. Please try again.");
+        setError(
+          body.error ?? "Unable to submit registration. Please try again.",
+        );
         return;
       }
 
       setSuccess(
-          body.message ??
+        body.message ??
           "Thank you for your interest in Siemens Tech Summit 2026. We will be sending you an email with the event details shortly.",
       );
       setFormData(initialState);
@@ -104,12 +109,16 @@ export function RegistrationForm() {
         <Input
           label="First Name *"
           value={formData.firstName}
-          onChange={(value) => setFormData((prev) => ({ ...prev, firstName: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, firstName: value }))
+          }
         />
         <Input
           label="Last Name *"
           value={formData.lastName}
-          onChange={(value) => setFormData((prev) => ({ ...prev, lastName: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, lastName: value }))
+          }
         />
       </div>
 
@@ -118,12 +127,16 @@ export function RegistrationForm() {
           type="email"
           label="Email *"
           value={formData.email}
-          onChange={(value) => setFormData((prev) => ({ ...prev, email: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, email: value }))
+          }
         />
         <Input
           label="Mobile Number *"
           value={formData.mobileNumber}
-          onChange={(value) => setFormData((prev) => ({ ...prev, mobileNumber: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, mobileNumber: value }))
+          }
         />
       </div>
 
@@ -131,12 +144,16 @@ export function RegistrationForm() {
         <Input
           label="Job Title *"
           value={formData.jobTitle}
-          onChange={(value) => setFormData((prev) => ({ ...prev, jobTitle: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, jobTitle: value }))
+          }
         />
         <Input
           label="Organization / Company *"
           value={formData.company}
-          onChange={(value) => setFormData((prev) => ({ ...prev, company: value }))}
+          onChange={(value) =>
+            setFormData((prev) => ({ ...prev, company: value }))
+          }
         />
       </div>
 
@@ -150,7 +167,10 @@ export function RegistrationForm() {
           }
           className={`${inputClassName} cursor-pointer appearance-none pr-10`}
         >
-          <option value="" style={{ backgroundColor: "#02023e", color: "#cbd5e1" }}>
+          <option
+            value=""
+            style={{ backgroundColor: "#02023e", color: "#cbd5e1" }}
+          >
             Select an industry
           </option>
           {industries.map((industry) => (
@@ -180,7 +200,10 @@ export function RegistrationForm() {
               value={track}
               checked={formData.breakoutTrack === track}
               onChange={(event) =>
-                setFormData((prev) => ({ ...prev, breakoutTrack: event.target.value }))
+                setFormData((prev) => ({
+                  ...prev,
+                  breakoutTrack: event.target.value,
+                }))
               }
               required
               className="mt-1 h-4 w-4 accent-[#11d3b7]"
@@ -212,7 +235,7 @@ export function RegistrationForm() {
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
         <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
-          Do you have a need for digitalization solutions? *
+          Do you need digitalization solutions? *
         </legend>
         {timelineNeeds.map((option, index) => (
           <label
@@ -243,25 +266,30 @@ export function RegistrationForm() {
           Privacy agreement & consent *
         </span>
         <span className="flex items-start gap-3">
-        <input
-          type="checkbox"
-          checked={formData.consent}
-          onChange={(event) => setFormData((prev) => ({ ...prev, consent: event.target.checked }))}
-          required
-          className="mt-1 h-4 w-4 rounded accent-[#11d3b7]"
-        />
-        <span>
-          I agree to the{" "}
-          <a
-            href="https://www.siemens.com/en-us/privacy-notice/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-[#7de6d5] underline underline-offset-2"
-          >
-            data privacy notice
-          </a>{" "}
-          and data processing terms.
-        </span>
+          <input
+            type="checkbox"
+            checked={formData.consent}
+            onChange={(event) =>
+              setFormData((prev) => ({
+                ...prev,
+                consent: event.target.checked,
+              }))
+            }
+            required
+            className="mt-1 h-4 w-4 rounded accent-[#11d3b7]"
+          />
+          <span>
+            I agree to the{" "}
+            <a
+              href="https://www.siemens.com/en-us/privacy-notice/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-[#7de6d5] underline underline-offset-2"
+            >
+              data privacy notice
+            </a>{" "}
+            and data processing terms.
+          </span>
         </span>
       </label>
 

@@ -277,19 +277,17 @@ Through real-world insights, Siemens Digital Industries highlights how integrati
       {
         name: "Isabel Chong",
         title: "SVP Siemens Digital Industries, ASEAN",
-        company: "Siemens",
+
         image: "/speaker-isabel-chong.jpg",
       },
     ],
   },
   {
     title:
-      "In the Age of Industrial AI: Reimagining the Future of Intelligent Enterprises",
+      "Generative AI Transforms Automation Engineering with Eigen Engineering Agent",
     description:
       "From experimentation to enterprise-wide AI—productivity, resilience, adaptability, and sustainable growth.",
-    detailSynopsis: `Industrial AI is rapidly redefining how organizations compete, shifting advantage from scale and cost efficiency to intelligence, speed, and adaptability. As AI moves from experimentation to enterprise-wide deployment, it is becoming the backbone of modern industry — powering smarter decisions, autonomous operations, and connected value chains.
-
-Learn how leading organizations are leveraging Industrial AI to unlock productivity, enhance resilience, and accelerate sustainable growth.`,
+    detailSynopsis: `Discover how Generative AI is reshaping automation engineering with the Eigen Engineering Agent. This session explores how AI-powered automation streamlines engineering workflows, accelerates system development, reduces manual effort, and enhances operational efficiency. Learn how intelligent agents enable faster decision-making, adaptive engineering processes, and scalable industrial innovation across the digital enterprise.`,
     time: "2.30 – 2.45pm",
   },
   {
@@ -304,7 +302,7 @@ This session highlights how autonomous technologies drive greater efficiency, re
       {
         name: "Sascha Maennl",
         title: "VP Sales Automation Solutions",
-        company: "Siemens Asia Pacific",
+        company: "Siemens Digital Industries Asia Pacific",
         image: "/speaker-sascha-maennl.jpg",
       },
     ],
@@ -320,8 +318,8 @@ This session explores how software-defined automation enables agile manufacturin
     speakers: [
       {
         name: "Govin Manickam",
-        title: "Technology Business Development",
-        company: "Siemens ASEAN",
+        title: "Technology Business Development - ASEAN",
+        company: "Siemens Digital Industries",
         image: "/speaker-govin-manickam.jpg",
       },
     ],
@@ -342,7 +340,7 @@ This session explores how unified digital environments help manufacturers stream
       {
         name: "Licheng Yan",
         title: "Solutions Consultant",
-        company: "Siemens Singapore",
+        company: "Siemens Digital Industries",
         image: "/speaker-licheng-yan.jpg",
       },
     ],
@@ -369,7 +367,7 @@ This session explores how manufacturers can strengthen resilience through secure
       {
         name: "Sander Rotmensen",
         title: "Head of Business Cybersecurity",
-        company: "Siemens AG",
+        company: "Siemens Digital Industries",
         image: "/speaker-sander-rotmensen.png",
       },
     ],
@@ -410,7 +408,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
       {
         name: "Teh Tiack Ein",
         title: "Head of Presales Southeast Asia",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-teh-tiack-ein.png",
       },
     ],
@@ -426,7 +424,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
       {
         name: "Sean Seneviratne",
         title: "Solutions Consultant",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-sean-seneviratne.jpeg",
       },
     ],
@@ -441,7 +439,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
       {
         name: "Winston Vigil, Manuel Raj",
         title: "Solutions Consultant",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-winston-vigil.png",
       },
     ],
@@ -468,7 +466,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
       {
         name: "Shidan Murphy",
         title: "Presales Head, Banking & Financial Services APAC",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-shidan-murphy.png",
       },
     ],
@@ -485,7 +483,7 @@ As the low‑code engine of Siemens Xcelerator, Mendix lets you extend PLM, MES,
       {
         name: "Keith Chin",
         title: "Solutions Consultant",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-keith-chin.png",
       },
     ],

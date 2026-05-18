@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       .toLowerCase() as InvitationType;
     const ctaUrl =
       formData.get("ctaUrl")?.toString().trim() ||
-      "https://www.siemenstechsummit2026.com/#register";
+      "https://www.siemenstechsummitsg2026.com/#register";
 
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "File is required." }, { status: 400 });
@@ -55,7 +55,9 @@ export async function POST(request: Request) {
 
       if (upsertError || !invitationRecord?.id) {
         failed += 1;
-        errors.push(`${row.email}: ${upsertError?.message ?? "Could not upsert invitation."}`);
+        errors.push(
+          `${row.email}: ${upsertError?.message ?? "Could not upsert invitation."}`,
+        );
         continue;
       }
 
@@ -72,7 +74,9 @@ export async function POST(request: Request) {
 
       if (!sendResult.ok) {
         failed += 1;
-        errors.push(`${row.email}: invitation email failed (${sendResult.error})`);
+        errors.push(
+          `${row.email}: invitation email failed (${sendResult.error})`,
+        );
         await supabase
           .from("invitation_recipients")
           .update({ last_error: sendResult.error, sent_at: null })

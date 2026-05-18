@@ -41,7 +41,7 @@ export function RegistrationsAdmin() {
   >(
     "invitation",
   );
-  const [ctaUrl, setCtaUrl] = useState("https://www.siemenstechsummit2026.com/#register");
+  const [ctaUrl, setCtaUrl] = useState("https://www.siemenstechsummitsg2026.com/#register");
   const isInvitationTemplate = useMemo(
     () =>
       emailTemplate === "invitation" ||

@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       : [];
     const emailTemplate = payload.emailTemplate ?? "invitation";
     const ctaUrl =
-      payload.ctaUrl?.trim() || "https://www.siemenstechsummit2026.com/#register";
+      payload.ctaUrl?.trim() || "https://www.siemenstechsummitsg2026.com/#register";
 
     if (ids.length === 0) {
       return NextResponse.json(

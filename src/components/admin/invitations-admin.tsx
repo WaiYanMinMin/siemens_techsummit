@@ -24,7 +24,7 @@ export function InvitationsAdmin() {
     "csuites",
   );
   const [ctaUrl, setCtaUrl] = useState(
-    "https://www.siemenstechsummit2026.com/#register",
+    "https://www.siemenstechsummitsg2026.com/#register",
   );
 
   async function loadInvitations(options?: { keepLoadingState?: boolean }) {

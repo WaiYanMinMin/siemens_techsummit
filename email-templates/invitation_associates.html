@@ -11,20 +11,55 @@
         supported-color-schemes: light dark;
       }
       @media only screen and (max-width: 620px) {
-        /* Logistics / CTA tiles: stack on narrow viewports only */
+        /* Logistics / CTA tiles: keep side-by-side on mobile */
+        .two-col-row {
+          table-layout: fixed !important;
+        }
         .two-col-row .col-left,
         .two-col-row .col-right {
-          display: block !important;
-          width: 100% !important;
-          max-width: 100% !important;
+          display: table-cell !important;
           box-sizing: border-box !important;
         }
         .two-col-row .col-left {
+          width: 56% !important;
+          max-width: 56% !important;
           padding-right: 0 !important;
-          padding-bottom: 10px !important;
         }
         .two-col-row .col-right {
+          width: 44% !important;
+          max-width: 44% !important;
           padding-left: 0 !important;
+        }
+        .two-col-row .box-left-copy {
+          padding: 10px 10px !important;
+          font-size: 11px !important;
+          line-height: 1.4 !important;
+        }
+        .two-col-row .box-left-copy strong {
+          min-width: 42px !important;
+          font-size: 11px !important;
+          margin-top: 4px !important;
+        }
+        .two-col-row .box-right-copy {
+          padding: 10px 8px !important;
+          height: 132px !important;
+          font-size: 11px !important;
+          line-height: 1.3 !important;
+        }
+        .two-col-row .box-right-shell {
+          width: 100% !important;
+        }
+        .two-col-row .box-right-copy .box-right-cta-wrap {
+          padding-top: 6px !important;
+        }
+        .two-col-row .box-right-copy .box-right-cta {
+          font-size: 10px !important;
+          padding: 7px 9px !important;
+          letter-spacing: 0.01em !important;
+          white-space: nowrap !important;
+        }
+        .footer-lower-box {
+          width: 100% !important;
         }
         /* Hero: keep imagery on the RIGHT (do not stack below copy) */
         .invite-shell {
@@ -337,19 +372,20 @@
             </tr>
 
             <tr>
-              <td colspan="2" bgcolor="#ffffff" style="padding: 8px 14px 12px">
+              <td colspan="2" bgcolor="#ffffff" style="padding: 8px 14px 0">
                 <table
                   role="presentation"
                   class="two-col-row"
                   width="100%"
                   cellpadding="0"
                   cellspacing="0"
+                  style="table-layout: fixed"
                 >
                   <tr>
                     <td
                       class="col-left"
-                      valign="top"
-                      style="width: 52%; padding-right: 6px"
+                      valign="middle"
+                      style="width: 60%; padding-right: 0"
                     >
                       <table
                         role="presentation"
@@ -361,13 +397,15 @@
                           background: #0ea7ab
                             url(&quot;https://siemenstechsummit.vercel.app/0ea6ab.png&quot;)
                             repeat !important;
-                          border-radius: 16px;
+                          border-radius: 16px 0 0 16px;
                         "
                       >
                         <tr>
                           <td
+                            class="box-left-copy"
                             style="
                               padding: 14px 16px;
+                              vertical-align: middle;
                               color: #ffffff !important;
                               font-size: 15px;
                               line-height: 1.6;
@@ -419,11 +457,13 @@
                     <td
                       class="col-right"
                       valign="middle"
-                      style="width: 48%; padding-left: 6px"
+                      style="width: 40%; padding-left: 0"
                     >
                       <table
+                        class="box-right-shell"
                         role="presentation"
                         width="100%"
+                        align="center"
                         cellpadding="0"
                         cellspacing="0"
                         bgcolor="#5ae6c5"
@@ -432,16 +472,19 @@
                             url(&quot;https://siemenstechsummit.vercel.app/1df5cd.png&quot;)
                             repeat !important;
                           border-radius: 16px;
-                          box-shadow: 0 8px 20px rgba(0, 0, 41, 0.12);
+                          box-shadow: 0 12px 28px rgba(0, 0, 41, 0.22);
                         "
                       >
                         <tr>
                           <td
+                            class="box-right-copy"
                             style="
-                              padding: 14px 14px;
+                              padding: 16px 14px;
+                              height: 154px;
                               text-align: center;
+                              vertical-align: middle;
                               color: #03263b !important;
-                              font-size: 14px;
+                              font-size: 15px;
                               line-height: 1.45;
                               font-weight: 600;
                             "
@@ -451,8 +494,12 @@
                             <span style="font-weight: 800"
                               >Secure your place today!</span
                             >
-                            <div style="padding-top: 12px">
+                            <div
+                              class="box-right-cta-wrap"
+                              style="padding-top: 12px"
+                            >
                               <a
+                                class="box-right-cta"
                                 href="{{cta_url}}"
                                 style="
                                   display: inline-block;
@@ -463,7 +510,8 @@
                                   text-decoration: none;
                                   padding: 10px 18px;
                                   border-radius: 999px;
-                                  font-size: 12px;
+                                  box-shadow: 0 6px 14px rgba(0, 0, 41, 0.28);
+                                  font-size: 13px;
                                   font-weight: 800;
                                   letter-spacing: 0.04em;
                                   text-transform: uppercase;
@@ -482,7 +530,7 @@
             </tr>
 
             <tr>
-              <td colspan="2" bgcolor="#ffffff" style="padding: 12px 20px 8px">
+              <td colspan="2" bgcolor="#eef1f5" style="padding: 12px 20px 8px">
                 <p
                   style="
                     margin: 0 0 10px;
@@ -497,7 +545,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2" bgcolor="#ffffff" style="padding: 0 20px 10px">
+              <td colspan="2" bgcolor="#eef1f5" style="padding: 0 20px 10px">
                 <p
                   style="
                     margin: 0 0 10px;
@@ -579,8 +627,10 @@
             <tr>
               <td colspan="2" bgcolor="#000029" style="padding: 0">
                 <table
+                  class="footer-lower-box"
                   role="presentation"
                   width="100%"
+                  align="center"
                   cellpadding="0"
                   cellspacing="0"
                   bgcolor="#000029"

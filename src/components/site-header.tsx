@@ -10,14 +10,14 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#000029]">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-8 lg:px-12">
+      <div className="flex w-full items-center justify-between px-6 py-4 sm:px-10 lg:px-12 xl:px-16">
         <Image
-          src="/siemens-3-logo-png-transparent.png"
+          src="/siemens-3-logo-png-transparent2.png"
           alt="Siemens"
-          width={230}
-          height={58}
+          width={272}
+          height={68}
           priority
-          className="h-12 w-auto sm:h-14"
+          className="h-14 w-auto sm:h-16"
         />
 
         <nav className="hidden items-center gap-7 text-base font-semibold text-[#00d7c7] sm:flex sm:text-lg">

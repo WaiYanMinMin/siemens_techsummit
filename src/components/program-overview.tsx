@@ -35,8 +35,8 @@ const morningAgenda: AgendaItem[] = [
       {
         name: "Dr Thai-Lai Pham",
         title: "President & CEO, Siemens ASEAN",
-        company: "Siemens",
-        image: "/speaker-dr-thai-lai-pham.jpg",
+
+        image: "/speaker-dr-thai-lai-pham.png",
       },
     ],
   },
@@ -118,13 +118,13 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
       {
         name: "Atul Kawatra",
         title: "GM, Head of Corporate Lending and Project Finance",
-        company: "Siemens Bank / SFS",
+        company: "Siemens Bank / Siemens Financial Services",
         image: "/speaker-atul-kawatra.jpg",
       },
       {
         name: "Mark Ee",
         title: "Head of Equity Finance Asia/Australia",
-        company: "SFS",
+        company: "Siemens Financial Services",
         image: "/speaker-mark-ee.jpg",
       },
     ],
@@ -149,8 +149,7 @@ In this session, we show you how Siemens moves beyond traditional building manag
     speakers: [
       {
         name: "Damien Nirousset",
-        title: "Head of SI Buildings, ASEAN & Japan",
-        company: "Siemens",
+        title: "Head of Smart Infrastructure Buildings, ASEAN & Japan",
         image: "/speaker-damien-nirousset.jpg",
       },
     ],
@@ -165,8 +164,8 @@ In this session, we show you how Siemens moves beyond traditional building manag
       {
         name: "Derek Del Nevo",
         title: "Head of Digital and Software - Southeast Asia",
-        company: "Siemens",
-        image: "/speaker-derek-del-nevo.jpg",
+        company: "Siemens Smart Infrastructure - Buildings",
+        image: "/speaker-derek-del-nevo.png",
       },
     ],
   },
@@ -180,8 +179,8 @@ In this session, we show you how Siemens moves beyond traditional building manag
       {
         name: "Norman Ng",
         title: "Head of Electrification and Automation",
-        company: "Siemens",
-        image: "/speaker-norman-ng.jpg",
+        company: "Siemens Smart Infrastructure",
+        image: "/speaker-norman-ng.png",
       },
     ],
   },
@@ -722,206 +721,205 @@ export function ProgramOverview() {
 
   return (
     <>
-    <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
-      <div className="mx-auto w-full max-w-6xl">
-        <div id="agenda" className="scroll-mt-[140px] sm:scroll-mt-[152px]" />
-        <span
-          id="agenda-morning"
-          className="block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
-          aria-hidden
-        />
-        <span
-          id="agenda-afternoon"
-          className="-mt-px block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
-          aria-hidden
-        />
+      <section className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12">
+        <div className="mx-auto w-full max-w-6xl">
+          <div id="agenda" className="scroll-mt-[140px] sm:scroll-mt-[152px]" />
+          <span
+            id="agenda-morning"
+            className="block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
+            aria-hidden
+          />
+          <span
+            id="agenda-afternoon"
+            className="-mt-px block h-px w-px shrink-0 scroll-mt-[140px] sm:scroll-mt-[152px]"
+            aria-hidden
+          />
 
-        <div
-          ref={tabSwitcherRef}
-          className="inline-flex overflow-hidden rounded-md border border-white/25 bg-white text-[#111]"
-        >
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab("morning");
-              setIsTrackMenuOpen(false);
-            }}
-            className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
-              activeTab === "morning" ? "bg-[#11d3b7]" : "bg-white"
-            }`}
+          <div
+            ref={tabSwitcherRef}
+            className="inline-flex overflow-hidden rounded-md border border-white/25 bg-white text-[#111]"
           >
-            Morning plenary
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("afternoon")}
-            className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
-              activeTab === "afternoon" ? "bg-[#11d3b7]" : "bg-white"
-            }`}
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("morning");
+                setIsTrackMenuOpen(false);
+              }}
+              className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
+                activeTab === "morning" ? "bg-[#11d3b7]" : "bg-white"
+              }`}
+            >
+              Morning plenary
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab("afternoon")}
+              className={`hitech-interactive px-2 py-2 text-xs font-semibold transition sm:px-4 sm:text-base ${
+                activeTab === "afternoon" ? "bg-[#11d3b7]" : "bg-white"
+              }`}
+            >
+              Afternoon Breakout Tracks
+            </button>
+          </div>
+
+          <div
+            ref={scrollRef}
+            className="program-scroll mt-5 h-[min(88vh,calc(100dvh-11rem))] overflow-y-auto rounded-md px-4 pb-3 md:h-[88vh]"
           >
-            Afternoon Breakout Tracks
-          </button>
-        </div>
-
-        <div
-          ref={scrollRef}
-          className="program-scroll mt-5 h-[min(88vh,calc(100dvh-11rem))] overflow-y-auto rounded-md px-4 pb-3 md:h-[88vh]"
-        >
-          {activeTab === "afternoon" && (
-            <div className="sticky top-0 z-20 bg-[#000029] pt-3">
-              <div className="mx-auto hidden w-full max-w-4xl flex-wrap overflow-hidden rounded-md border border-white/25 bg-white text-[#111] md:flex">
-                <button
-                  type="button"
-                  onClick={() => setActiveTrack("track1")}
-                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
-                    activeTrack === "track1" ? "bg-[#11d3b7]" : "bg-white"
-                  }`}
-                >
-                  Powering the Future of Autonomous Buildings
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTrack("track2")}
-                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
-                    activeTrack === "track2" ? "bg-[#11d3b7]" : "bg-white"
-                  }`}
-                >
-                  Smart Manufacturing with Industrial AI
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTrack("track3")}
-                  className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
-                    activeTrack === "track3" ? "bg-[#11d3b7]" : "bg-white"
-                  }`}
-                >
-                  Engineering the Industrial Metaverse
-                </button>
-              </div>
-
-              <div className="relative md:hidden">
-                <button
-                  type="button"
-                  onClick={() => setIsTrackMenuOpen((prev) => !prev)}
-                  className="hitech-interactive inline-flex min-w-0 w-full items-center justify-between gap-2 rounded-md border border-white/25 bg-white px-3 py-2 text-left text-xs font-semibold text-[#111]"
-                >
-                  <span className="min-w-0 flex-1 pr-1 leading-snug max-md:line-clamp-2">
-                    {trackLabels[activeTrack]}
-                  </span>
-                  <span className="shrink-0">
-                    {isTrackMenuOpen ? "▲" : "▼"}
-                  </span>
-                </button>
-
-                {isTrackMenuOpen && (
-                  <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[20dvh] overflow-y-auto overscroll-contain rounded-md border border-white/20 bg-[#02023e] p-1 shadow-lg">
-                    {(
-                      [
-                        ["track1", trackLabels.track1],
-                        ["track2", trackLabels.track2],
-                        ["track3", trackLabels.track3],
-                      ] as const
-                    ).map(([trackId, label]) => (
-                      <button
-                        key={trackId}
-                        type="button"
-                        onClick={() => {
-                          setActiveTrack(trackId);
-                          setIsTrackMenuOpen(false);
-                        }}
-                        className={`hitech-interactive mb-1 block w-full rounded px-3 py-2 text-left text-xs font-semibold leading-snug break-words ${
-                          activeTrack === trackId
-                            ? "bg-[#11d3b7] text-[#03263b]"
-                            : "bg-transparent text-white"
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          <div className="mt-6 pb-6">
-            {items.map((item, index) => (
-              <article
-                key={`${activeTab}-${activeTrack}-${index}-${item.time}`}
-                className="agenda-item border-b border-white/35 py-6 first:pt-0"
-              >
-                <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">
-                  {item.title}
-                </h3>
-
-                {item.detailSynopsis && (
+            {activeTab === "afternoon" && (
+              <div className="sticky top-0 z-20 bg-[#000029] pt-3">
+                <div className="mx-auto hidden w-full max-w-4xl flex-wrap overflow-hidden rounded-md border border-white/25 bg-white text-[#111] md:flex">
                   <button
                     type="button"
-                    onClick={() => setDetailItem(item)}
-                    className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00d7c7] underline decoration-[#00d7c7]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
+                    onClick={() => setActiveTrack("track1")}
+                    className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
+                      activeTrack === "track1" ? "bg-[#11d3b7]" : "bg-white"
+                    }`}
                   >
-                    View synopsis
+                    Powering the Future of Autonomous Buildings
                   </button>
-                )}
-
-                <div className="mt-3 flex items-center gap-3 text-sm sm:text-base">
-                  <span className="inline-block h-3 w-3 rounded-full bg-[#00d7c7] shadow-[0_0_10px_rgba(0,215,199,0.55)]" />
-                  <span>{item.time}</span>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTrack("track2")}
+                    className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
+                      activeTrack === "track2" ? "bg-[#11d3b7]" : "bg-white"
+                    }`}
+                  >
+                    Smart Manufacturing with Industrial AI
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTrack("track3")}
+                    className={`hitech-interactive flex-1 px-2 py-2 text-center text-xs font-semibold leading-tight transition sm:px-3 sm:text-sm ${
+                      activeTrack === "track3" ? "bg-[#11d3b7]" : "bg-white"
+                    }`}
+                  >
+                    Engineering the Industrial Metaverse
+                  </button>
                 </div>
 
-                {item.speakers && item.speakers.length > 0 && (
-                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    {item.speakers.map((speaker) => (
-                      <div
-                        key={`${item.title}-${speaker.name}`}
-                        className="flex items-center gap-3"
-                      >
-                        {speaker.image ? (
-                          <Image
-                            src={speaker.image}
-                            alt={speaker.name}
-                            width={72}
-                            height={72}
-                            className="h-[72px] w-[72px] rounded-full object-cover"
-                          />
-                        ) : (
-                          <span className="inline-block h-[72px] w-[72px] rounded-full bg-white/15" />
-                        )}
-                        <div className="text-white">
-                          <p className="text-base font-semibold leading-tight sm:text-lg">
-                            {speaker.name}
-                          </p>
-                          {speaker.title && (
-                            <p className="text-sm leading-tight text-white/90 sm:text-base">
-                              {speaker.title}
-                            </p>
-                          )}
-                          {speaker.company && (
-                            <p className="text-sm leading-tight text-white/90 sm:text-base">
-                              {speaker.company}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="relative md:hidden">
+                  <button
+                    type="button"
+                    onClick={() => setIsTrackMenuOpen((prev) => !prev)}
+                    className="hitech-interactive inline-flex min-w-0 w-full items-center justify-between gap-2 rounded-md border border-white/25 bg-white px-3 py-2 text-left text-xs font-semibold text-[#111]"
+                  >
+                    <span className="min-w-0 flex-1 pr-1 leading-snug max-md:line-clamp-2">
+                      {trackLabels[activeTrack]}
+                    </span>
+                    <span className="shrink-0">
+                      {isTrackMenuOpen ? "▲" : "▼"}
+                    </span>
+                  </button>
 
-                {item.notes && item.notes.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/90 sm:text-base">
-                    {item.notes.map((note, noteIndex) => (
-                      <p key={`${item.title}-${note}-${noteIndex}`}>{note}</p>
-                    ))}
+                  {isTrackMenuOpen && (
+                    <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[20dvh] overflow-y-auto overscroll-contain rounded-md border border-white/20 bg-[#02023e] p-1 shadow-lg">
+                      {(
+                        [
+                          ["track1", trackLabels.track1],
+                          ["track2", trackLabels.track2],
+                          ["track3", trackLabels.track3],
+                        ] as const
+                      ).map(([trackId, label]) => (
+                        <button
+                          key={trackId}
+                          type="button"
+                          onClick={() => {
+                            setActiveTrack(trackId);
+                            setIsTrackMenuOpen(false);
+                          }}
+                          className={`hitech-interactive mb-1 block w-full rounded px-3 py-2 text-left text-xs font-semibold leading-snug break-words ${
+                            activeTrack === trackId
+                              ? "bg-[#11d3b7] text-[#03263b]"
+                              : "bg-transparent text-white"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 pb-6">
+              {items.map((item, index) => (
+                <article
+                  key={`${activeTab}-${activeTrack}-${index}-${item.time}`}
+                  className="agenda-item border-b border-white/35 py-6 first:pt-0"
+                >
+                  <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">
+                    {item.title}
+                  </h3>
+
+                  {item.detailSynopsis && (
+                    <button
+                      type="button"
+                      onClick={() => setDetailItem(item)}
+                      className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00d7c7] underline decoration-[#00d7c7]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
+                    >
+                      View synopsis
+                    </button>
+                  )}
+
+                  <div className="mt-3 flex items-center gap-3 text-sm sm:text-base">
+                    <span className="inline-block h-3 w-3 rounded-full bg-[#00d7c7] shadow-[0_0_10px_rgba(0,215,199,0.55)]" />
+                    <span>{item.time}</span>
                   </div>
-                )}
-              </article>
-            ))}
+
+                  {item.speakers && item.speakers.length > 0 && (
+                    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                      {item.speakers.map((speaker) => (
+                        <div
+                          key={`${item.title}-${speaker.name}`}
+                          className="flex items-center gap-3"
+                        >
+                          {speaker.image ? (
+                            <Image
+                              src={speaker.image}
+                              alt={speaker.name}
+                              width={72}
+                              height={72}
+                              className="h-[72px] w-[72px] rounded-full object-cover"
+                            />
+                          ) : (
+                            <span className="inline-block h-[72px] w-[72px] rounded-full bg-white/15" />
+                          )}
+                          <div className="text-white">
+                            <p className="text-base font-semibold leading-tight sm:text-lg">
+                              {speaker.name}
+                            </p>
+                            {speaker.title && (
+                              <p className="text-sm leading-tight text-white/90 sm:text-base">
+                                {speaker.title}
+                              </p>
+                            )}
+                            {speaker.company && (
+                              <p className="text-sm leading-tight text-white/90 sm:text-base">
+                                {speaker.company}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {item.notes && item.notes.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/90 sm:text-base">
+                      {item.notes.map((note, noteIndex) => (
+                        <p key={`${item.title}-${note}-${noteIndex}`}>{note}</p>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-
-    </section>
-    {synopsisModal}
+      </section>
+      {synopsisModal}
     </>
   );
 }

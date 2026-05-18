@@ -18,6 +18,23 @@ type Registration = {
   created_at?: string;
 };
 
+type SortKey =
+  | "id"
+  | "first_name"
+  | "last_name"
+  | "email"
+  | "mobile_number"
+  | "job_title"
+  | "company"
+  | "industry"
+  | "breakout_track"
+  | "challenges"
+  | "need_timeline"
+  | "consent"
+  | "created_at";
+
+type SortDirection = "asc" | "desc";
+
 type RegistrationFormState = {
   firstName: string;
   lastName: string;
@@ -41,6 +58,8 @@ export function RegistrationsAdmin() {
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
+  const [sortKey, setSortKey] = useState<SortKey>("created_at");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
   const filteredRows = useMemo(() => {
@@ -64,6 +83,41 @@ export function RegistrationsAdmin() {
     () => filteredRows.map((row) => String(row.id)),
     [filteredRows],
   );
+  const sortedRows = useMemo(() => {
+    const rowsCopy = [...filteredRows];
+
+    const getValue = (row: Registration): string | number => {
+      switch (sortKey) {
+        case "id":
+          return String(row.id);
+        case "challenges":
+          return (row.challenges ?? []).join(", ");
+        case "consent":
+          return row.consent === true ? 1 : row.consent === false ? 0 : -1;
+        case "created_at":
+          return row.created_at ? new Date(row.created_at).getTime() : 0;
+        default:
+          return String(row[sortKey] ?? "");
+      }
+    };
+
+    rowsCopy.sort((a, b) => {
+      const left = getValue(a);
+      const right = getValue(b);
+
+      if (typeof left === "number" && typeof right === "number") {
+        return sortDirection === "asc" ? left - right : right - left;
+      }
+
+      const compared = String(left).localeCompare(String(right), undefined, {
+        sensitivity: "base",
+        numeric: true,
+      });
+      return sortDirection === "asc" ? compared : -compared;
+    });
+
+    return rowsCopy;
+  }, [filteredRows, sortDirection, sortKey]);
   const areAllFilteredSelected = useMemo(() => {
     if (filteredIds.length === 0) {
       return false;
@@ -200,6 +254,16 @@ export function RegistrationsAdmin() {
     }
 
     setSelectedIds((prev) => Array.from(new Set([...prev, ...filteredIds])));
+  }
+
+  function onToggleSort(key: SortKey) {
+    if (sortKey === key) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+      return;
+    }
+
+    setSortKey(key);
+    setSortDirection("asc");
   }
 
   async function onSendEmails() {
@@ -415,24 +479,102 @@ export function RegistrationsAdmin() {
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
-                  <th className="px-2 py-2">ID</th>
-                  <th className="px-2 py-2">First name</th>
-                  <th className="px-2 py-2">Last name</th>
-                  <th className="px-2 py-2">Email</th>
-                  <th className="px-2 py-2">Mobile number</th>
-                  <th className="px-2 py-2">Job title</th>
-                  <th className="px-2 py-2">Company</th>
-                  <th className="px-2 py-2">Industry</th>
-                  <th className="px-2 py-2">Breakout track</th>
-                  <th className="px-2 py-2">Challenges</th>
-                  <th className="px-2 py-2">Need timeline</th>
-                  <th className="px-2 py-2">Consent</th>
-                  <th className="px-2 py-2">Created</th>
+                  <SortableHeader
+                    label="ID"
+                    columnKey="id"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="First name"
+                    columnKey="first_name"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Last name"
+                    columnKey="last_name"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Email"
+                    columnKey="email"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Mobile number"
+                    columnKey="mobile_number"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Job title"
+                    columnKey="job_title"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Company"
+                    columnKey="company"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Industry"
+                    columnKey="industry"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Breakout track"
+                    columnKey="breakout_track"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Challenges"
+                    columnKey="challenges"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Need timeline"
+                    columnKey="need_timeline"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Consent"
+                    columnKey="consent"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
+                    label="Created"
+                    columnKey="created_at"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
                   <th className="px-2 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredRows.map((row) => (
+                {sortedRows.map((row) => (
                   <tr key={String(row.id)} className="border-b border-slate-100">
                     <td className="px-2 py-2">
                       <input
@@ -487,7 +629,7 @@ export function RegistrationsAdmin() {
                     </td>
                   </tr>
                 ))}
-                {filteredRows.length === 0 ? (
+                {sortedRows.length === 0 ? (
                   <tr>
                     <td colSpan={15} className="px-2 py-4 text-center text-slate-500">
                       No registrations found for current filters.
@@ -522,5 +664,37 @@ function Input({ label, value, onChange, type = "text" }: InputProps) {
         className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
       />
     </label>
+  );
+}
+
+type SortableHeaderProps = {
+  label: string;
+  columnKey: SortKey;
+  sortKey: SortKey;
+  sortDirection: SortDirection;
+  onToggleSort: (key: SortKey) => void;
+};
+
+function SortableHeader({
+  label,
+  columnKey,
+  sortKey,
+  sortDirection,
+  onToggleSort,
+}: SortableHeaderProps) {
+  const isActive = sortKey === columnKey;
+  const indicator = isActive ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
+
+  return (
+    <th className="px-2 py-2">
+      <button
+        type="button"
+        onClick={() => onToggleSort(columnKey)}
+        className="whitespace-nowrap text-left text-xs font-semibold text-slate-600 hover:text-slate-900"
+      >
+        {label}
+        {indicator}
+      </button>
+    </th>
   );
 }

@@ -38,9 +38,9 @@ export async function POST(request: Request) {
     const errors: string[] = [];
 
     for (const row of rows) {
-      const { data: invitationRecord, error: upsertError } = await supabase
+      const { data: invitationRecord, error: insertError } = await supabase
         .from("invitation_recipients")
-        .upsert(
+        .insert(
           {
             first_name: row.firstName,
             email: row.email,
@@ -48,16 +48,41 @@ export async function POST(request: Request) {
             invitation_type: invitationType,
             last_error: null,
           },
-          { onConflict: "email" },
         )
         .select("id")
         .single();
 
-      if (upsertError || !invitationRecord?.id) {
+      let invitationId = invitationRecord?.id;
+      if (insertError?.code === "23505") {
+        const { data: existingRecord, error: existingRecordError } = await supabase
+          .from("invitation_recipients")
+          .select("id")
+          .eq("email", row.email)
+          .limit(1)
+          .maybeSingle();
+
+        if (existingRecordError || !existingRecord?.id) {
+          failed += 1;
+          errors.push(
+            `${row.email}: ${existingRecordError?.message ?? "Could not resolve existing invitation."}`,
+          );
+          continue;
+        }
+
+        invitationId = existingRecord.id;
+      }
+
+      if (insertError && insertError.code !== "23505") {
         failed += 1;
         errors.push(
-          `${row.email}: ${upsertError?.message ?? "Could not upsert invitation."}`,
+          `${row.email}: ${insertError.message ?? "Could not insert invitation."}`,
         );
+        continue;
+      }
+
+      if (!invitationId) {
+        failed += 1;
+        errors.push(`${row.email}: Could not determine invitation id.`);
         continue;
       }
 
@@ -69,7 +94,7 @@ export async function POST(request: Request) {
         associationName: row.associationName,
         invitationType,
         ctaUrl,
-        invitationId: String(invitationRecord.id),
+        invitationId: String(invitationId),
       });
 
       if (!sendResult.ok) {
@@ -80,7 +105,7 @@ export async function POST(request: Request) {
         await supabase
           .from("invitation_recipients")
           .update({ last_error: sendResult.error, sent_at: null })
-          .eq("id", invitationRecord.id);
+          .eq("id", invitationId);
         continue;
       }
 
@@ -88,7 +113,7 @@ export async function POST(request: Request) {
       await supabase
         .from("invitation_recipients")
         .update({ sent_at: new Date().toISOString(), last_error: null })
-        .eq("id", invitationRecord.id);
+        .eq("id", invitationId);
     }
 
     return NextResponse.json({

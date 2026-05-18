@@ -65,10 +65,45 @@ export async function POST(request: Request) {
     if (error) {
       console.error("Supabase insert error:", error);
       if (error.code === "23505") {
-        return NextResponse.json(
-          { error: "This email or mobile number is already registered." },
-          { status: 409 },
-        );
+        // Temporarily allow duplicate submissions without exposing a conflict to the user.
+        const normalizedEmail = data.email.toLowerCase();
+        let existingRegistrationId: string | number | undefined;
+
+        const { data: existingByEmail } = await supabase
+          .from("registrations")
+          .select("id")
+          .eq("email", normalizedEmail)
+          .limit(1)
+          .maybeSingle();
+
+        existingRegistrationId = existingByEmail?.id;
+
+        if (!existingRegistrationId) {
+          const { data: existingByMobile } = await supabase
+            .from("registrations")
+            .select("id")
+            .eq("mobile_number", data.mobileNumber)
+            .limit(1)
+            .maybeSingle();
+          existingRegistrationId = existingByMobile?.id;
+        }
+
+        if (existingRegistrationId) {
+          const confirmationResult = await sendRegistrationConfirmation({
+            firstName: data.firstName,
+            email: data.email,
+            registrationId: String(existingRegistrationId),
+          });
+
+          if (!confirmationResult.ok) {
+            console.error(
+              "Confirmation email send failed for duplicate registration:",
+              confirmationResult.error,
+            );
+          }
+        }
+
+        return NextResponse.json({ message: registrationSuccessMessage });
       }
 
       return NextResponse.json(

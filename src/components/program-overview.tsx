@@ -194,8 +194,8 @@ In this session, we show you how Siemens moves beyond traditional building manag
       {
         name: "Vardaan Arora",
         title: "IT & Cybersecurity Lead",
-        company: "Siemens",
-        image: "/speaker-vardaan-arora.jpeg",
+        company: "Siemens Smart Infrastructure Buildings",
+        image: "/speaker-vardaan-arora2.png",
       },
     ],
   },
@@ -234,8 +234,8 @@ Learn how Siemens is helping organizations worldwide create intelligent infrastr
       {
         name: "Imelda Zhang",
         title: "Data Center Lead - ASEAN",
-        company: "Siemens",
-        image: "/speaker-imelda-zhang.jpeg",
+        company: "Siemens Smart Infrastructure",
+        image: "/speaker-imelda-zhang.png",
       },
     ],
   },
@@ -251,8 +251,8 @@ The session will highlight common gaps and considerations, prompting organisatio
       {
         name: "Michael Tiew",
         title: "Head of Portfolio and Sales Enablement",
-        company: "Siemens",
-        image: "/speaker-michael-tiew.jpg",
+        company: "Siemens Smart Infrastructure",
+        image: "/speaker-michael-tiew.png",
       },
     ],
   },
@@ -394,7 +394,7 @@ const afternoonTrack3Agenda: AgendaItem[] = [
       {
         name: "Wayne Chua",
         title: "Country Head – Singapore, Philippines, Brunei",
-        company: "Siemens",
+        company: "Siemens Digital Industries Software",
         image: "/speaker-wayne-chua.png",
       },
     ],

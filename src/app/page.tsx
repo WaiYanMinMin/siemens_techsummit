@@ -97,10 +97,11 @@ export default function Home() {
 
                 <div className="space-y-6 text-left text-sm leading-7 text-white/95 sm:text-base lg:col-start-2 lg:row-start-2">
                   <p>
-                    In a world defined by scarce raw materials, rising energy
-                    prices, skilled labor shortages, and geopolitical tensions,
-                    companies must accelerate innovation, boost productivity,
-                    and scale rapidly amid volatility. The game changer:{" "}
+                    In a world shaped by scarce raw materials, rising energy
+                    costs, skilled labor shortages, and geopolitical
+                    uncertainty, companies must accelerate innovation, boost
+                    productivity, and scale rapidly with confidence. The game
+                    changer:{" "}
                     <span className="font-semibold text-[#00d7c7]">
                       Industrial AI.
                     </span>
@@ -145,7 +146,7 @@ export default function Home() {
                   </p>
 
                   <p>
-                    If you&apos;re looking to discover what you can do with{" "}
+                    Are you looking to discover what you can do with{" "}
                     <span className="font-semibold text-[#00d7c7]">
                       Industrial AI
                     </span>{" "}
@@ -154,7 +155,7 @@ export default function Home() {
                   <p className="border-l-2 border-[#00d7c7] pl-4 text-base font-semibold leading-relaxed text-[#00d7c7] sm:text-lg">
                     Join us at Siemens Tech Summit 2026 to accelerate
                     innovation, enable smarter decision-making, and prepare your
-                    organization for an AI-powered future.
+                    organization for an AI-powered future
                   </p>
                 </div>
               </div>

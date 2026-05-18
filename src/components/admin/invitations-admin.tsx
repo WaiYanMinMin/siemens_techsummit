@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type InvitationRow = {
   id: string | number;
@@ -20,11 +20,12 @@ export function InvitationsAdmin() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [importFile, setImportFile] = useState<File | null>(null);
+  const [sendingIndividual, setSendingIndividual] = useState(false);
+  const [individualFirstName, setIndividualFirstName] = useState("");
+  const [individualEmail, setIndividualEmail] = useState("");
+  const [individualAssociationName, setIndividualAssociationName] = useState("");
   const [invitationType, setInvitationType] = useState<"csuites" | "associates">(
     "csuites",
-  );
-  const [ctaUrl, setCtaUrl] = useState(
-    "https://www.siemenstechsummitsg2026.com/#register",
   );
 
   async function loadInvitations(options?: { keepLoadingState?: boolean }) {
@@ -73,7 +74,6 @@ export function InvitationsAdmin() {
       const formData = new FormData();
       formData.set("file", importFile);
       formData.set("invitationType", invitationType);
-      formData.set("ctaUrl", ctaUrl);
 
       const response = await fetch("/api/admin/invitations/import", {
         method: "POST",
@@ -104,6 +104,53 @@ export function InvitationsAdmin() {
     }
   }
 
+  async function onSendIndividual(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const firstName = individualFirstName.trim();
+    const email = individualEmail.trim();
+    const associationName = individualAssociationName.trim();
+
+    if (!firstName || !email || !associationName) {
+      setError("Name, email and associate name are required.");
+      setInfo("");
+      return;
+    }
+
+    setSendingIndividual(true);
+    setError("");
+    setInfo("");
+
+    try {
+      const response = await fetch("/api/admin/invitations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          email,
+          associationName,
+          invitationType,
+        }),
+      });
+
+      const body = (await response.json()) as { error?: string; message?: string };
+      if (!response.ok) {
+        setError(body.error ?? "Failed to send invitation email.");
+        return;
+      }
+
+      setInfo(body.message ?? "Invitation sent.");
+      setIndividualFirstName("");
+      setIndividualEmail("");
+      setIndividualAssociationName("");
+      await loadInvitations({ keepLoadingState: true });
+    } catch {
+      setError("Network error while sending invitation email.");
+    } finally {
+      setSendingIndividual(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -122,7 +169,7 @@ export function InvitationsAdmin() {
           </button>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 sm:grid-cols-1">
           <label className="flex flex-col gap-1 text-sm text-slate-700">
             Invitation template
             <select
@@ -137,16 +184,6 @@ export function InvitationsAdmin() {
               <option value="csuites">C-Suites invitation template</option>
               <option value="associates">Associates invitation template</option>
             </select>
-          </label>
-
-          <label className="flex flex-col gap-1 text-sm text-slate-700">
-            CTA URL
-            <input
-              type="url"
-              value={ctaUrl}
-              onChange={(event) => setCtaUrl(event.target.value)}
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
-            />
           </label>
         </div>
 
@@ -165,6 +202,60 @@ export function InvitationsAdmin() {
             {importing ? "Sending..." : "Import + send invitations"}
           </button>
         </div>
+      </section>
+
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-900">
+          Send individual invitation email
+        </h2>
+        <p className="mt-1 text-xs text-slate-600">
+          Enter recipient details and send one invitation immediately.
+        </p>
+
+        <form
+          onSubmit={onSendIndividual}
+          className="mt-4 grid gap-3 sm:grid-cols-3"
+        >
+          <label className="flex flex-col gap-1 text-sm text-slate-700">
+            Name
+            <input
+              type="text"
+              required
+              value={individualFirstName}
+              onChange={(event) => setIndividualFirstName(event.target.value)}
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-slate-700">
+            Email
+            <input
+              type="email"
+              required
+              value={individualEmail}
+              onChange={(event) => setIndividualEmail(event.target.value)}
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm text-slate-700">
+            Associate name
+            <input
+              type="text"
+              required
+              value={individualAssociationName}
+              onChange={(event) => setIndividualAssociationName(event.target.value)}
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+            />
+          </label>
+          <div className="sm:col-span-3">
+            <button
+              type="submit"
+              disabled={sendingIndividual}
+              className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+            >
+              {sendingIndividual ? "Sending..." : "Send individual invitation"}
+            </button>
+          </div>
+        </form>
       </section>
 
       {error ? (

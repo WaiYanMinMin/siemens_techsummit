@@ -1,33 +1,17 @@
 import { NextResponse } from "next/server";
 
-import {
-  sendInvitationEmail,
-  sendRegistrationConfirmation,
-  sendRegistrationRejection,
-} from "@/lib/email";
+import { sendRegistrationRejection } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
-
-type EmailTemplate =
-  | "invitation"
-  | "csuites"
-  | "associates"
-  | "confirmation"
-  | "rejection";
 
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as {
       ids?: Array<string | number>;
-      emailTemplate?: EmailTemplate;
-      ctaUrl?: string;
     };
 
     const ids = Array.isArray(payload.ids)
       ? payload.ids.map((id) => String(id)).filter(Boolean)
       : [];
-    const emailTemplate = payload.emailTemplate ?? "invitation";
-    const ctaUrl =
-      payload.ctaUrl?.trim() || "https://www.siemenstechsummitsg2026.com/#register";
 
     if (ids.length === 0) {
       return NextResponse.json(
@@ -67,30 +51,13 @@ export async function POST(request: Request) {
 
     for (const row of rows) {
       try {
-        const perSendKey = `admin-bulk/${emailTemplate}/${row.id}/${Date.now()}`;
-        const result =
-          emailTemplate === "confirmation"
-            ? await sendRegistrationConfirmation({
-                firstName: row.first_name ?? "Guest",
-                email: row.email,
-                registrationId: String(row.id),
-                idempotencyKey: perSendKey,
-              })
-            : emailTemplate === "rejection"
-              ? await sendRegistrationRejection({
-                  firstName: row.first_name ?? "Guest",
-                  email: row.email,
-                  registrationId: String(row.id),
-                  idempotencyKey: perSendKey,
-                })
-            : await sendInvitationEmail({
-                firstName: row.first_name ?? "Guest",
-                email: row.email,
-                invitationId: String(row.id),
-                invitationType: emailTemplate === "invitation" ? "default" : emailTemplate,
-                ctaUrl,
-                idempotencyKey: perSendKey,
-              });
+        const perSendKey = `admin-bulk/rejection/${row.id}/${Date.now()}`;
+        const result = await sendRegistrationRejection({
+          firstName: row.first_name ?? "Guest",
+          email: row.email,
+          registrationId: String(row.id),
+          idempotencyKey: perSendKey,
+        });
 
         if (result.ok) {
           sent += 1;

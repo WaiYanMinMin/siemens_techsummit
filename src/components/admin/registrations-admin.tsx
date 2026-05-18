@@ -10,6 +10,11 @@ type Registration = {
   mobile_number: string;
   company: string;
   job_title: string;
+  industry?: string | null;
+  breakout_track?: string | null;
+  challenges?: string[] | null;
+  need_timeline?: string | null;
+  consent?: boolean | null;
   created_at?: string;
 };
 
@@ -36,19 +41,6 @@ export function RegistrationsAdmin() {
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
-  const [emailTemplate, setEmailTemplate] = useState<
-    "invitation" | "csuites" | "associates" | "confirmation" | "rejection"
-  >(
-    "invitation",
-  );
-  const [ctaUrl, setCtaUrl] = useState("https://www.siemenstechsummitsg2026.com/#register");
-  const isInvitationTemplate = useMemo(
-    () =>
-      emailTemplate === "invitation" ||
-      emailTemplate === "csuites" ||
-      emailTemplate === "associates",
-    [emailTemplate],
-  );
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
   const filteredRows = useMemo(() => {
@@ -228,8 +220,6 @@ export function RegistrationsAdmin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ids: selectedIds,
-          emailTemplate,
-          ctaUrl,
         }),
       });
 
@@ -260,45 +250,10 @@ export function RegistrationsAdmin() {
   return (
     <div className="space-y-6">
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Bulk email sender</h2>
+        <h2 className="text-lg font-semibold text-slate-900">Bulk rejection email sender</h2>
         <p className="mt-1 text-xs text-slate-600">
-          Select rows from the table first, choose a template, then send.
+          Select rows from the table and send rejection email only.
         </p>
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          <label className="flex flex-col gap-1 text-xs font-medium text-slate-700">
-            Email template
-            <select
-              value={emailTemplate}
-              onChange={(event) =>
-                setEmailTemplate(
-                  event.target.value as
-                    | "invitation"
-                    | "csuites"
-                    | "associates"
-                    | "confirmation"
-                    | "rejection",
-                )
-              }
-              className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
-            >
-              <option value="invitation">Invitation (default)</option>
-              <option value="csuites">C-suites invitation</option>
-              <option value="associates">Associates invitation</option>
-              <option value="confirmation">Confirmation email</option>
-              <option value="rejection">Rejection email</option>
-            </select>
-          </label>
-          <label className="sm:col-span-2 flex flex-col gap-1 text-xs font-medium text-slate-700">
-            CTA URL
-            <input
-              type="url"
-              value={ctaUrl}
-              onChange={(event) => setCtaUrl(event.target.value)}
-              disabled={!isInvitationTemplate}
-              className="h-9 rounded border border-slate-300 px-2 text-xs outline-none ring-[#00d7c7] focus:ring-2"
-            />
-          </label>
-        </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <button
             type="button"
@@ -306,7 +261,9 @@ export function RegistrationsAdmin() {
             disabled={sendingEmails || selectedIds.length === 0}
             className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
           >
-            {sendingEmails ? "Sending..." : `Send email to selected (${selectedIds.length})`}
+            {sendingEmails
+              ? "Sending..."
+              : `Send rejection email to selected (${selectedIds.length})`}
           </button>
           <span className="text-xs text-slate-500">
             {selectedIds.length === 0 ? "No row selected" : `${selectedIds.length} row(s) selected`}
@@ -454,13 +411,22 @@ export function RegistrationsAdmin() {
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
           <div className="mt-3 overflow-x-auto">
-            <table className="min-w-full text-left text-sm">
+            <table className="min-w-[1700px] text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
-                  <th className="px-2 py-2">Name</th>
+                  <th className="px-2 py-2">ID</th>
+                  <th className="px-2 py-2">First name</th>
+                  <th className="px-2 py-2">Last name</th>
                   <th className="px-2 py-2">Email</th>
+                  <th className="px-2 py-2">Mobile number</th>
+                  <th className="px-2 py-2">Job title</th>
                   <th className="px-2 py-2">Company</th>
+                  <th className="px-2 py-2">Industry</th>
+                  <th className="px-2 py-2">Breakout track</th>
+                  <th className="px-2 py-2">Challenges</th>
+                  <th className="px-2 py-2">Need timeline</th>
+                  <th className="px-2 py-2">Consent</th>
                   <th className="px-2 py-2">Created</th>
                   <th className="px-2 py-2">Actions</th>
                 </tr>
@@ -476,9 +442,28 @@ export function RegistrationsAdmin() {
                         className="h-4 w-4 rounded border-slate-300"
                       />
                     </td>
-                    <td className="px-2 py-2">{`${row.first_name} ${row.last_name}`}</td>
+                    <td className="px-2 py-2">{row.id}</td>
+                    <td className="px-2 py-2">{row.first_name}</td>
+                    <td className="px-2 py-2">{row.last_name}</td>
                     <td className="px-2 py-2">{row.email}</td>
+                    <td className="px-2 py-2">{row.mobile_number || "-"}</td>
+                    <td className="px-2 py-2">{row.job_title || "-"}</td>
                     <td className="px-2 py-2">{row.company}</td>
+                    <td className="px-2 py-2">{row.industry || "-"}</td>
+                    <td className="px-2 py-2">{row.breakout_track || "-"}</td>
+                    <td className="px-2 py-2">
+                      {(row.challenges ?? []).length > 0
+                        ? (row.challenges ?? []).join(", ")
+                        : "-"}
+                    </td>
+                    <td className="px-2 py-2">{row.need_timeline || "-"}</td>
+                    <td className="px-2 py-2">
+                      {row.consent === null || row.consent === undefined
+                        ? "-"
+                        : row.consent
+                          ? "Yes"
+                          : "No"}
+                    </td>
                     <td className="px-2 py-2">
                       {row.created_at
                         ? new Date(row.created_at).toLocaleString()
@@ -504,7 +489,7 @@ export function RegistrationsAdmin() {
                 ))}
                 {filteredRows.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-2 py-4 text-center text-slate-500">
+                    <td colSpan={15} className="px-2 py-4 text-center text-slate-500">
                       No registrations found for current filters.
                     </td>
                   </tr>

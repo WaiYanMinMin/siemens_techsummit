@@ -5,6 +5,7 @@ import { sendInvitationEmail } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type InvitationType = "csuites" | "associates";
+const FIXED_CTA_URL = "https://www.siemenstechsummitsg2026.com/#register";
 
 export async function POST(request: Request) {
   try {
@@ -13,9 +14,6 @@ export async function POST(request: Request) {
     const invitationType = (formData.get("invitationType") ?? "csuites")
       .toString()
       .toLowerCase() as InvitationType;
-    const ctaUrl =
-      formData.get("ctaUrl")?.toString().trim() ||
-      "https://www.siemenstechsummitsg2026.com/#register";
 
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "File is required." }, { status: 400 });
@@ -93,7 +91,7 @@ export async function POST(request: Request) {
         email: row.email,
         associationName: row.associationName,
         invitationType,
-        ctaUrl,
+        ctaUrl: FIXED_CTA_URL,
         invitationId: String(invitationId),
       });
 

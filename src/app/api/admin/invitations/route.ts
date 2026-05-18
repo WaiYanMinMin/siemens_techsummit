@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { sendInvitationEmail } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-type InvitationType = "csuites" | "associates";
+type InvitationType = "default" | "csuites" | "associates";
 const FIXED_CTA_URL = "https://www.siemenstechsummitsg2026.com/#register";
 
 export async function GET() {
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const firstName = payload.firstName?.trim() ?? "";
     const email = payload.email?.trim().toLowerCase() ?? "";
     const associationName = payload.associationName?.trim() ?? "";
-    const invitationType = payload.invitationType ?? "associates";
+    const invitationType = payload.invitationType ?? "default";
 
     if (!firstName || !email || !associationName) {
       return NextResponse.json(
@@ -47,9 +47,13 @@ export async function POST(request: Request) {
       );
     }
 
-    if (invitationType !== "csuites" && invitationType !== "associates") {
+    if (
+      invitationType !== "default" &&
+      invitationType !== "csuites" &&
+      invitationType !== "associates"
+    ) {
       return NextResponse.json(
-        { error: "invitationType must be csuites or associates." },
+        { error: "invitationType must be default, csuites or associates." },
         { status: 400 },
       );
     }
@@ -67,37 +71,14 @@ export async function POST(request: Request) {
       .select("id")
       .single();
 
-    let invitationId = invitationRecord?.id;
-    if (insertError?.code === "23505") {
-      const { data: existingRecord, error: existingRecordError } = await supabase
-        .from("invitation_recipients")
-        .select("id")
-        .eq("email", email)
-        .limit(1)
-        .maybeSingle();
-
-      if (existingRecordError || !existingRecord?.id) {
-        return NextResponse.json(
-          {
-            error:
-              existingRecordError?.message ??
-              "Could not resolve existing invitation recipient.",
-          },
-          { status: 500 },
-        );
-      }
-
-      invitationId = existingRecord.id;
-    } else if (insertError) {
-      return NextResponse.json({ error: insertError.message }, { status: 500 });
-    }
-
-    if (!invitationId) {
+    if (insertError || !invitationRecord?.id) {
       return NextResponse.json(
-        { error: "Could not determine invitation id." },
+        { error: insertError?.message ?? "Could not insert invitation recipient." },
         { status: 500 },
       );
     }
+
+    const invitationId = invitationRecord.id;
 
     const sendResult = await sendInvitationEmail({
       firstName,

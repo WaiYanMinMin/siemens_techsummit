@@ -7,7 +7,7 @@ type InvitationRow = {
   first_name: string;
   email: string;
   association_name: string | null;
-  invitation_type: "csuites" | "associates";
+  invitation_type: "default" | "csuites" | "associates";
   sent_at: string | null;
   last_error: string | null;
   created_at?: string;
@@ -24,8 +24,10 @@ export function InvitationsAdmin() {
   const [individualFirstName, setIndividualFirstName] = useState("");
   const [individualEmail, setIndividualEmail] = useState("");
   const [individualAssociationName, setIndividualAssociationName] = useState("");
-  const [invitationType, setInvitationType] = useState<"csuites" | "associates">(
-    "csuites",
+  const [invitationType, setInvitationType] = useState<
+    "default" | "csuites" | "associates"
+  >(
+    "default",
   );
 
   async function loadInvitations(options?: { keepLoadingState?: boolean }) {
@@ -176,11 +178,12 @@ export function InvitationsAdmin() {
               value={invitationType}
               onChange={(event) =>
                 setInvitationType(
-                  event.target.value as "csuites" | "associates",
+                  event.target.value as "default" | "csuites" | "associates",
                 )
               }
               className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
             >
+              <option value="default">General invitation template</option>
               <option value="csuites">C-Suites invitation template</option>
               <option value="associates">Associates invitation template</option>
             </select>

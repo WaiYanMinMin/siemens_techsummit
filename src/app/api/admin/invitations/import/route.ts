@@ -4,14 +4,14 @@ import { parseInvitationRows, parseWorkbookRows } from "@/lib/admin-excel";
 import { sendInvitationEmail } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-type InvitationType = "csuites" | "associates";
+type InvitationType = "default" | "csuites" | "associates";
 const FIXED_CTA_URL = "https://www.siemenstechsummitsg2026.com/#register";
 
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
-    const invitationType = (formData.get("invitationType") ?? "csuites")
+    const invitationType = (formData.get("invitationType") ?? "default")
       .toString()
       .toLowerCase() as InvitationType;
 
@@ -19,9 +19,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "File is required." }, { status: 400 });
     }
 
-    if (invitationType !== "csuites" && invitationType !== "associates") {
+    if (
+      invitationType !== "default" &&
+      invitationType !== "csuites" &&
+      invitationType !== "associates"
+    ) {
       return NextResponse.json(
-        { error: "invitationType must be csuites or associates." },
+        { error: "invitationType must be default, csuites or associates." },
         { status: 400 },
       );
     }
@@ -50,39 +54,15 @@ export async function POST(request: Request) {
         .select("id")
         .single();
 
-      let invitationId = invitationRecord?.id;
-      if (insertError?.code === "23505") {
-        const { data: existingRecord, error: existingRecordError } = await supabase
-          .from("invitation_recipients")
-          .select("id")
-          .eq("email", row.email)
-          .limit(1)
-          .maybeSingle();
-
-        if (existingRecordError || !existingRecord?.id) {
-          failed += 1;
-          errors.push(
-            `${row.email}: ${existingRecordError?.message ?? "Could not resolve existing invitation."}`,
-          );
-          continue;
-        }
-
-        invitationId = existingRecord.id;
-      }
-
-      if (insertError && insertError.code !== "23505") {
+      if (insertError || !invitationRecord?.id) {
         failed += 1;
         errors.push(
-          `${row.email}: ${insertError.message ?? "Could not insert invitation."}`,
+          `${row.email}: ${insertError?.message ?? "Could not insert invitation."}`,
         );
         continue;
       }
 
-      if (!invitationId) {
-        failed += 1;
-        errors.push(`${row.email}: Could not determine invitation id.`);
-        continue;
-      }
+      const invitationId = invitationRecord.id;
 
       imported += 1;
 

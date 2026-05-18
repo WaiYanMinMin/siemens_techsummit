@@ -1,0 +1,2 @@
+alter table public.invitation_recipients
+drop constraint if exists invitation_recipients_email_key;

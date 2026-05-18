@@ -60,6 +60,7 @@ export function RegistrationsAdmin() {
   const [filterCompany, setFilterCompany] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [detailRow, setDetailRow] = useState<Registration | null>(null);
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
   const filteredRows = useMemo(() => {
@@ -576,7 +577,7 @@ export function RegistrationsAdmin() {
               <tbody>
                 {sortedRows.map((row) => (
                   <tr key={String(row.id)} className="border-b border-slate-100">
-                    <td className="px-2 py-2">
+                    <td className="px-2 py-2 align-top">
                       <input
                         type="checkbox"
                         checked={selectedIds.includes(String(row.id))}
@@ -584,35 +585,48 @@ export function RegistrationsAdmin() {
                         className="h-4 w-4 rounded border-slate-300"
                       />
                     </td>
-                    <td className="px-2 py-2">{row.id}</td>
-                    <td className="px-2 py-2">{row.first_name}</td>
-                    <td className="px-2 py-2">{row.last_name}</td>
-                    <td className="px-2 py-2">{row.email}</td>
-                    <td className="px-2 py-2">{row.mobile_number || "-"}</td>
-                    <td className="px-2 py-2">{row.job_title || "-"}</td>
-                    <td className="px-2 py-2">{row.company}</td>
-                    <td className="px-2 py-2">{row.industry || "-"}</td>
-                    <td className="px-2 py-2">{row.breakout_track || "-"}</td>
-                    <td className="px-2 py-2">
+                    <td className="px-2 py-2 align-top">{row.id}</td>
+                    <td className="px-2 py-2 align-top">{row.first_name}</td>
+                    <td className="px-2 py-2 align-top">{row.last_name}</td>
+                    <td className="px-2 py-2 align-top">{row.email}</td>
+                    <td className="px-2 py-2 align-top">{row.mobile_number || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.job_title || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.company}</td>
+                    <td className="px-2 py-2 align-top">{row.industry || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.breakout_track || "-"}</td>
+                    <td
+                      className="max-w-[260px] px-2 py-2 align-top overflow-hidden text-ellipsis whitespace-nowrap"
+                      title={
+                        (row.challenges ?? []).length > 0
+                          ? (row.challenges ?? []).join(", ")
+                          : "-"
+                      }
+                    >
                       {(row.challenges ?? []).length > 0
-                        ? (row.challenges ?? []).join(", ")
+                        ? (row.challenges ?? []).join("; ")
                         : "-"}
                     </td>
-                    <td className="px-2 py-2">{row.need_timeline || "-"}</td>
-                    <td className="px-2 py-2">
+                    <td className="px-2 py-2 align-top">{row.need_timeline || "-"}</td>
+                    <td className="px-2 py-2 align-top">
                       {row.consent === null || row.consent === undefined
                         ? "-"
                         : row.consent
                           ? "Yes"
                           : "No"}
                     </td>
-                    <td className="px-2 py-2">
+                    <td className="px-2 py-2 align-top">
                       {row.created_at
                         ? new Date(row.created_at).toLocaleString()
                         : "-"}
                     </td>
-                    <td className="px-2 py-2">
-                      <div className="flex items-center gap-2">
+                    <td className="px-2 py-2 align-top">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => setDetailRow(row)}
+                          className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                        >
+                          View details
+                        </button>
                         <button
                           onClick={() => startEdit(row)}
                           className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
@@ -641,6 +655,60 @@ export function RegistrationsAdmin() {
           </div>
         )}
       </section>
+
+      {detailRow ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/55 p-4"
+          onClick={() => setDetailRow(null)}
+        >
+          <div
+            className="w-full max-w-2xl rounded-lg bg-white p-5 shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="text-lg font-semibold text-slate-900">Registration details</h3>
+              <button
+                type="button"
+                onClick={() => setDetailRow(null)}
+                className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+              >
+                Close
+              </button>
+            </div>
+            <div className="mt-4 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
+              <p><strong>ID:</strong> {detailRow.id}</p>
+              <p><strong>Name:</strong> {detailRow.first_name} {detailRow.last_name}</p>
+              <p><strong>Email:</strong> {detailRow.email}</p>
+              <p><strong>Mobile:</strong> {detailRow.mobile_number || "-"}</p>
+              <p><strong>Job title:</strong> {detailRow.job_title || "-"}</p>
+              <p><strong>Company:</strong> {detailRow.company || "-"}</p>
+              <p><strong>Industry:</strong> {detailRow.industry || "-"}</p>
+              <p><strong>Breakout track:</strong> {detailRow.breakout_track || "-"}</p>
+              <p><strong>Need timeline:</strong> {detailRow.need_timeline || "-"}</p>
+              <p>
+                <strong>Consent:</strong>{" "}
+                {detailRow.consent === null || detailRow.consent === undefined
+                  ? "-"
+                  : detailRow.consent
+                    ? "Yes"
+                    : "No"}
+              </p>
+              <p className="sm:col-span-2">
+                <strong>Challenges:</strong>{" "}
+                {(detailRow.challenges ?? []).length > 0
+                  ? (detailRow.challenges ?? []).join(", ")
+                  : "-"}
+              </p>
+              <p className="sm:col-span-2">
+                <strong>Created:</strong>{" "}
+                {detailRow.created_at
+                  ? new Date(detailRow.created_at).toLocaleString()
+                  : "-"}
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -40,6 +40,11 @@ export function InvitationsAdmin() {
   >(
     "default",
   );
+  const [individualInvitationType, setIndividualInvitationType] = useState<
+    "default" | "csuites" | "associates"
+  >(
+    "default",
+  );
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
@@ -144,7 +149,7 @@ export function InvitationsAdmin() {
           firstName,
           email,
           associationName,
-          invitationType,
+          invitationType: individualInvitationType,
         }),
       });
 
@@ -239,7 +244,7 @@ export function InvitationsAdmin() {
 
         <div className="mt-4 grid gap-3 sm:grid-cols-1">
           <label className="flex flex-col gap-1 text-sm text-slate-700">
-            Invitation template
+            Import invitation template
             <select
               value={invitationType}
               onChange={(event) =>
@@ -285,6 +290,22 @@ export function InvitationsAdmin() {
           onSubmit={onSendIndividual}
           className="mt-4 grid gap-3 sm:grid-cols-3"
         >
+          <label className="flex flex-col gap-1 text-sm text-slate-700 sm:col-span-3">
+            Individual invitation template
+            <select
+              value={individualInvitationType}
+              onChange={(event) =>
+                setIndividualInvitationType(
+                  event.target.value as "default" | "csuites" | "associates",
+                )
+              }
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+            >
+              <option value="default">General invitation template</option>
+              <option value="csuites">C-Suites invitation template</option>
+              <option value="associates">Associates invitation template</option>
+            </select>
+          </label>
           <label className="flex flex-col gap-1 text-sm text-slate-700">
             Name
             <input

@@ -44,7 +44,6 @@ export async function POST(request: Request) {
       challenges: data.challenges,
       need_timeline: data.needTimeline,
       consent: data.consent,
-      approval_status: "pending",
     });
 
     if (error) {

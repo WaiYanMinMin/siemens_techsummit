@@ -20,6 +20,7 @@ type Registration = {
   need_timeline?: string | null;
   consent?: boolean | null;
   approval_status?: ApprovalStatus | null;
+  confirmation_email_sent?: boolean | null;
   created_at?: string;
 };
 
@@ -43,6 +44,7 @@ type SortKey =
   | "challenges"
   | "need_timeline"
   | "consent"
+  | "confirmation_email_sent"
   | "created_at";
 
 type SortDirection = "asc" | "desc";
@@ -139,6 +141,8 @@ export function RegistrationsAdmin() {
           return (row.challenges ?? []).join(", ");
         case "consent":
           return row.consent === true ? 1 : row.consent === false ? 0 : -1;
+        case "confirmation_email_sent":
+          return row.confirmation_email_sent === true ? 1 : 0;
         case "created_at":
           return row.created_at ? new Date(row.created_at).getTime() : 0;
         default:
@@ -500,7 +504,7 @@ export function RegistrationsAdmin() {
           {activeTab === "registrants"
             ? "Pending applications. Select rows and approve or reject. Rejecting sends a rejection email automatically."
             : activeTab === "approved"
-              ? "Approved registrants. No email is sent on approval — send invitations manually when ready."
+              ? "Approved registrants. Update confirmation email status manually in Supabase after you send it."
               : "Rejected registrants. Rejection emails were sent when they were rejected."}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -661,7 +665,7 @@ export function RegistrationsAdmin() {
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
           <div className="mt-3 overflow-x-auto">
-            <table className="min-w-[1700px] text-left text-sm">
+            <table className="min-w-[1820px] text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
@@ -749,6 +753,15 @@ export function RegistrationsAdmin() {
                     sortDirection={sortDirection}
                     onToggleSort={onToggleSort}
                   />
+                  {activeTab === "approved" ? (
+                    <SortableHeader
+                      label="Confirmation email"
+                      columnKey="confirmation_email_sent"
+                      sortKey={sortKey}
+                      sortDirection={sortDirection}
+                      onToggleSort={onToggleSort}
+                    />
+                  ) : null}
                   <SortableHeader
                     label="Created"
                     columnKey="created_at"
@@ -799,6 +812,19 @@ export function RegistrationsAdmin() {
                           ? "Yes"
                           : "No"}
                     </td>
+                    {activeTab === "approved" ? (
+                      <td className="px-2 py-2 align-top">
+                        <span
+                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
+                            row.confirmation_email_sent
+                              ? "bg-emerald-50 text-emerald-700"
+                              : "bg-slate-100 text-slate-600"
+                          }`}
+                        >
+                          {row.confirmation_email_sent ? "Sent" : "Not sent"}
+                        </span>
+                      </td>
+                    ) : null}
                     <td className="px-2 py-2 align-top">
                       {row.created_at
                         ? new Date(row.created_at).toLocaleString()
@@ -830,7 +856,10 @@ export function RegistrationsAdmin() {
                 ))}
                 {sortedRows.length === 0 ? (
                   <tr>
-                    <td colSpan={15} className="px-2 py-4 text-center text-slate-500">
+                    <td
+                      colSpan={activeTab === "approved" ? 16 : 15}
+                      className="px-2 py-4 text-center text-slate-500"
+                    >
                       No {tabTitle.toLowerCase()} found for current filters.
                     </td>
                   </tr>
@@ -883,6 +912,12 @@ export function RegistrationsAdmin() {
                     ? "Yes"
                     : "No"}
               </p>
+              {normalizeApprovalStatus(detailRow) === "approved" ? (
+                <p>
+                  <strong>Confirmation email:</strong>{" "}
+                  {detailRow.confirmation_email_sent ? "Sent" : "Not sent"}
+                </p>
+              ) : null}
               <p className="sm:col-span-2">
                 <strong>Challenges:</strong>{" "}
                 {(detailRow.challenges ?? []).length > 0

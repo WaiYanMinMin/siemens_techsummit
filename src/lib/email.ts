@@ -139,7 +139,8 @@ export async function sendRegistrationRejection({
     {
       from: fromEmail,
       to: email,
-      subject: "Registration Update: Siemens Tech Summit 2026",
+      subject:
+        "Siemens Tech Summit 2026: Registration Unsuccessful (Full Capacity)",
       template: {
         id: rejectionTemplateId,
         variables: {

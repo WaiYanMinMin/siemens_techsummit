@@ -513,11 +513,17 @@ export function RegistrationsAdmin() {
             <button
               type="button"
               onClick={() => {
-                window.location.href = "/api/admin/registrations/export";
+                const href =
+                  activeTab === "approved"
+                    ? "/api/admin/registrations/export?approval_status=approved"
+                    : "/api/admin/registrations/export";
+                window.location.href = href;
               }}
               className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
             >
-              Export registrations
+              {activeTab === "approved"
+                ? "Export approved"
+                : "Export registrations"}
             </button>
             <button
               type="button"

@@ -29,10 +29,10 @@ type EmailResult = { ok: true; id: string } | { ok: false; error: string };
 let resendClient: Resend | null = null;
 
 const DEFAULT_EMAIL_LOGO_URL =
-  "https://siemenstechsummit.vercel.app/siemens-3-logo-png-transparent.png";
+  "https://siemenstechsummitsg2026.com/siemens-3-logo-png-transparent.png";
 
 const DEFAULT_EMAIL_HERO_IMAGE_URL =
-  "https://siemenstechsummit.vercel.app/key_visual_mobile.png";
+  "https://siemenstechsummitsg2026.com/key_visual_mobile.png";
 
 function emailLogoUrl() {
   return process.env.EMAIL_LOGO_URL?.trim() || DEFAULT_EMAIL_LOGO_URL;

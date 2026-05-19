@@ -504,7 +504,7 @@ export function RegistrationsAdmin() {
           {activeTab === "registrants"
             ? "Pending applications. Select rows and approve or reject. Rejecting sends a rejection email automatically."
             : activeTab === "approved"
-              ? "Approved registrants. Update confirmation email status manually in Supabase after you send it."
+              ? "Approved registrants."
               : "Rejected registrants. Rejection emails were sent when they were rejected."}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">

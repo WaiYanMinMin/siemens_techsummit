@@ -2,6 +2,10 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
+type ApprovalStatus = "pending" | "approved" | "rejected";
+
+type AdminTab = "registrants" | "approved" | "rejected";
+
 type Registration = {
   id: string | number;
   first_name: string;
@@ -15,8 +19,16 @@ type Registration = {
   challenges?: string[] | null;
   need_timeline?: string | null;
   consent?: boolean | null;
+  approval_status?: ApprovalStatus | null;
   created_at?: string;
 };
+
+function normalizeApprovalStatus(row: Registration): ApprovalStatus {
+  if (row.approval_status === "approved" || row.approval_status === "rejected") {
+    return row.approval_status;
+  }
+  return "pending";
+}
 
 type SortKey =
   | "id"
@@ -49,12 +61,14 @@ export function RegistrationsAdmin() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [sendingEmails, setSendingEmails] = useState(false);
+  const [processingReview, setProcessingReview] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [emailErrors, setEmailErrors] = useState<string[]>([]);
   const [form, setForm] = useState<RegistrationFormState | null>(null);
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<AdminTab>("registrants");
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
@@ -63,12 +77,42 @@ export function RegistrationsAdmin() {
   const [detailRow, setDetailRow] = useState<Registration | null>(null);
 
   const isEditing = useMemo(() => editingId !== null, [editingId]);
+  const tabCounts = useMemo(() => {
+    let registrants = 0;
+    let approved = 0;
+    let rejected = 0;
+
+    for (const row of rows) {
+      const status = normalizeApprovalStatus(row);
+      if (status === "pending") {
+        registrants += 1;
+      } else if (status === "approved") {
+        approved += 1;
+      } else {
+        rejected += 1;
+      }
+    }
+
+    return { registrants, approved, rejected };
+  }, [rows]);
+  const tabRows = useMemo(() => {
+    return rows.filter((row) => {
+      const status = normalizeApprovalStatus(row);
+      if (activeTab === "registrants") {
+        return status === "pending";
+      }
+      if (activeTab === "approved") {
+        return status === "approved";
+      }
+      return status === "rejected";
+    });
+  }, [rows, activeTab]);
   const filteredRows = useMemo(() => {
     const nameFilter = filterName.trim().toLowerCase();
     const emailFilter = filterEmail.trim().toLowerCase();
     const companyFilter = filterCompany.trim().toLowerCase();
 
-    return rows.filter((row) => {
+    return tabRows.filter((row) => {
       const fullName = `${row.first_name} ${row.last_name}`.toLowerCase();
       const email = (row.email || "").toLowerCase();
       const company = (row.company || "").toLowerCase();
@@ -79,7 +123,7 @@ export function RegistrationsAdmin() {
         (!companyFilter || company.includes(companyFilter))
       );
     });
-  }, [rows, filterName, filterEmail, filterCompany]);
+  }, [tabRows, filterName, filterEmail, filterCompany]);
   const filteredIds = useMemo(
     () => filteredRows.map((row) => String(row.id)),
     [filteredRows],
@@ -267,6 +311,82 @@ export function RegistrationsAdmin() {
     setSortDirection("asc");
   }
 
+  function onChangeTab(tab: AdminTab) {
+    setActiveTab(tab);
+    setSelectedIds([]);
+    setError("");
+    setInfo("");
+    setEmailErrors([]);
+  }
+
+  async function onReview(action: "approve" | "reject") {
+    if (selectedIds.length === 0) {
+      setError("Please select at least one registrant.");
+      setInfo("");
+      return;
+    }
+
+    if (action === "reject") {
+      const confirmed = window.confirm(
+        `Reject ${selectedIds.length} registrant(s)? A rejection email will be sent automatically.`,
+      );
+      if (!confirmed) {
+        return;
+      }
+    }
+
+    setProcessingReview(true);
+    setError("");
+    setInfo("");
+    setEmailErrors([]);
+
+    try {
+      const response = await fetch("/api/admin/registrations/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ids: selectedIds,
+          action,
+        }),
+      });
+
+      const body = (await response.json()) as {
+        error?: string;
+        message?: string;
+        processed?: number;
+        emailsSent?: number;
+        emailsFailed?: number;
+        errors?: string[];
+      };
+
+      if (!response.ok) {
+        setError(body.error ?? "Failed to update registrations.");
+        setEmailErrors(body.errors ?? []);
+        return;
+      }
+
+      const processed = body.processed ?? 0;
+      if (action === "approve") {
+        setInfo(
+          body.message ??
+            `${processed} registrant(s) approved. No email was sent — you can email them manually later.`,
+        );
+      } else {
+        setInfo(
+          `${processed} registrant(s) rejected. Rejection emails: ${body.emailsSent ?? 0} sent, ${body.emailsFailed ?? 0} failed.`,
+        );
+        setEmailErrors(body.errors ?? []);
+      }
+
+      setSelectedIds([]);
+      await loadRegistrations();
+    } catch {
+      setError("Network error while updating registrations.");
+    } finally {
+      setProcessingReview(false);
+    }
+  }
+
   async function onSendEmails() {
     if (selectedIds.length === 0) {
       setError("Please select at least one registration before sending emails.");
@@ -312,30 +432,15 @@ export function RegistrationsAdmin() {
     }
   }
 
+  const tabTitle =
+    activeTab === "registrants"
+      ? "Registrants"
+      : activeTab === "approved"
+        ? "Approved"
+        : "Rejected";
+
   return (
     <div className="space-y-6">
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Bulk rejection email sender</h2>
-        <p className="mt-1 text-xs text-slate-600">
-          Select rows from the table and send rejection email only.
-        </p>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={onSendEmails}
-            disabled={sendingEmails || selectedIds.length === 0}
-            className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
-          >
-            {sendingEmails
-              ? "Sending..."
-              : `Send rejection email to selected (${selectedIds.length})`}
-          </button>
-          <span className="text-xs text-slate-500">
-            {selectedIds.length === 0 ? "No row selected" : `${selectedIds.length} row(s) selected`}
-          </span>
-        </div>
-      </section>
-
       {error ? (
         <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
@@ -363,8 +468,43 @@ export function RegistrationsAdmin() {
       ) : null}
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div
+          role="tablist"
+          aria-label="Registration status"
+          className="mb-4 flex flex-wrap gap-2 border-b border-slate-200 pb-3"
+        >
+          {(
+            [
+              ["registrants", "Registrants", tabCounts.registrants],
+              ["approved", "Approved", tabCounts.approved],
+              ["rejected", "Rejected", tabCounts.rejected],
+            ] as const
+          ).map(([tab, label, count]) => (
+            <button
+              key={tab}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab}
+              onClick={() => onChangeTab(tab)}
+              className={`rounded-full px-4 py-1.5 text-xs font-semibold transition ${
+                activeTab === tab
+                  ? "bg-slate-900 text-white"
+                  : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              {label} ({count})
+            </button>
+          ))}
+        </div>
+        <p className="mb-3 text-xs text-slate-600">
+          {activeTab === "registrants"
+            ? "Pending applications. Select rows and approve or reject. Rejecting sends a rejection email automatically."
+            : activeTab === "approved"
+              ? "Approved registrants. No email is sent on approval — send invitations manually when ready."
+              : "Rejected registrants. Rejection emails were sent when they were rejected."}
+        </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">Registered users</h2>
+          <h2 className="text-lg font-semibold text-slate-900">{tabTitle}</h2>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -384,6 +524,51 @@ export function RegistrationsAdmin() {
             </button>
           </div>
         </div>
+
+        {activeTab === "registrants" ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <button
+              type="button"
+              onClick={() => onReview("approve")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
+            >
+              {processingReview ? "Processing..." : `Approve selected (${selectedIds.length})`}
+            </button>
+            <button
+              type="button"
+              onClick={() => onReview("reject")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded bg-red-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-600 disabled:opacity-60"
+            >
+              {processingReview ? "Processing..." : `Reject selected (${selectedIds.length})`}
+            </button>
+            <span className="text-xs text-slate-500">
+              {selectedIds.length === 0
+                ? "No row selected"
+                : `${selectedIds.length} row(s) selected`}
+            </span>
+          </div>
+        ) : null}
+
+        {activeTab === "rejected" ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <button
+              type="button"
+              onClick={onSendEmails}
+              disabled={sendingEmails || selectedIds.length === 0}
+              className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+            >
+              {sendingEmails
+                ? "Sending..."
+                : `Resend rejection email (${selectedIds.length})`}
+            </button>
+            <span className="text-xs text-slate-500">
+              Use only if the original rejection email failed to deliver.
+            </span>
+          </div>
+        ) : null}
+
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <input
             placeholder="Filter by name"
@@ -646,7 +831,7 @@ export function RegistrationsAdmin() {
                 {sortedRows.length === 0 ? (
                   <tr>
                     <td colSpan={15} className="px-2 py-4 text-center text-slate-500">
-                      No registrations found for current filters.
+                      No {tabTitle.toLowerCase()} found for current filters.
                     </td>
                   </tr>
                 ) : null}
@@ -677,6 +862,11 @@ export function RegistrationsAdmin() {
             </div>
             <div className="mt-4 grid gap-2 text-sm text-slate-700 sm:grid-cols-2">
               <p><strong>ID:</strong> {detailRow.id}</p>
+              <p>
+                <strong>Status:</strong>{" "}
+                {normalizeApprovalStatus(detailRow).charAt(0).toUpperCase() +
+                  normalizeApprovalStatus(detailRow).slice(1)}
+              </p>
               <p><strong>Name:</strong> {detailRow.first_name} {detailRow.last_name}</p>
               <p><strong>Email:</strong> {detailRow.email}</p>
               <p><strong>Mobile:</strong> {detailRow.mobile_number || "-"}</p>

@@ -8,7 +8,8 @@ export default function AdminDashboardPage() {
       <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6">
         <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
         <p className="mt-1 text-sm text-slate-600">
-          Manage registrations with edit/delete, filters, and bulk invitation sends.
+          Review registrants, approve or reject applications, and manage approved and
+          rejected lists.
         </p>
         <div className="mt-6">
           <RegistrationsAdmin />

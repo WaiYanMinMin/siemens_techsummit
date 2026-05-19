@@ -93,7 +93,7 @@ export function RegistrationForm() {
 
       setSuccess(
         body.message ??
-          "Thank you for your interest in Siemens Tech Summit 2026. We will be sending you an email with the event details shortly.",
+          "Thank you for your interest in Siemens Tech Summit 2026. We have received your registration.",
       );
       setFormData(initialState);
     } catch {

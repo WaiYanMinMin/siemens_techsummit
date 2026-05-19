@@ -4,6 +4,8 @@ type ConfirmationEmailInput = {
   firstName: string;
   email: string;
   registrationId: string;
+  /** When set, attaches event-ticket-qr.png and passes ticket_id to the Resend template. */
+  ticketId?: string | null;
   idempotencyKey?: string;
 };
 
@@ -11,6 +13,8 @@ type RejectionEmailInput = {
   firstName: string;
   email: string;
   registrationId: string;
+  /** ISO 8601 — when set, Resend sends the email at this time instead of immediately. */
+  scheduledAt?: string;
   idempotencyKey?: string;
 };
 
@@ -63,6 +67,7 @@ export async function sendRegistrationConfirmation({
   firstName,
   email,
   registrationId,
+  ticketId,
   idempotencyKey,
 }: ConfirmationEmailInput) {
   const fromEmail = process.env.FROM_EMAIL;
@@ -80,6 +85,30 @@ export async function sendRegistrationConfirmation({
     throw new Error("RESEND_TEMPLATE_CONFIRMATION_ID is missing.");
   }
 
+  const trimmedTicket = ticketId?.trim() ?? "";
+  const variables: Record<string, string | number> = {
+    first_name: firstName || "Guest",
+    hero_image_url: heroImageUrl,
+    logo_url: logoUrl,
+  };
+  if (trimmedTicket) {
+    variables.ticket_id = trimmedTicket;
+  }
+
+  let attachments:
+    | { filename: string; content: string; contentType: string }[]
+    | undefined;
+  if (trimmedTicket) {
+    const { ticketIdToQrPngBase64 } = await import("@/lib/ticket-qr");
+    attachments = [
+      {
+        filename: "event-ticket-qr.png",
+        content: await ticketIdToQrPngBase64(trimmedTicket),
+        contentType: "image/png",
+      },
+    ];
+  }
+
   const { data, error } = await resend.emails.send(
     {
       from: fromEmail,
@@ -87,12 +116,9 @@ export async function sendRegistrationConfirmation({
       subject: "Registration Confirmation : Siemens Tech Summit 2026",
       template: {
         id: confirmationTemplateId,
-        variables: {
-          first_name: firstName || "Guest",
-          hero_image_url: heroImageUrl,
-          logo_url: logoUrl,
-        },
+        variables,
       },
+      ...(attachments ? { attachments } : {}),
     },
     {
       idempotencyKey:
@@ -118,6 +144,7 @@ export async function sendRegistrationRejection({
   firstName,
   email,
   registrationId,
+  scheduledAt,
   idempotencyKey,
 }: RejectionEmailInput) {
   const fromEmail = process.env.FROM_EMAIL;
@@ -149,6 +176,7 @@ export async function sendRegistrationRejection({
           logo_url: logoUrl,
         },
       },
+      ...(scheduledAt ? { scheduledAt } : {}),
     },
     {
       idempotencyKey:

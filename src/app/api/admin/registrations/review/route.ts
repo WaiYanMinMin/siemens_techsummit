@@ -34,6 +34,21 @@ export async function POST(request: Request) {
     const supabase = getSupabaseAdminClient();
     const newStatus = action === "approve" ? "approved" : "rejected";
 
+    const rejectionDelayHoursRaw = process.env.REJECTION_EMAIL_DELAY_HOURS?.trim();
+    const rejectionDelayHours = Math.max(
+      0,
+      Math.min(
+        24 * 30,
+        Number.parseInt(rejectionDelayHoursRaw ?? "0", 10) || 0,
+      ),
+    );
+    const rejectionScheduledAt =
+      action === "reject" && rejectionDelayHours > 0
+        ? new Date(
+            Date.now() + rejectionDelayHours * 60 * 60 * 1000,
+          ).toISOString()
+        : undefined;
+
     const { data: registrations, error } = await supabase
       .from("registrations")
       .select("id, first_name, email, approval_status")
@@ -82,7 +97,10 @@ export async function POST(request: Request) {
           firstName: row.first_name ?? "Guest",
           email: row.email,
           registrationId: String(row.id),
-          idempotencyKey: `admin-reject/${row.id}/${Date.now()}`,
+          ...(rejectionScheduledAt
+            ? { scheduledAt: rejectionScheduledAt }
+            : {}),
+          idempotencyKey: `admin-reject/${row.id}/${rejectionScheduledAt ?? "immediate"}`,
         });
 
         if (result.ok) {
@@ -98,11 +116,15 @@ export async function POST(request: Request) {
       message:
         action === "approve"
           ? "Selected registrations approved."
-          : "Selected registrations rejected.",
+          : rejectionScheduledAt
+            ? `Selected registrations rejected. Rejection emails scheduled via Resend (first send at ${rejectionScheduledAt}).`
+            : "Selected registrations rejected.",
       action,
       processed: pendingRows.length,
       emailsSent,
       emailsFailed,
+      rejectionEmailDelayHours: action === "reject" ? rejectionDelayHours : undefined,
+      rejectionScheduledAt: action === "reject" ? rejectionScheduledAt ?? null : undefined,
       errors,
     });
   } catch (error) {

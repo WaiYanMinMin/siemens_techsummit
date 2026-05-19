@@ -191,11 +191,69 @@ export function registrationsExportBuffer(rows: RegistrationExportRow[]) {
       company: row.company ?? "",
       industry: row.industry ?? "",
       breakout_track: row.breakout_track ?? "",
-      challenges: (row.challenges ?? []).join("|"),
-      need_timeline: row.need_timeline ?? "",
-      consent: row.consent ?? false,
       created_at: row.created_at ?? "",
     })),
     "registrations",
   );
+}
+
+export type ConfirmationSendImportRow = {
+  registrationId: string;
+  ticketId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+};
+
+export function parseConfirmationSendRows(rows: AnyRow[]) {
+  return rows.map((row, index) => {
+    const normalized = Object.fromEntries(
+      Object.entries(row).map(([key, value]) => [normalizeHeader(key), value]),
+    );
+
+    const registrationId = toStringValue(
+      normalized.registration_id ?? normalized.id ?? "",
+    );
+    const ticketId = toStringValue(normalized.ticket_id);
+    const email = toStringValue(normalized.email).toLowerCase();
+    const firstName = toStringValue(normalized.first_name);
+    const lastName = toStringValue(normalized.last_name);
+
+    if (!registrationId || !ticketId) {
+      throw new Error(
+        `Row ${index + 2}: registration_id (or id) and ticket_id are required.`,
+      );
+    }
+
+    return {
+      registrationId,
+      ticketId,
+      email,
+      firstName,
+      lastName,
+    } satisfies ConfirmationSendImportRow;
+  });
+}
+
+export function confirmationSendTemplateBuffer() {
+  return toWorkbookBuffer(
+    [
+      {
+        registration_id: "00000000-0000-0000-0000-000000000000",
+        email: "guest@example.com",
+        first_name: "Jane",
+        last_name: "Doe",
+        ticket_id: "PASTE-TICKET-ID-FROM-YOUR-TICKETING-SYSTEM",
+      },
+    ],
+    "confirmations",
+  );
+}
+
+/** UTF-8 CSV template (same columns as Excel). */
+export function confirmationSendTemplateCsvBuffer() {
+  const header = "registration_id,email,first_name,last_name,ticket_id";
+  const sample =
+    "00000000-0000-0000-0000-000000000000,guest@example.com,Jane,Doe,PASTE-TICKET-ID-FROM-YOUR-TICKETING-SYSTEM";
+  return Buffer.from(`${header}\n${sample}\n`, "utf-8");
 }

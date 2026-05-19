@@ -24,9 +24,7 @@ type InvitationEmailInput = {
   idempotencyKey?: string;
 };
 
-type EmailResult =
-  | { ok: true; id: string }
-  | { ok: false; error: string };
+type EmailResult = { ok: true; id: string } | { ok: false; error: string };
 
 let resendClient: Resend | null = null;
 
@@ -41,7 +39,9 @@ function emailLogoUrl() {
 }
 
 function emailHeroImageUrl() {
-  return process.env.EMAIL_HERO_IMAGE_URL?.trim() || DEFAULT_EMAIL_HERO_IMAGE_URL;
+  return (
+    process.env.EMAIL_HERO_IMAGE_URL?.trim() || DEFAULT_EMAIL_HERO_IMAGE_URL
+  );
 }
 
 function getResendClient() {
@@ -84,8 +84,7 @@ export async function sendRegistrationConfirmation({
     {
       from: fromEmail,
       to: email,
-      subject:
-        "Registration Confirmation & Ticket: Siemens Tech Summit 2026",
+      subject: "Registration Confirmation : Siemens Tech Summit 2026",
       template: {
         id: confirmationTemplateId,
         variables: {
@@ -96,7 +95,8 @@ export async function sendRegistrationConfirmation({
       },
     },
     {
-      idempotencyKey: idempotencyKey ?? `registration-confirmation/${registrationId}`,
+      idempotencyKey:
+        idempotencyKey ?? `registration-confirmation/${registrationId}`,
     },
   );
 
@@ -105,7 +105,10 @@ export async function sendRegistrationConfirmation({
   }
 
   if (!data?.id) {
-    return { ok: false, error: "Email API did not return a message id." } satisfies EmailResult;
+    return {
+      ok: false,
+      error: "Email API did not return a message id.",
+    } satisfies EmailResult;
   }
 
   return { ok: true, id: data.id } satisfies EmailResult;
@@ -147,7 +150,8 @@ export async function sendRegistrationRejection({
       },
     },
     {
-      idempotencyKey: idempotencyKey ?? `registration-rejection/${registrationId}`,
+      idempotencyKey:
+        idempotencyKey ?? `registration-rejection/${registrationId}`,
     },
   );
 
@@ -156,7 +160,10 @@ export async function sendRegistrationRejection({
   }
 
   if (!data?.id) {
-    return { ok: false, error: "Email API did not return a message id." } satisfies EmailResult;
+    return {
+      ok: false,
+      error: "Email API did not return a message id.",
+    } satisfies EmailResult;
   }
 
   return { ok: true, id: data.id } satisfies EmailResult;
@@ -222,7 +229,10 @@ export async function sendInvitationEmail({
   }
 
   if (!data?.id) {
-    return { ok: false, error: "Email API did not return a message id." } satisfies EmailResult;
+    return {
+      ok: false,
+      error: "Email API did not return a message id.",
+    } satisfies EmailResult;
   }
 
   return { ok: true, id: data.id } satisfies EmailResult;

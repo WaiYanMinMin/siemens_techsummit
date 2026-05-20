@@ -66,7 +66,6 @@ export function RegistrationsAdmin() {
   const [processingReview, setProcessingReview] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
-  const [emailErrors, setEmailErrors] = useState<string[]>([]);
   const [form, setForm] = useState<RegistrationFormState | null>(null);
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -320,7 +319,6 @@ export function RegistrationsAdmin() {
     setSelectedIds([]);
     setError("");
     setInfo("");
-    setEmailErrors([]);
   }
 
   async function onReview(action: "approve" | "reject") {
@@ -342,8 +340,6 @@ export function RegistrationsAdmin() {
     setProcessingReview(true);
     setError("");
     setInfo("");
-    setEmailErrors([]);
-
     try {
       const response = await fetch("/api/admin/registrations/review", {
         method: "POST",
@@ -358,14 +354,10 @@ export function RegistrationsAdmin() {
         error?: string;
         message?: string;
         processed?: number;
-        emailsSent?: number;
-        emailsFailed?: number;
-        errors?: string[];
       };
 
       if (!response.ok) {
         setError(body.error ?? "Failed to update registrations.");
-        setEmailErrors(body.errors ?? []);
         return;
       }
 
@@ -377,9 +369,8 @@ export function RegistrationsAdmin() {
         );
       } else {
         setInfo(
-          `${processed} registrant(s) rejected. Rejection emails: ${body.emailsSent ?? 0} sent, ${body.emailsFailed ?? 0} failed.`,
+          body.message ?? `${processed} registrant(s) rejected.`,
         );
-        setEmailErrors(body.errors ?? []);
       }
 
       setSelectedIds([]);
@@ -401,8 +392,6 @@ export function RegistrationsAdmin() {
     setSendingEmails(true);
     setError("");
     setInfo("");
-    setEmailErrors([]);
-
     try {
       const response = await fetch("/api/admin/registrations/send-email", {
         method: "POST",
@@ -414,21 +403,15 @@ export function RegistrationsAdmin() {
 
       const body = (await response.json()) as {
         error?: string;
-        sent?: number;
-        failed?: number;
-        errors?: string[];
+        message?: string;
       };
 
       if (!response.ok) {
         setError(body.error ?? "Failed to send emails.");
-        setEmailErrors(body.errors ?? []);
         return;
       }
 
-      setInfo(
-        `Email send complete: ${body.sent ?? 0} sent, ${body.failed ?? 0} failed.`,
-      );
-      setEmailErrors(body.errors ?? []);
+      setInfo(body.message ?? "Rejection email send completed.");
     } catch {
       setError("Network error while sending emails.");
     } finally {
@@ -455,22 +438,6 @@ export function RegistrationsAdmin() {
           {info}
         </p>
       ) : null}
-      {emailErrors.length > 0 ? (
-        <div className="rounded border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-          <p className="font-semibold">Send errors</p>
-          <p className="mt-1 text-xs text-amber-800">
-            {emailErrors.length} recipient(s) failed:
-          </p>
-          <div className="mt-2 max-h-44 overflow-auto rounded border border-amber-200 bg-white p-2">
-            {emailErrors.map((item) => (
-              <p key={item} className="text-xs leading-5 text-amber-900">
-                - {item}
-              </p>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div
           role="tablist"
@@ -574,7 +541,7 @@ export function RegistrationsAdmin() {
                 : `Resend rejection email (${selectedIds.length})`}
             </button>
             <span className="text-xs text-slate-500">
-              Use only if the original rejection email failed to deliver.
+              Resend the rejection email if needed.
             </span>
           </div>
         ) : null}

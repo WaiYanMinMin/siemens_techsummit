@@ -45,10 +45,6 @@ export async function POST(request: Request) {
       );
     }
 
-    let sent = 0;
-    let failed = 0;
-    const errors: string[] = [];
-
     for (const row of rows) {
       try {
         const perSendKey = `admin-bulk/rejection/${row.id}/${Date.now()}`;
@@ -59,27 +55,26 @@ export async function POST(request: Request) {
           idempotencyKey: perSendKey,
         });
 
-        if (result.ok) {
-          sent += 1;
-        } else {
-          failed += 1;
-          errors.push(`${row.email}: ${result.error}`);
+        if (!result.ok) {
+          console.error(
+            `Rejection email resend failed for registration ${row.id} (${row.email}):`,
+            result.error,
+          );
         }
       } catch (error) {
-        failed += 1;
         const message =
           error instanceof Error ? error.message : "Unexpected send error.";
-        errors.push(`${row.email}: ${message}`);
+        console.error(
+          `Rejection email resend failed for registration ${row.id} (${row.email}):`,
+          message,
+        );
       }
     }
 
     return NextResponse.json({
-      message: "Email send completed.",
+      message: "Rejection email send completed.",
       selected: ids.length,
       processed: rows.length,
-      sent,
-      failed,
-      errors,
     });
   } catch (error) {
     console.error("Admin send registration email error:", error);

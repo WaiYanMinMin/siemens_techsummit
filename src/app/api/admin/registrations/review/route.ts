@@ -87,10 +87,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });
     }
 
-    let emailsSent = 0;
-    let emailsFailed = 0;
-    const errors: string[] = [];
-
     if (action === "reject") {
       for (const row of pendingRows) {
         const result = await sendRegistrationRejection({
@@ -103,11 +99,11 @@ export async function POST(request: Request) {
           idempotencyKey: `admin-reject/${row.id}/${rejectionScheduledAt ?? "immediate"}`,
         });
 
-        if (result.ok) {
-          emailsSent += 1;
-        } else {
-          emailsFailed += 1;
-          errors.push(`${row.email}: ${result.error}`);
+        if (!result.ok) {
+          console.error(
+            `Rejection email failed for registration ${row.id} (${row.email}):`,
+            result.error,
+          );
         }
       }
     }
@@ -121,11 +117,8 @@ export async function POST(request: Request) {
             : "Selected registrations rejected.",
       action,
       processed: pendingRows.length,
-      emailsSent,
-      emailsFailed,
       rejectionEmailDelayHours: action === "reject" ? rejectionDelayHours : undefined,
       rejectionScheduledAt: action === "reject" ? rejectionScheduledAt ?? null : undefined,
-      errors,
     });
   } catch (error) {
     console.error("Admin registrations review error:", error);

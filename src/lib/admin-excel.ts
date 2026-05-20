@@ -63,7 +63,9 @@ export function parseRegistrationRows(rows: AnyRow[]) {
     const industry = toStringValue(normalized.industry);
     const breakoutTrack = toStringValue(normalized.breakout_track);
     const challengesRaw = toStringValue(normalized.challenges);
-    const needTimelineRaw = toStringValue(normalized.need_timeline) as RegistrationImportRow["needTimeline"];
+    const needTimelineRaw = toStringValue(
+      normalized.need_timeline,
+    ) as RegistrationImportRow["needTimeline"];
     const consent = toBooleanValue(normalized.consent);
 
     const challenges = challengesRaw
@@ -72,7 +74,9 @@ export function parseRegistrationRows(rows: AnyRow[]) {
       .filter(Boolean);
 
     if (!firstName || !lastName || !email) {
-      throw new Error(`Row ${index + 2}: first_name, last_name and email are required.`);
+      throw new Error(
+        `Row ${index + 2}: first_name, last_name and email are required.`,
+      );
     }
 
     return {
@@ -85,9 +89,12 @@ export function parseRegistrationRows(rows: AnyRow[]) {
       industry,
       breakoutTrack,
       challenges,
-      needTimeline: ["6_months", "12_months", "exploring", "no_requirement"].includes(
-        needTimelineRaw,
-      )
+      needTimeline: [
+        "6_months",
+        "12_months",
+        "exploring",
+        "no_requirement",
+      ].includes(needTimelineRaw)
         ? needTimelineRaw
         : "exploring",
       consent,
@@ -104,7 +111,9 @@ export function parseInvitationRows(rows: AnyRow[]) {
     const firstName = toStringValue(normalized.first_name);
     const email = toStringValue(normalized.email).toLowerCase();
     const associationName = toStringValue(normalized.association_name);
-    const invitationTypeRaw = toStringValue(normalized.invitation_type).toLowerCase();
+    const invitationTypeRaw = toStringValue(
+      normalized.invitation_type,
+    ).toLowerCase();
     const invitationType =
       invitationTypeRaw === "associates" ? "associates" : "csuites";
 
@@ -140,7 +149,8 @@ export function registrationTemplateBuffer() {
         company: "Acme Industries",
         industry: "Manufacturing",
         breakout_track: "Track 2: Smart Manufacturing with Industrial AI",
-        challenges: "Fragmented software and data silos|Leveraging AI/ML for product innovation",
+        challenges:
+          "Fragmented software and data silos|Leveraging AI/ML for product innovation",
         need_timeline: "6_months",
         consent: true,
       },
@@ -175,7 +185,6 @@ type RegistrationExportRow = {
   breakout_track: string | null;
   challenges: string[] | null;
   need_timeline: string | null;
-  consent: boolean | null;
   created_at: string | null;
 };
 
@@ -191,6 +200,8 @@ export function registrationsExportBuffer(rows: RegistrationExportRow[]) {
       company: row.company ?? "",
       industry: row.industry ?? "",
       breakout_track: row.breakout_track ?? "",
+      challenges: (row.challenges ?? []).join("|"),
+      need_timeline: row.need_timeline ?? "",
       created_at: row.created_at ?? "",
     })),
     "registrations",

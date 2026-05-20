@@ -8,7 +8,8 @@ const exportableStatuses = new Set(["pending", "approved", "rejected"]);
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const statusParam = searchParams.get("approval_status")?.trim().toLowerCase() ?? "";
+    const statusParam =
+      searchParams.get("approval_status")?.trim().toLowerCase() ?? "";
     const filterByStatus = exportableStatuses.has(statusParam)
       ? (statusParam as "pending" | "approved" | "rejected")
       : null;
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
     let query = supabase
       .from("registrations")
       .select(
-        "id, first_name, last_name, email, mobile_number, job_title, company, industry, breakout_track, challenges, need_timeline, consent, created_at",
+        "id, first_name, last_name, email, mobile_number, job_title, company, industry, breakout_track, challenges, need_timeline, created_at",
       )
       .order("created_at", { ascending: false })
       .limit(10000);
@@ -52,6 +53,9 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Admin registrations export error:", error);
-    return NextResponse.json({ error: "Unexpected server error." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Unexpected server error." },
+      { status: 500 },
+    );
   }
 }

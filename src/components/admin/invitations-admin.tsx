@@ -24,6 +24,19 @@ type SortKey =
 
 type SortDirection = "asc" | "desc";
 
+/** Keep in sync with src/lib/invitation-send.ts — 200 is safest on Vercel; 500 only if Pro + long function timeout. */
+const SEND_BATCH_SIZE = 200;
+
+type ImportProgress = {
+  phase: "parsing" | "sending" | "done";
+  totalRows: number;
+  completedRows: number;
+  currentBatch: number;
+  totalBatches: number;
+  emailsSent: number;
+  failed: number;
+};
+
 export function InvitationsAdmin() {
   const [rows, setRows] = useState<InvitationRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +44,8 @@ export function InvitationsAdmin() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [importFile, setImportFile] = useState<File | null>(null);
+  const [importProgress, setImportProgress] = useState<ImportProgress | null>(null);
+  const [importErrors, setImportErrors] = useState<string[]>([]);
   const [sendingIndividual, setSendingIndividual] = useState(false);
   const [individualFirstName, setIndividualFirstName] = useState("");
   const [individualEmail, setIndividualEmail] = useState("");
@@ -89,36 +104,139 @@ export function InvitationsAdmin() {
     setImporting(true);
     setError("");
     setInfo("");
+    setImportErrors([]);
+    setImportProgress({
+      phase: "parsing",
+      totalRows: 0,
+      completedRows: 0,
+      currentBatch: 0,
+      totalBatches: 0,
+      emailsSent: 0,
+      failed: 0,
+    });
 
     try {
-      const formData = new FormData();
-      formData.set("file", importFile);
-      formData.set("invitationType", invitationType);
+      const parseForm = new FormData();
+      parseForm.set("file", importFile);
 
-      const response = await fetch("/api/admin/invitations/import", {
+      const parseResponse = await fetch("/api/admin/invitations/parse", {
         method: "POST",
-        body: formData,
+        body: parseForm,
       });
 
-      const body = (await response.json()) as {
+      const parseBody = (await parseResponse.json()) as {
         error?: string;
-        imported?: number;
-        failed?: number;
-        emailsSent?: number;
+        total?: number;
+        rows?: Array<{
+          firstName: string;
+          email: string;
+          associationName: string;
+        }>;
       };
 
-      if (!response.ok) {
-        setError(body.error ?? "Import failed.");
+      if (!parseResponse.ok) {
+        setError(parseBody.error ?? "Could not read the file.");
+        setImportProgress(null);
         return;
       }
 
+      const allRows = parseBody.rows ?? [];
+      const totalRows = allRows.length;
+      if (totalRows === 0) {
+        setError("The file has no data rows.");
+        setImportProgress(null);
+        return;
+      }
+
+      const totalBatches = Math.ceil(totalRows / SEND_BATCH_SIZE);
+      let emailsSent = 0;
+      let failed = 0;
+      const errors: string[] = [];
+
+      setImportProgress({
+        phase: "sending",
+        totalRows,
+        completedRows: 0,
+        currentBatch: 0,
+        totalBatches,
+        emailsSent: 0,
+        failed: 0,
+      });
+
+      for (let batchIndex = 0; batchIndex < totalBatches; batchIndex += 1) {
+        const chunk = allRows.slice(
+          batchIndex * SEND_BATCH_SIZE,
+          batchIndex * SEND_BATCH_SIZE + SEND_BATCH_SIZE,
+        );
+
+        const batchResponse = await fetch("/api/admin/invitations/send-batch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            invitationType,
+            rows: chunk,
+          }),
+        });
+
+        const batchBody = (await batchResponse.json()) as {
+          error?: string;
+          emailsSent?: number;
+          failed?: number;
+          errors?: string[];
+        };
+
+        if (!batchResponse.ok) {
+          failed += chunk.length;
+          errors.push(
+            batchBody.error ??
+              `Batch ${batchIndex + 1}/${totalBatches} failed entirely.`,
+          );
+          if (batchBody.errors?.length) {
+            errors.push(...batchBody.errors);
+          }
+        } else {
+          emailsSent += batchBody.emailsSent ?? 0;
+          failed += batchBody.failed ?? 0;
+          if (batchBody.errors?.length) {
+            errors.push(...batchBody.errors);
+          }
+        }
+
+        const completedRows = Math.min(
+          (batchIndex + 1) * SEND_BATCH_SIZE,
+          totalRows,
+        );
+
+        setImportProgress({
+          phase: "sending",
+          totalRows,
+          completedRows,
+          currentBatch: batchIndex + 1,
+          totalBatches,
+          emailsSent,
+          failed,
+        });
+      }
+
+      setImportProgress({
+        phase: "done",
+        totalRows,
+        completedRows: totalRows,
+        currentBatch: totalBatches,
+        totalBatches,
+        emailsSent,
+        failed,
+      });
+
+      setImportErrors(errors.slice(0, 30));
       setInfo(
-        `Import done: ${body.imported ?? 0} imported, ${body.emailsSent ?? 0} invitations sent, ${body.failed ?? 0} failed.`,
+        `Finished ${totalRows} row(s) in ${totalBatches} batch(es): ${emailsSent} sent, ${failed} failed.`,
       );
       setImportFile(null);
       await loadInvitations();
     } catch {
       setError("Network error while importing invitations.");
+      setImportProgress(null);
     } finally {
       setImporting(false);
     }
@@ -261,6 +379,13 @@ export function InvitationsAdmin() {
           </label>
         </div>
 
+        <p className="mt-3 text-xs text-slate-600">
+          Use Excel files with up to about <strong>{SEND_BATCH_SIZE} rows</strong> each, or
+          upload a larger file — we send in batches of {SEND_BATCH_SIZE} with progress below.
+          For ~4,000 recipients, split into about 20 files or upload one list and let the
+          progress bar run.
+        </p>
+
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <input
             type="file"
@@ -273,9 +398,54 @@ export function InvitationsAdmin() {
             disabled={importing}
             className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
           >
-            {importing ? "Sending..." : "Import + send invitations"}
+            {importing ? "Sending…" : "Import + send invitations"}
           </button>
         </div>
+
+        {importProgress ? (
+          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
+              <span className="font-semibold">
+                {importProgress.phase === "parsing"
+                  ? "Reading file…"
+                  : importProgress.phase === "done"
+                    ? "Complete"
+                    : `Sending batch ${importProgress.currentBatch} of ${importProgress.totalBatches}`}
+              </span>
+              <span>
+                {importProgress.completedRows} / {importProgress.totalRows} rows ·{" "}
+                {importProgress.emailsSent} sent · {importProgress.failed} failed
+              </span>
+            </div>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+              <div
+                className="h-full rounded-full bg-[#007f77] transition-all duration-300"
+                style={{
+                  width:
+                    importProgress.totalRows > 0
+                      ? `${Math.round(
+                          (importProgress.completedRows / importProgress.totalRows) *
+                            100,
+                        )}%`
+                      : importProgress.phase === "parsing"
+                        ? "8%"
+                        : "0%",
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
+
+        {importErrors.length > 0 ? (
+          <div className="mt-3 max-h-40 overflow-auto rounded border border-amber-200 bg-amber-50 p-2 text-xs text-amber-950">
+            <p className="font-semibold">Errors (showing up to 30)</p>
+            {importErrors.map((item) => (
+              <p key={item} className="mt-1">
+                - {item}
+              </p>
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">

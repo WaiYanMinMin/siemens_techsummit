@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { parseInvitationRows, parseWorkbookRows } from "@/lib/admin-excel";
-import { sendInvitationEmail } from "@/lib/email";
-import { getSupabaseAdminClient } from "@/lib/supabase-admin";
+import {
+  type InvitationType,
+  INVITATION_SEND_BATCH_SIZE,
+  processInvitationBatch,
+} from "@/lib/invitation-send";
 
-type InvitationType = "default" | "csuites" | "associates";
-const FIXED_CTA_URL = "https://www.siemenstechsummitsg2026.com/#register";
+export const maxDuration = 300;
 
 export async function POST(request: Request) {
   try {
@@ -30,82 +32,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = getSupabaseAdminClient();
     const workbookRows = parseWorkbookRows(await file.arrayBuffer());
-    const rows = parseInvitationRows(workbookRows);
+    const parsed = parseInvitationRows(workbookRows);
 
-    let imported = 0;
-    let emailsSent = 0;
-    let failed = 0;
-    const errors: string[] = [];
-
-    for (const row of rows) {
-      const { data: invitationRecord, error: insertError } = await supabase
-        .from("invitation_recipients")
-        .insert(
-          {
-            first_name: row.firstName,
-            email: row.email,
-            association_name: row.associationName || null,
-            invitation_type: invitationType,
-            last_error: null,
-          },
-        )
-        .select("id")
-        .single();
-
-      if (insertError || !invitationRecord?.id) {
-        failed += 1;
-        errors.push(
-          `${row.email}: ${insertError?.message ?? "Could not insert invitation."}`,
-        );
-        continue;
-      }
-
-      const invitationId = invitationRecord.id;
-
-      imported += 1;
-
-      const sendResult = await sendInvitationEmail({
-        firstName: row.firstName,
-        email: row.email,
-        associationName: row.associationName,
-        invitationType,
-        ctaUrl: FIXED_CTA_URL,
-        invitationId: String(invitationId),
-      });
-
-      if (!sendResult.ok) {
-        failed += 1;
-        errors.push(
-          `${row.email}: invitation email failed (${sendResult.error})`,
-        );
-        await supabase
-          .from("invitation_recipients")
-          .update({ last_error: sendResult.error, sent_at: null })
-          .eq("id", invitationId);
-        continue;
-      }
-
-      emailsSent += 1;
-      await supabase
-        .from("invitation_recipients")
-        .update({ sent_at: new Date().toISOString(), last_error: null })
-        .eq("id", invitationId);
+    if (parsed.length > INVITATION_SEND_BATCH_SIZE) {
+      return NextResponse.json(
+        {
+          error: `This file has ${parsed.length} rows. Use files with at most ${INVITATION_SEND_BATCH_SIZE} rows, or use Import + send (with progress) which splits automatically.`,
+        },
+        { status: 400 },
+      );
     }
+
+    const rows = parsed.map((row) => ({
+      firstName: row.firstName,
+      email: row.email,
+      associationName: row.associationName,
+    }));
+
+    const result = await processInvitationBatch(rows, invitationType);
 
     return NextResponse.json({
       message: "Invitation import completed.",
-      totalRows: rows.length,
-      imported,
-      emailsSent,
-      failed,
-      errors,
+      totalRows: parsed.length,
+      ...result,
     });
   } catch (error) {
     console.error("Admin invitation import error:", error);
     const message =
       error instanceof Error ? error.message : "Unexpected server error.";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

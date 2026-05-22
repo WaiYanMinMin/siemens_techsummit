@@ -471,7 +471,7 @@ export function RegistrationsAdmin() {
           {activeTab === "registrants"
             ? "Pending applications. Select rows and approve or reject. Rejecting sends a rejection email automatically."
             : activeTab === "approved"
-              ? "Approved registrants."
+              ? "Approved registrants. Export includes only rows with confirmation email status Not sent."
               : "Rejected registrants. Rejection emails were sent when they were rejected."}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -489,7 +489,7 @@ export function RegistrationsAdmin() {
               className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
             >
               {activeTab === "approved"
-                ? "Export approved"
+                ? "Export not sent"
                 : "Export registrations"}
             </button>
             <button

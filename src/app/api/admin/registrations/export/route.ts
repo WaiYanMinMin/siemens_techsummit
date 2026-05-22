@@ -27,6 +27,13 @@ export async function GET(request: Request) {
       query = query.eq("approval_status", filterByStatus);
     }
 
+    // Approved export: only rows still awaiting confirmation email (confirmations workflow).
+    if (filterByStatus === "approved") {
+      query = query.or(
+        "confirmation_email_sent.is.null,confirmation_email_sent.eq.false",
+      );
+    }
+
     const { data, error } = await query;
 
     if (error) {
@@ -36,7 +43,7 @@ export async function GET(request: Request) {
     const file = registrationsExportBuffer(data ?? []);
     const filename =
       filterByStatus === "approved"
-        ? "registrations-approved-export.xlsx"
+        ? "registrations-approved-not-sent-export.xlsx"
         : filterByStatus === "rejected"
           ? "registrations-rejected-export.xlsx"
           : filterByStatus === "pending"

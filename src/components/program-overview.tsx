@@ -9,6 +9,7 @@ type Speaker = {
   title?: string;
   company?: string;
   image?: string;
+  imageClassName?: string;
 };
 
 type AgendaItem = {
@@ -70,6 +71,7 @@ const morningAgenda: AgendaItem[] = [
         title: "Executive Vice President & Member of the Executive Committee",
         company: "Singapore Economic Development Board",
         image: "/speaker-cindy.png",
+        imageClassName: "scale-[1.35]",
       },
     ],
   },
@@ -689,13 +691,15 @@ export function ProgramOverview() {
                           className="flex items-center gap-3"
                         >
                           {speaker.image ? (
-                            <Image
-                              src={speaker.image}
-                              alt={speaker.name}
-                              width={64}
-                              height={64}
-                              className="h-16 w-16 rounded-full object-cover"
-                            />
+                            <span className="inline-block h-16 w-16 shrink-0 overflow-hidden rounded-full bg-white/12">
+                              <Image
+                                src={speaker.image}
+                                alt={speaker.name}
+                                width={64}
+                                height={64}
+                                className={`h-16 w-16 object-cover ${speaker.imageClassName ?? ""}`}
+                              />
+                            </span>
                           ) : (
                             <span className="inline-block h-16 w-16 shrink-0 rounded-full bg-white/12" />
                           )}
@@ -884,13 +888,15 @@ export function ProgramOverview() {
                           className="flex items-center gap-3"
                         >
                           {speaker.image ? (
-                            <Image
-                              src={speaker.image}
-                              alt={speaker.name}
-                              width={72}
-                              height={72}
-                              className="h-[72px] w-[72px] rounded-full object-cover"
-                            />
+                            <span className="inline-block h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full bg-white/15">
+                              <Image
+                                src={speaker.image}
+                                alt={speaker.name}
+                                width={72}
+                                height={72}
+                                className={`h-[72px] w-[72px] object-cover ${speaker.imageClassName ?? ""}`}
+                              />
+                            </span>
                           ) : (
                             <span className="inline-block h-[72px] w-[72px] rounded-full bg-white/15" />
                           )}

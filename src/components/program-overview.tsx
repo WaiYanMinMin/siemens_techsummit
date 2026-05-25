@@ -58,12 +58,20 @@ const morningAgenda: AgendaItem[] = [
     ],
   },
   {
-    title: "Keynote: Singapore's AI Mission",
+    title: "Keynote: Singapore’s Strategy for AI and Advanced Manufacturing",
     description:
       "Singapore’s national AI strategy, advanced manufacturing, and how organizations can align for long-term competitiveness.",
     detailSynopsis:
-      "Learn more about Singapore’s strategy in spearheading AI development and advanced manufacturing, and how organizations can align with the national AI strategy to accelerate transformation and long-term competitiveness.",
+      "Learn more about Singapore’s strategy in spearheading AI development and advanced manufacturing, and how organizations can align with these strategies in AI and advanced manufacturing to accelerate transformation and long-term competitiveness.",
     time: "10.45 – 11.05am",
+    speakers: [
+      {
+        name: "Cindy Koh",
+        title: "Executive Vice President & Member of the Executive Committee",
+        company: "Singapore Economic Development Board",
+        image: "/speaker-cindy.png",
+      },
+    ],
   },
   {
     title: "The launch of Eigen Engineering Agent",
@@ -149,7 +157,8 @@ In this session, we show you how Siemens moves beyond traditional building manag
     speakers: [
       {
         name: "Damien Nirousset",
-        title: "Head of Smart Infrastructure Buildings, ASEAN & Japan",
+        title: "Head of Buildings, ASEAN & Japan",
+        company: "Siemens Smart Infrastructure",
         image: "/speaker-damien-nirousset.jpg",
       },
     ],
@@ -164,7 +173,7 @@ In this session, we show you how Siemens moves beyond traditional building manag
       {
         name: "Derek Del Nevo",
         title: "Head of Digital and Software - Southeast Asia",
-        company: "Siemens Smart Infrastructure - Buildings",
+        company: "Siemens Smart Infrastructure Buildings",
         image: "/speaker-derek-del-nevo.png",
       },
     ],
@@ -251,7 +260,7 @@ The session will highlight common gaps and considerations, prompting organisatio
       {
         name: "Michael Tiew",
         title: "Head of Portfolio and Sales Enablement",
-        company: "Siemens Smart Infrastructure",
+        company: "Siemens Smart Infrastructure Buildings",
         image: "/speaker-michael-tiew.png",
       },
     ],
@@ -516,7 +525,7 @@ export function ProgramOverview() {
   const items =
     activeTab === "morning" ? morningAgenda : afternoonTrackItems[activeTrack];
   const trackLabels: Record<TrackId, string> = {
-    track1: "Powering the Future of Autonomous Buildings",
+    track1: "Powering the Future of Electrification and Autonomous Buildings",
     track2: "Smart Manufacturing with Industrial AI",
     track3: "Engineering the Industrial Metaverse",
   };
@@ -774,7 +783,8 @@ export function ProgramOverview() {
                       activeTrack === "track1" ? "bg-[#11d3b7]" : "bg-white"
                     }`}
                   >
-                    Powering the Future of Autonomous Buildings
+                    Powering the Future of Electrification and Autonomous
+                    Buildings
                   </button>
                   <button
                     type="button"

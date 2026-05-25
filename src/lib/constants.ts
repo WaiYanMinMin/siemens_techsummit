@@ -35,7 +35,7 @@ export const industries = [
 ] as const;
 
 export const breakoutTracks = [
-  "Track 1: Powering the Future of Autonomous Buildings",
+  "Track 1: Powering the Future of Electrification and Autonomous Buildings",
   "Track 2: Smart Manufacturing with Industrial AI",
   "Track 3: Engineering the Industrial Metaverse",
 ] as const;

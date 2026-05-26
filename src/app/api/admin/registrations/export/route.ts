@@ -10,6 +10,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const statusParam =
       searchParams.get("approval_status")?.trim().toLowerCase() ?? "";
+    const confirmationEmailParam =
+      searchParams.get("confirmation_email_sent")?.trim().toLowerCase() ?? "";
     const filterByStatus = exportableStatuses.has(statusParam)
       ? (statusParam as "pending" | "approved" | "rejected")
       : null;
@@ -27,11 +29,15 @@ export async function GET(request: Request) {
       query = query.eq("approval_status", filterByStatus);
     }
 
-    // Approved export: only rows still awaiting confirmation email (confirmations workflow).
+    // Approved exports can target the selected confirmation email status tab.
     if (filterByStatus === "approved") {
-      query = query.or(
-        "confirmation_email_sent.is.null,confirmation_email_sent.eq.false",
-      );
+      if (confirmationEmailParam === "sent") {
+        query = query.eq("confirmation_email_sent", true);
+      } else if (confirmationEmailParam !== "all") {
+        query = query.or(
+          "confirmation_email_sent.is.null,confirmation_email_sent.eq.false",
+        );
+      }
     }
 
     const { data, error } = await query;
@@ -43,7 +49,11 @@ export async function GET(request: Request) {
     const file = registrationsExportBuffer(data ?? []);
     const filename =
       filterByStatus === "approved"
-        ? "registrations-approved-not-sent-export.xlsx"
+        ? confirmationEmailParam === "sent"
+          ? "registrations-approved-sent-export.xlsx"
+          : confirmationEmailParam === "all"
+            ? "registrations-approved-all-export.xlsx"
+            : "registrations-approved-not-sent-export.xlsx"
         : filterByStatus === "rejected"
           ? "registrations-rejected-export.xlsx"
           : filterByStatus === "pending"

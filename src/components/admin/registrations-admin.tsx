@@ -5,6 +5,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 type ApprovalStatus = "pending" | "approved" | "rejected";
 
 type AdminTab = "registrants" | "approved" | "rejected";
+type ApprovedEmailTab = "not_sent" | "sent";
 
 type Registration = {
   id: string | number;
@@ -81,6 +82,8 @@ export function RegistrationsAdmin() {
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<AdminTab>("registrants");
+  const [approvedEmailTab, setApprovedEmailTab] =
+    useState<ApprovedEmailTab>("not_sent");
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
@@ -107,6 +110,24 @@ export function RegistrationsAdmin() {
 
     return { registrants, approved, rejected };
   }, [rows]);
+  const approvedEmailCounts = useMemo(() => {
+    let sent = 0;
+    let notSent = 0;
+
+    for (const row of rows) {
+      if (normalizeApprovalStatus(row) !== "approved") {
+        continue;
+      }
+
+      if (row.confirmation_email_sent) {
+        sent += 1;
+      } else {
+        notSent += 1;
+      }
+    }
+
+    return { sent, notSent };
+  }, [rows]);
   const tabRows = useMemo(() => {
     return rows.filter((row) => {
       const status = normalizeApprovalStatus(row);
@@ -114,11 +135,16 @@ export function RegistrationsAdmin() {
         return status === "pending";
       }
       if (activeTab === "approved") {
-        return status === "approved";
+        return (
+          status === "approved" &&
+          (approvedEmailTab === "sent"
+            ? row.confirmation_email_sent === true
+            : row.confirmation_email_sent !== true)
+        );
       }
       return status === "rejected";
     });
-  }, [rows, activeTab]);
+  }, [rows, activeTab, approvedEmailTab]);
   const filteredRows = useMemo(() => {
     const nameFilter = filterName.trim().toLowerCase();
     const emailFilter = filterEmail.trim().toLowerCase();
@@ -388,6 +414,13 @@ export function RegistrationsAdmin() {
     setInfo("");
   }
 
+  function onChangeApprovedEmailTab(tab: ApprovedEmailTab) {
+    setApprovedEmailTab(tab);
+    setSelectedIds([]);
+    setError("");
+    setInfo("");
+  }
+
   async function onReview(action: "approve" | "reject") {
     if (selectedIds.length === 0) {
       setError("Please select at least one registrant.");
@@ -513,6 +546,7 @@ export function RegistrationsAdmin() {
       setRows((prev) =>
         prev.map((row) => (String(row.id) === String(id) ? body.registration! : row)),
       );
+      setSelectedIds((prev) => prev.filter((value) => value !== String(id)));
       setDetailRow((prev) =>
         prev && String(prev.id) === String(id) ? body.registration! : prev,
       );
@@ -556,6 +590,7 @@ export function RegistrationsAdmin() {
       setRows((prev) =>
         prev.map((row) => (String(row.id) === String(id) ? body.registration! : row)),
       );
+      setSelectedIds((prev) => prev.filter((value) => value !== String(id)));
       setDetailRow((prev) =>
         prev && String(prev.id) === String(id) ? body.registration! : prev,
       );
@@ -679,24 +714,73 @@ export function RegistrationsAdmin() {
               ? "Approved registrants. Track confirmation email status and mark each row as Sent or Not sent."
               : "Rejected registrants. Send rejection emails manually, or mark each row as Sent or Not sent."}
         </p>
+        {activeTab === "approved" ? (
+          <div
+            role="tablist"
+            aria-label="Confirmation email status"
+            className="mb-3 flex flex-wrap gap-2"
+          >
+            {(
+              [
+                ["not_sent", "Not sent", approvedEmailCounts.notSent],
+                ["sent", "Sent", approvedEmailCounts.sent],
+              ] as const
+            ).map(([tab, label, count]) => (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={approvedEmailTab === tab}
+                onClick={() => onChangeApprovedEmailTab(tab)}
+                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                  approvedEmailTab === tab
+                    ? "bg-[#007f77] text-white"
+                    : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                }`}
+              >
+                {label} ({count})
+              </button>
+            ))}
+          </div>
+        ) : null}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">{tabTitle}</h2>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                const href =
-                  activeTab === "approved"
-                    ? "/api/admin/registrations/export?approval_status=approved"
-                    : "/api/admin/registrations/export";
-                window.location.href = href;
-              }}
-              className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-            >
-              {activeTab === "approved"
-                ? "Export not sent"
-                : "Export registrations"}
-            </button>
+            {activeTab === "approved" ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const statusParam =
+                      approvedEmailTab === "sent" ? "sent" : "not_sent";
+                    window.location.href = `/api/admin/registrations/export?approval_status=approved&confirmation_email_sent=${statusParam}`;
+                  }}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                >
+                  Export {approvedEmailTab === "sent" ? "sent" : "not sent"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href =
+                      "/api/admin/registrations/export?approval_status=approved&confirmation_email_sent=all";
+                  }}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                >
+                  Export all approved
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "/api/admin/registrations/export";
+                }}
+                className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+              >
+                Export registrations
+              </button>
+            )}
             <button
               type="button"
               onClick={onToggleSelectAllFiltered}

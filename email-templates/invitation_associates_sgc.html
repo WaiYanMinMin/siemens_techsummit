@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        supported-color-schemes: light dark;
+      }
+      @media only screen and (max-width: 620px) {
+        /* Logistics / CTA tiles: keep side-by-side on mobile */
+        .two-col-row {
+          table-layout: fixed !important;
+        }
+        .two-col-row .col-left,
+        .two-col-row .col-right {
+          display: table-cell !important;
+          box-sizing: border-box !important;
+        }
+        .two-col-row .col-left {
+          width: 56% !important;
+          max-width: 56% !important;
+          padding-right: 0 !important;
+        }
+        .two-col-row .col-right {
+          width: 44% !important;
+          max-width: 44% !important;
+          padding-left: 0 !important;
+        }
+        .two-col-row .box-left-copy {
+          padding: 10px 10px !important;
+          font-size: 11px !important;
+          line-height: 1.4 !important;
+        }
+        .two-col-row .box-left-copy strong {
+          min-width: 42px !important;
+          font-size: 11px !important;
+          margin-top: 4px !important;
+        }
+        .two-col-row .box-right-copy {
+          padding: 10px 8px !important;
+          height: 132px !important;
+          font-size: 11px !important;
+          line-height: 1.3 !important;
+        }
+        .two-col-row .box-right-shell {
+          width: 100% !important;
+        }
+        .two-col-row .box-right-copy .box-right-cta-wrap {
+          padding-top: 6px !important;
+        }
+        .two-col-row .box-right-copy .box-right-cta {
+          font-size: 10px !important;
+          padding: 7px 9px !important;
+          letter-spacing: 0.01em !important;
+          white-space: nowrap !important;
+        }
+        .footer-lower-box {
+          width: 100% !important;
+        }
+        /* Hero: keep imagery on the RIGHT (do not stack below copy) */
+        .invite-shell {
+          table-layout: fixed !important;
+          width: 100% !important;
+        }
+        .hero-col-text.hero-col-text {
+          display: table-cell !important;
+          width: 44% !important;
+          max-width: 44% !important;
+          padding: 22px 10px 22px 12px !important;
+          vertical-align: middle !important;
+        }
+        .hero-col-visual.hero-col-visual {
+          display: table-cell !important;
+          width: 56% !important;
+          max-width: 56% !important;
+          vertical-align: middle !important;
+        }
+        .hero-col-visual-inner {
+          height: 280px !important;
+          background-position: center center !important;
+          background-size: cover !important;
+        }
+        .hero-col-visual-inner div {
+          line-height: 280px !important;
+        }
+        .hero-headline {
+          font-size: 26px !important;
+        }
+        .hero-sub {
+          font-size: 17px !important;
+        }
+        .hero-meta {
+          font-size: 12px !important;
+        }
+        .hero-cta {
+          font-size: 11px !important;
+          padding: 10px 14px !important;
+          white-space: nowrap !important;
+        }
+      }
+    </style>
+    <title>Siemens Tech Summit Invitation</title>
+  </head>
+  <body
+    bgcolor="#f3f6fb"
+    style="
+      margin: 0;
+      padding: 0;
+      background: #f3f6fb !important;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #2c3b57 !important;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f3f6fb"
+      style="padding: 20px 8px; background: #f3f6fb !important"
+    >
+      <tr>
+        <td
+          align="center"
+          bgcolor="#f3f6fb"
+          style="background: #f3f6fb !important"
+        >
+          <table
+            role="presentation"
+            width="100%"
+            cellpadding="0"
+            cellspacing="0"
+            bgcolor="#ffffff"
+            class="invite-shell"
+            style="
+              max-width: 620px;
+              background: #ffffff !important;
+              border: 1px solid #dbe2ec;
+              table-layout: fixed;
+              width: 100%;
+            "
+          >
+            <!-- Hero: copy left-only; visual right-only (crop left/building via bg position) -->
+            <tr>
+              <td
+                class="hero-col-text"
+                bgcolor="#000029"
+                valign="middle"
+                width="284"
+                style="
+                  background-color: #000029 !important;
+                  padding: 32px 18px 32px 22px;
+                  vertical-align: middle;
+                  width: 46%;
+                "
+              >
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tr>
+                    <td style="padding: 0 0 18px; line-height: 0">
+                      <img
+                        src="https://siemenstechsummitsg2026.com/siemens-3-logo-png-transparent2.png"
+                        width="140"
+                        alt="Siemens"
+                        border="0"
+                        style="
+                          display: block;
+                          width: 140px;
+                          max-width: 100%;
+                          height: auto;
+                          border: 0;
+                          outline: none;
+                          text-decoration: none;
+                        "
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 0">
+                      <p
+                        class="hero-headline"
+                        style="
+                          margin: 0;
+                          color: #ffffff !important;
+                          font-weight: 700;
+                          font-size: 32px;
+                          line-height: 1.1;
+                          letter-spacing: -0.02em;
+                        "
+                      >
+                        Make
+                        <span style="color: #00d7c7 !important">AI</span> Real
+                      </p>
+                      <p
+                        class="hero-sub"
+                        style="
+                          margin: 14px 0 0;
+                          color: #ffffff !important;
+                          font-weight: 600;
+                          font-size: 19px;
+                          line-height: 1.25;
+                        "
+                      >
+                        Siemens Tech Summit 2026
+                      </p>
+                      <p
+                        class="hero-meta"
+                        style="
+                          margin: 18px 0 0;
+                          color: #e7edf7 !important;
+                          font-size: 14px;
+                          line-height: 1.45;
+                          font-weight: 400;
+                        "
+                      >
+                        Singapore, 1 July 2026<br />
+                        Raffles City Convention Centre
+                      </p>
+                      <div style="padding-top: 20px">
+                        <a
+                          class="hero-cta"
+                          href="https://forms.office.com/pages/responsepage.aspx?id=zTuuOHmV1E-t2rQuFJXVWlbxwm-RdqFNiXPTLUiI0-ZUNExJVlZXWlZZWTg4Mjk0MDBXVERYOEEwSy4u&amp;route=shorturl"
+                          style="
+                            display: inline-block;
+                            background: #00d7c7 !important;
+                            color: #000029 !important;
+                            text-decoration: none;
+                            padding: 12px 24px;
+                            border-radius: 999px;
+                            font-weight: 800;
+                            font-size: 12px;
+                            letter-spacing: 0.06em;
+                            text-transform: uppercase;
+                            white-space: nowrap;
+                          "
+                        >
+                          REGISTER today
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td
+                class="hero-col-visual"
+                valign="middle"
+                width="336"
+                bgcolor="#000029"
+                style="
+                  padding: 0;
+                  vertical-align: middle;
+                  width: 54%;
+                  background-color: #000029 !important;
+                "
+              >
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td
+                      bgcolor="#000029"
+                      background="https://siemenstechsummit.vercel.app/key_visual_mobile.png"
+                      valign="middle"
+                      height="360"
+                      class="hero-col-visual-inner"
+                      style="
+                        height: 360px;
+                        padding: 0;
+                        vertical-align: middle;
+                        background-color: #000029 !important;
+                        background-image: url(https://siemenstechsummit.vercel.app/key_visual_mobile.png);
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        background-size: cover;
+                      "
+                    >
+                      <div style="line-height: 360px">&nbsp;</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" bgcolor="#ffffff" style="padding: 18px 20px 12px">
+                <p
+                  style="
+                    margin: 0;
+                    color: #007f77 !important;
+                    font-size: 24px;
+                    font-weight: 800;
+                    line-height: 1.18;
+                  "
+                >
+                  You Are Invited to Siemens Tech Summit 2026
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" bgcolor="#ffffff" style="padding: 0 20px 16px">
+                <p
+                  style="
+                    margin: 0 0 12px;
+                    font-size: 14px;
+                    line-height: 1.65;
+                    color: #2c3b57 !important;
+                  "
+                >
+                  As a valued member of
+                  <span style="color: #9a5d23">SGC</span>, you
+                  are invited to <strong>Siemens Tech Summit 2026</strong> — an
+                  exclusive platform bringing together industry leaders,
+                  innovators, and technology experts to explore the future of
+                  industry and infrastructure. Step into the future and discover
+                  how to <strong>Make AI Real</strong> for industry and
+                  infrastructure. Learn how organizations can accelerate
+                  innovation, boost productivity and resource efficiency, scale
+                  faster, and enable autonomous operations by becoming a Digital
+                  Enterprise.
+                </p>
+                <p
+                  style="
+                    margin: 0 0 12px;
+                    font-size: 14px;
+                    line-height: 1.65;
+                    color: #2c3b57 !important;
+                  "
+                >
+                  <strong>Gain valuable insights:</strong> Hear from industry
+                  leaders and technology experts as they share emerging
+                  industrial AI trends, real-world applications, and
+                  breakthrough innovations shaping the future of industry.
+                </p>
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 14px;
+                    line-height: 1.65;
+                    color: #2c3b57 !important;
+                  "
+                >
+                  <strong>Experience innovation:</strong> Take part in hands-on
+                  zones, deep dives, and customer stories that translate
+                  strategy into action — from digital twins and connected
+                  operations to autonomous systems.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" bgcolor="#ffffff" style="padding: 8px 14px 0">
+                <table
+                  role="presentation"
+                  class="two-col-row"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="table-layout: fixed"
+                >
+                  <tr>
+                    <td
+                      class="col-left"
+                      valign="middle"
+                      style="width: 60%; padding-right: 0"
+                    >
+                      <table
+                        role="presentation"
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        bgcolor="#0ea7ab"
+                        style="
+                          background: #0ea7ab
+                            url(&quot;https://siemenstechsummit.vercel.app/0ea6ab.png&quot;)
+                            repeat !important;
+                          border-radius: 16px 0 0 16px;
+                        "
+                      >
+                        <tr>
+                          <td
+                            class="box-left-copy"
+                            style="
+                              padding: 14px 16px;
+                              vertical-align: middle;
+                              color: #ffffff !important;
+                              font-size: 15px;
+                              line-height: 1.6;
+                            "
+                          >
+                            <strong
+                              style="
+                                display: inline-block;
+                                min-width: 56px;
+                                font-size: 14px;
+                                color: #ffffff !important;
+                              "
+                              >Date:</strong
+                            >
+                            <span style="color: #ffffff !important"
+                              >Wednesday, 1 July 2026</span
+                            ><br />
+                            <strong
+                              style="
+                                display: inline-block;
+                                min-width: 56px;
+                                font-size: 14px;
+                                margin-top: 6px;
+                                color: #ffffff !important;
+                              "
+                              >Time:</strong
+                            >
+                            <span style="color: #ffffff !important"
+                              >9.00am to 6.00pm</span
+                            ><br />
+                            <strong
+                              style="
+                                display: inline-block;
+                                min-width: 56px;
+                                font-size: 14px;
+                                margin-top: 6px;
+                                color: #ffffff !important;
+                              "
+                              >Venue:</strong
+                            >
+                            <span style="color: #ffffff !important"
+                              >Raffles City Convention Centre, Level 4, Stamford
+                              Ballroom</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td
+                      class="col-right"
+                      valign="middle"
+                      style="width: 40%; padding-left: 0"
+                    >
+                      <table
+                        class="box-right-shell"
+                        role="presentation"
+                        width="100%"
+                        align="center"
+                        cellpadding="0"
+                        cellspacing="0"
+                        bgcolor="#5ae6c5"
+                        style="
+                          background: #5ae6c5
+                            url(&quot;https://siemenstechsummit.vercel.app/1df5cd.png&quot;)
+                            repeat !important;
+                          border-radius: 16px;
+                          box-shadow: 0 12px 28px rgba(0, 0, 41, 0.22);
+                        "
+                      >
+                        <tr>
+                          <td
+                            class="box-right-copy"
+                            style="
+                              padding: 16px 14px;
+                              height: 154px;
+                              text-align: center;
+                              vertical-align: middle;
+                              color: #03263b !important;
+                              font-size: 15px;
+                              line-height: 1.45;
+                              font-weight: 600;
+                            "
+                          >
+                            By-registration-only Siemens Tech Summit
+                            Singapore<br />
+                            <span style="font-weight: 800"
+                              >Secure your place today!</span
+                            >
+                            <div
+                              class="box-right-cta-wrap"
+                              style="padding-top: 12px"
+                            >
+                              <a
+                                class="box-right-cta"
+                                href="https://forms.office.com/pages/responsepage.aspx?id=zTuuOHmV1E-t2rQuFJXVWlbxwm-RdqFNiXPTLUiI0-ZUNExJVlZXWlZZWTg4Mjk0MDBXVERYOEEwSy4u&amp;route=shorturl"
+                                style="
+                                  display: inline-block;
+                                  background: #00153b
+                                    url(&quot;https://siemenstechsummit.vercel.app/02023d.png&quot;)
+                                    repeat !important;
+                                  color: #ffffff !important;
+                                  text-decoration: none;
+                                  padding: 10px 18px;
+                                  border-radius: 999px;
+                                  box-shadow: 0 6px 14px rgba(0, 0, 41, 0.28);
+                                  font-size: 13px;
+                                  font-weight: 800;
+                                  letter-spacing: 0.04em;
+                                  text-transform: uppercase;
+                                "
+                              >
+                                Register to Attend
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" bgcolor="#eef1f5" style="padding: 12px 20px 8px">
+                <p
+                  style="
+                    margin: 0 0 10px;
+                    color: #007f77 !important;
+                    font-size: 17px;
+                    font-weight: 800;
+                    line-height: 1.35;
+                  "
+                >
+                  3 exclusive deep-dive breakout sessions:
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" bgcolor="#eef1f5" style="padding: 0 20px 10px">
+                <p
+                  style="
+                    margin: 0 0 10px;
+                    color: #2c3b57 !important;
+                    font-size: 13px;
+                    line-height: 1.6;
+                  "
+                >
+                  <span style="color: #008d84 !important; font-weight: 800"
+                    >&#9670;</span
+                  >
+                  <strong style="color: #007f77 !important"
+                    >Track 1: Powering the Future of Electrification and Autonomous
+                    Buildings</strong
+                  ><br />
+                  Discover how smart infrastructure, intelligent energy
+                  management, and connected building technologies are redefining
+                  sustainability and occupant experience.
+                </p>
+                <p
+                  style="
+                    margin: 0 0 10px;
+                    color: #2c3b57 !important;
+                    font-size: 13px;
+                    line-height: 1.6;
+                  "
+                >
+                  <span style="color: #008d84 !important; font-weight: 800"
+                    >&#9670;</span
+                  >
+                  <strong style="color: #007f77 !important"
+                    >Track 2: Smart Manufacturing with Industrial AI</strong
+                  ><br />
+                  See how industrial AI, connected operations, and sustainable
+                  practices are redefining the future of autonomous
+                  manufacturing.
+                </p>
+                <p
+                  style="
+                    margin: 0 0 14px;
+                    color: #2c3b57 !important;
+                    font-size: 13px;
+                    line-height: 1.6;
+                  "
+                >
+                  <span style="color: #008d84 !important; font-weight: 800"
+                    >&#9670;</span
+                  >
+                  <strong style="color: #007f77 !important"
+                    >Track 3: Engineering the Industrial Metaverse</strong
+                  ><br />
+                  Explore the convergence of digital twins, simulation,
+                  immersive engineering, and industrial metaverse technologies
+                  shaping the future of engineering and operations.
+                </p>
+                <p
+                  style="
+                    margin: 12px 0 0;
+                    font-size: 13px;
+                    line-height: 1.55;
+                    color: #2c3b57 !important;
+                  "
+                >
+                  Reach out to us at
+                  <a
+                    href="mailto:info.sg@siemens.com"
+                    style="
+                      color: #00153b !important;
+                      text-decoration: underline;
+                    "
+                    >info.sg@siemens.com</a
+                  >
+                  should you have any questions regarding the
+                  <strong>Siemens Tech Summit 2026</strong>.
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2" bgcolor="#000029" style="padding: 0">
+                <table
+                  class="footer-lower-box"
+                  role="presentation"
+                  width="100%"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                  bgcolor="#000029"
+                  style="
+                    background: #000029
+                      url(&quot;https://siemenstechsummit.vercel.app/000029.png&quot;)
+                      repeat !important;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 18px 18px 16px; vertical-align: middle">
+                      <p
+                        style="
+                          margin: 0 0 6px;
+                          color: #7de6d5 !important;
+                          font-size: 16px;
+                          font-weight: 800;
+                          line-height: 1.3;
+                        "
+                      >
+                        Join us at Siemens Tech Summit 2026
+                      </p>
+                      <p
+                        style="
+                          margin: 0;
+                          color: #ffffff !important;
+                          font-size: 14px;
+                          line-height: 1.5;
+                          font-weight: 600;
+                        "
+                      >
+                        Connect with industry leaders at Happy Hour Networking
+                        Session
+                      </p>
+                    </td>
+                    <td
+                      align="right"
+                      valign="middle"
+                      style="padding: 12px 16px 12px 8px; white-space: nowrap"
+                    >
+                      <img
+                        src="https://siemenstechsummit.vercel.app/beer.png"
+                        width="80"
+                        height="80"
+                        alt=""
+                        border="0"
+                        style="
+                          display: inline-block;
+                          width: 80px;
+                          height: auto;
+                          vertical-align: middle;
+                          margin-left: 6px;
+                        "
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

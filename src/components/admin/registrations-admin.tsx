@@ -931,6 +931,24 @@ export function RegistrationsAdmin() {
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
+                  {activeTab === "approved" ? (
+                    <SortableHeader
+                      label="Confirmation email"
+                      columnKey="confirmation_email_sent"
+                      sortKey={sortKey}
+                      sortDirection={sortDirection}
+                      onToggleSort={onToggleSort}
+                    />
+                  ) : null}
+                  {activeTab === "rejected" ? (
+                    <SortableHeader
+                      label="Rejection email"
+                      columnKey="rejection_email_sent"
+                      sortKey={sortKey}
+                      sortDirection={sortDirection}
+                      onToggleSort={onToggleSort}
+                    />
+                  ) : null}
                   <SortableHeader
                     label="ID"
                     columnKey="id"
@@ -1015,24 +1033,6 @@ export function RegistrationsAdmin() {
                     sortDirection={sortDirection}
                     onToggleSort={onToggleSort}
                   />
-                  {activeTab === "approved" ? (
-                    <SortableHeader
-                      label="Confirmation email"
-                      columnKey="confirmation_email_sent"
-                      sortKey={sortKey}
-                      sortDirection={sortDirection}
-                      onToggleSort={onToggleSort}
-                    />
-                  ) : null}
-                  {activeTab === "rejected" ? (
-                    <SortableHeader
-                      label="Rejection email"
-                      columnKey="rejection_email_sent"
-                      sortKey={sortKey}
-                      sortDirection={sortDirection}
-                      onToggleSort={onToggleSort}
-                    />
-                  ) : null}
                   <SortableHeader
                     label="Created"
                     columnKey="created_at"
@@ -1053,35 +1053,6 @@ export function RegistrationsAdmin() {
                         onChange={() => onToggleSelect(String(row.id))}
                         className="h-4 w-4 rounded border-slate-300"
                       />
-                    </td>
-                    <td className="px-2 py-2 align-top">{row.id}</td>
-                    <td className="px-2 py-2 align-top">{row.first_name}</td>
-                    <td className="px-2 py-2 align-top">{row.last_name}</td>
-                    <td className="px-2 py-2 align-top">{row.email}</td>
-                    <td className="px-2 py-2 align-top">{row.mobile_number || "-"}</td>
-                    <td className="px-2 py-2 align-top">{row.job_title || "-"}</td>
-                    <td className="px-2 py-2 align-top">{row.company}</td>
-                    <td className="px-2 py-2 align-top">{row.industry || "-"}</td>
-                    <td className="px-2 py-2 align-top">{row.breakout_track || "-"}</td>
-                    <td
-                      className="max-w-[260px] px-2 py-2 align-top overflow-hidden text-ellipsis whitespace-nowrap"
-                      title={
-                        (row.challenges ?? []).length > 0
-                          ? (row.challenges ?? []).join(", ")
-                          : "-"
-                      }
-                    >
-                      {(row.challenges ?? []).length > 0
-                        ? (row.challenges ?? []).join("; ")
-                        : "-"}
-                    </td>
-                    <td className="px-2 py-2 align-top">{row.need_timeline || "-"}</td>
-                    <td className="px-2 py-2 align-top">
-                      {row.consent === null || row.consent === undefined
-                        ? "-"
-                        : row.consent
-                          ? "Yes"
-                          : "No"}
                     </td>
                     {activeTab === "approved" ? (
                       <td className="px-2 py-2 align-top">
@@ -1151,6 +1122,35 @@ export function RegistrationsAdmin() {
                         </div>
                       </td>
                     ) : null}
+                    <td className="px-2 py-2 align-top">{row.id}</td>
+                    <td className="px-2 py-2 align-top">{row.first_name}</td>
+                    <td className="px-2 py-2 align-top">{row.last_name}</td>
+                    <td className="px-2 py-2 align-top">{row.email}</td>
+                    <td className="px-2 py-2 align-top">{row.mobile_number || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.job_title || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.company}</td>
+                    <td className="px-2 py-2 align-top">{row.industry || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.breakout_track || "-"}</td>
+                    <td
+                      className="max-w-[260px] px-2 py-2 align-top overflow-hidden text-ellipsis whitespace-nowrap"
+                      title={
+                        (row.challenges ?? []).length > 0
+                          ? (row.challenges ?? []).join(", ")
+                          : "-"
+                      }
+                    >
+                      {(row.challenges ?? []).length > 0
+                        ? (row.challenges ?? []).join("; ")
+                        : "-"}
+                    </td>
+                    <td className="px-2 py-2 align-top">{row.need_timeline || "-"}</td>
+                    <td className="px-2 py-2 align-top">
+                      {row.consent === null || row.consent === undefined
+                        ? "-"
+                        : row.consent
+                          ? "Yes"
+                          : "No"}
+                    </td>
                     <td className="px-2 py-2 align-top">
                       {row.created_at
                         ? new Date(row.created_at).toLocaleString()

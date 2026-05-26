@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-import { sendRegistrationRejection } from "@/lib/email";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
 type ReviewAction = "approve" | "reject";
@@ -34,21 +33,6 @@ export async function POST(request: Request) {
     const supabase = getSupabaseAdminClient();
     const newStatus = action === "approve" ? "approved" : "rejected";
 
-    const rejectionDelayHoursRaw = process.env.REJECTION_EMAIL_DELAY_HOURS?.trim();
-    const rejectionDelayHours = Math.max(
-      0,
-      Math.min(
-        24 * 30,
-        Number.parseInt(rejectionDelayHoursRaw ?? "0", 10) || 0,
-      ),
-    );
-    const rejectionScheduledAt =
-      action === "reject" && rejectionDelayHours > 0
-        ? new Date(
-            Date.now() + rejectionDelayHours * 60 * 60 * 1000,
-          ).toISOString()
-        : undefined;
-
     const { data: registrations, error } = await supabase
       .from("registrations")
       .select("id, first_name, email, approval_status")
@@ -78,47 +62,26 @@ export async function POST(request: Request) {
     }
 
     const pendingIds = pendingRows.map((row) => row.id);
+    const updatePayload =
+      action === "reject"
+        ? { approval_status: newStatus, rejection_email_sent: false }
+        : { approval_status: newStatus };
     const { error: updateError } = await supabase
       .from("registrations")
-      .update({ approval_status: newStatus })
+      .update(updatePayload)
       .in("id", pendingIds);
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });
     }
 
-    if (action === "reject") {
-      for (const row of pendingRows) {
-        const result = await sendRegistrationRejection({
-          firstName: row.first_name ?? "Guest",
-          email: row.email,
-          registrationId: String(row.id),
-          ...(rejectionScheduledAt
-            ? { scheduledAt: rejectionScheduledAt }
-            : {}),
-          idempotencyKey: `admin-reject/${row.id}/${rejectionScheduledAt ?? "immediate"}`,
-        });
-
-        if (!result.ok) {
-          console.error(
-            `Rejection email failed for registration ${row.id} (${row.email}):`,
-            result.error,
-          );
-        }
-      }
-    }
-
     return NextResponse.json({
       message:
         action === "approve"
           ? "Selected registrations approved."
-          : rejectionScheduledAt
-            ? `Selected registrations rejected. Rejection emails scheduled via Resend (first send at ${rejectionScheduledAt}).`
-            : "Selected registrations rejected.",
+          : "Selected registrations rejected. No rejection emails were sent.",
       action,
       processed: pendingRows.length,
-      rejectionEmailDelayHours: action === "reject" ? rejectionDelayHours : undefined,
-      rejectionScheduledAt: action === "reject" ? rejectionScheduledAt ?? null : undefined,
     });
   } catch (error) {
     console.error("Admin registrations review error:", error);

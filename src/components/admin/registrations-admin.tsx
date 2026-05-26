@@ -21,6 +21,7 @@ type Registration = {
   consent?: boolean | null;
   approval_status?: ApprovalStatus | null;
   confirmation_email_sent?: boolean | null;
+  rejection_email_sent?: boolean | null;
   created_at?: string;
 };
 
@@ -45,6 +46,7 @@ type SortKey =
   | "need_timeline"
   | "consent"
   | "confirmation_email_sent"
+  | "rejection_email_sent"
   | "created_at";
 
 type SortDirection = "asc" | "desc";
@@ -62,7 +64,16 @@ export function RegistrationsAdmin() {
   const [rows, setRows] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importErrors, setImportErrors] = useState<string[]>([]);
   const [sendingEmails, setSendingEmails] = useState(false);
+  const [updatingConfirmationEmailId, setUpdatingConfirmationEmailId] = useState<
+    string | number | null
+  >(null);
+  const [updatingRejectionEmailId, setUpdatingRejectionEmailId] = useState<
+    string | number | null
+  >(null);
   const [processingReview, setProcessingReview] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -142,6 +153,8 @@ export function RegistrationsAdmin() {
           return row.consent === true ? 1 : row.consent === false ? 0 : -1;
         case "confirmation_email_sent":
           return row.confirmation_email_sent === true ? 1 : 0;
+        case "rejection_email_sent":
+          return row.rejection_email_sent === true ? 1 : 0;
         case "created_at":
           return row.created_at ? new Date(row.created_at).getTime() : 0;
         default:
@@ -209,6 +222,60 @@ export function RegistrationsAdmin() {
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
+
+  async function onImportRegistrations() {
+    if (!importFile) {
+      setError("Please select an XLSX file first.");
+      setInfo("");
+      return;
+    }
+
+    setImporting(true);
+    setError("");
+    setInfo("");
+    setImportErrors([]);
+
+    try {
+      const formData = new FormData();
+      formData.set("file", importFile);
+
+      const response = await fetch("/api/admin/registrations/import", {
+        method: "POST",
+        body: formData,
+      });
+
+      const body = (await response.json()) as {
+        error?: string;
+        message?: string;
+        totalRows?: number;
+        imported?: number;
+        failed?: number;
+        errors?: string[];
+      };
+
+      if (!response.ok) {
+        setError(body.error ?? "Could not import registrations.");
+        setImportErrors(body.errors?.slice(0, 30) ?? []);
+        return;
+      }
+
+      const imported = body.imported ?? 0;
+      const failed = body.failed ?? 0;
+      const totalRows = body.totalRows ?? imported + failed;
+      setInfo(
+        `Imported ${imported} of ${totalRows} registration row(s). ${failed} failed.`,
+      );
+      setImportErrors(body.errors?.slice(0, 30) ?? []);
+      setImportFile(null);
+      setSelectedIds([]);
+      setActiveTab("registrants");
+      await loadRegistrations({ keepLoadingState: true });
+    } catch {
+      setError("Network error while importing registrations.");
+    } finally {
+      setImporting(false);
+    }
+  }
 
   function startEdit(row: Registration) {
     setEditingId(row.id);
@@ -330,7 +397,7 @@ export function RegistrationsAdmin() {
 
     if (action === "reject") {
       const confirmed = window.confirm(
-        `Reject ${selectedIds.length} registrant(s)? A rejection email will be sent automatically.`,
+        `Reject ${selectedIds.length} registrant(s)? No rejection email will be sent automatically.`,
       );
       if (!confirmed) {
         return;
@@ -368,9 +435,7 @@ export function RegistrationsAdmin() {
             `${processed} registrant(s) approved. No email was sent — you can email them manually later.`,
         );
       } else {
-        setInfo(
-          body.message ?? `${processed} registrant(s) rejected.`,
-        );
+        setInfo(body.message ?? `${processed} registrant(s) rejected. Email status is Not sent.`);
       }
 
       setSelectedIds([]);
@@ -412,10 +477,97 @@ export function RegistrationsAdmin() {
       }
 
       setInfo(body.message ?? "Rejection email send completed.");
+      await loadRegistrations({ keepLoadingState: true });
     } catch {
       setError("Network error while sending emails.");
     } finally {
       setSendingEmails(false);
+    }
+  }
+
+  async function onUpdateRejectionEmailStatus(
+    id: string | number,
+    rejectionEmailSent: boolean,
+  ) {
+    setUpdatingRejectionEmailId(id);
+    setError("");
+    setInfo("");
+
+    try {
+      const response = await fetch(`/api/admin/registrations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rejectionEmailSent }),
+      });
+
+      const body = (await response.json()) as {
+        registration?: Registration;
+        error?: string;
+      };
+
+      if (!response.ok || !body.registration) {
+        setError(body.error ?? "Failed to update rejection email status.");
+        return;
+      }
+
+      setRows((prev) =>
+        prev.map((row) => (String(row.id) === String(id) ? body.registration! : row)),
+      );
+      setDetailRow((prev) =>
+        prev && String(prev.id) === String(id) ? body.registration! : prev,
+      );
+      setInfo(
+        `Rejection email status marked as ${
+          rejectionEmailSent ? "sent" : "not sent"
+        }.`,
+      );
+    } catch {
+      setError("Network error while updating rejection email status.");
+    } finally {
+      setUpdatingRejectionEmailId(null);
+    }
+  }
+
+  async function onUpdateConfirmationEmailStatus(
+    id: string | number,
+    confirmationEmailSent: boolean,
+  ) {
+    setUpdatingConfirmationEmailId(id);
+    setError("");
+    setInfo("");
+
+    try {
+      const response = await fetch(`/api/admin/registrations/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmationEmailSent }),
+      });
+
+      const body = (await response.json()) as {
+        registration?: Registration;
+        error?: string;
+      };
+
+      if (!response.ok || !body.registration) {
+        setError(body.error ?? "Failed to update confirmation email status.");
+        return;
+      }
+
+      setRows((prev) =>
+        prev.map((row) => (String(row.id) === String(id) ? body.registration! : row)),
+      );
+      setDetailRow((prev) =>
+        prev && String(prev.id) === String(id) ? body.registration! : prev,
+      );
+      setInfo(
+        `Confirmation email status marked as ${
+          confirmationEmailSent ? "sent" : "not sent"
+        }.`,
+      );
+    } catch {
+      setError("Network error while updating confirmation email status.");
+    } finally {
+      setUpdatingConfirmationEmailId(null);
     }
   }
 
@@ -438,6 +590,59 @@ export function RegistrationsAdmin() {
           {info}
         </p>
       ) : null}
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900">
+              Import registration list
+            </h2>
+            <p className="mt-1 text-xs text-slate-600">
+              Upload an Excel registration list to add rows to the Registrants tab.
+              No confirmation emails are sent during import.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              window.location.href = "/api/admin/registrations/template";
+            }}
+            className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+          >
+            Download Excel template
+          </button>
+        </div>
+
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={(event) => setImportFile(event.target.files?.[0] ?? null)}
+            className="max-w-xs rounded border border-slate-300 px-2 py-1 text-xs"
+          />
+          <button
+            type="button"
+            onClick={onImportRegistrations}
+            disabled={importing}
+            className="rounded bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 disabled:opacity-60"
+          >
+            {importing ? "Importing..." : "Import registrations"}
+          </button>
+          {importFile ? (
+            <span className="text-xs text-slate-500">{importFile.name}</span>
+          ) : null}
+        </div>
+
+        {importErrors.length > 0 ? (
+          <div className="mt-3 max-h-40 overflow-auto rounded border border-amber-200 bg-amber-50 p-2 text-xs text-amber-950">
+            <p className="font-semibold">Import errors (showing up to 30)</p>
+            {importErrors.map((item) => (
+              <p key={item} className="mt-1">
+                - {item}
+              </p>
+            ))}
+          </div>
+        ) : null}
+      </section>
       <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div
           role="tablist"
@@ -469,10 +674,10 @@ export function RegistrationsAdmin() {
         </div>
         <p className="mb-3 text-xs text-slate-600">
           {activeTab === "registrants"
-            ? "Pending applications. Select rows and approve or reject. Rejecting sends a rejection email automatically."
+            ? "Pending applications. Select rows and approve or reject. Rejections do not send email automatically."
             : activeTab === "approved"
-              ? "Approved registrants. Export includes only rows with confirmation email status Not sent."
-              : "Rejected registrants. Rejection emails were sent when they were rejected."}
+              ? "Approved registrants. Track confirmation email status and mark each row as Sent or Not sent."
+              : "Rejected registrants. Send rejection emails manually, or mark each row as Sent or Not sent."}
         </p>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">{tabTitle}</h2>
@@ -538,10 +743,10 @@ export function RegistrationsAdmin() {
             >
               {sendingEmails
                 ? "Sending..."
-                : `Resend rejection email (${selectedIds.length})`}
+                : `Send rejection email (${selectedIds.length})`}
             </button>
             <span className="text-xs text-slate-500">
-              Resend the rejection email if needed.
+              Successful sends are marked as Sent. You can also update each row manually.
             </span>
           </div>
         ) : null}
@@ -638,7 +843,7 @@ export function RegistrationsAdmin() {
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
           <div className="mt-3 overflow-x-auto">
-            <table className="min-w-[1820px] text-left text-sm">
+            <table className="min-w-[1940px] text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
@@ -735,6 +940,15 @@ export function RegistrationsAdmin() {
                       onToggleSort={onToggleSort}
                     />
                   ) : null}
+                  {activeTab === "rejected" ? (
+                    <SortableHeader
+                      label="Rejection email"
+                      columnKey="rejection_email_sent"
+                      sortKey={sortKey}
+                      sortDirection={sortDirection}
+                      onToggleSort={onToggleSort}
+                    />
+                  ) : null}
                   <SortableHeader
                     label="Created"
                     columnKey="created_at"
@@ -787,15 +1001,70 @@ export function RegistrationsAdmin() {
                     </td>
                     {activeTab === "approved" ? (
                       <td className="px-2 py-2 align-top">
-                        <span
-                          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
-                            row.confirmation_email_sent
-                              ? "bg-emerald-50 text-emerald-700"
-                              : "bg-slate-100 text-slate-600"
-                          }`}
-                        >
-                          {row.confirmation_email_sent ? "Sent" : "Not sent"}
-                        </span>
+                        <div className="flex min-w-[150px] flex-col items-start gap-1">
+                          <span
+                            className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
+                              row.confirmation_email_sent
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-slate-100 text-slate-600"
+                            }`}
+                          >
+                            {row.confirmation_email_sent ? "Sent" : "Not sent"}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onUpdateConfirmationEmailStatus(
+                                row.id,
+                                !row.confirmation_email_sent,
+                              )
+                            }
+                            disabled={
+                              String(updatingConfirmationEmailId) === String(row.id)
+                            }
+                            className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+                          >
+                            {String(updatingConfirmationEmailId) === String(row.id)
+                              ? "Updating..."
+                              : row.confirmation_email_sent
+                                ? "Mark not sent"
+                                : "Mark sent"}
+                          </button>
+                        </div>
+                      </td>
+                    ) : null}
+                    {activeTab === "rejected" ? (
+                      <td className="px-2 py-2 align-top">
+                        <div className="flex min-w-[150px] flex-col items-start gap-1">
+                          <span
+                            className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
+                              row.rejection_email_sent
+                                ? "bg-emerald-50 text-emerald-700"
+                                : "bg-slate-100 text-slate-600"
+                            }`}
+                          >
+                            {row.rejection_email_sent ? "Sent" : "Not sent"}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              onUpdateRejectionEmailStatus(
+                                row.id,
+                                !row.rejection_email_sent,
+                              )
+                            }
+                            disabled={
+                              String(updatingRejectionEmailId) === String(row.id)
+                            }
+                            className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 disabled:opacity-60"
+                          >
+                            {String(updatingRejectionEmailId) === String(row.id)
+                              ? "Updating..."
+                              : row.rejection_email_sent
+                                ? "Mark not sent"
+                                : "Mark sent"}
+                          </button>
+                        </div>
                       </td>
                     ) : null}
                     <td className="px-2 py-2 align-top">
@@ -830,7 +1099,9 @@ export function RegistrationsAdmin() {
                 {sortedRows.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={activeTab === "approved" ? 16 : 15}
+                      colSpan={
+                        activeTab === "approved" || activeTab === "rejected" ? 16 : 15
+                      }
                       className="px-2 py-4 text-center text-slate-500"
                     >
                       No {tabTitle.toLowerCase()} found for current filters.
@@ -889,6 +1160,12 @@ export function RegistrationsAdmin() {
                 <p>
                   <strong>Confirmation email:</strong>{" "}
                   {detailRow.confirmation_email_sent ? "Sent" : "Not sent"}
+                </p>
+              ) : null}
+              {normalizeApprovalStatus(detailRow) === "rejected" ? (
+                <p>
+                  <strong>Rejection email:</strong>{" "}
+                  {detailRow.rejection_email_sent ? "Sent" : "Not sent"}
                 </p>
               ) : null}
               <p className="sm:col-span-2">

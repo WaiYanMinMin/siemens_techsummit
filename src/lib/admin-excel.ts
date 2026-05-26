@@ -185,6 +185,8 @@ type RegistrationExportRow = {
   breakout_track: string | null;
   challenges: string[] | null;
   need_timeline: string | null;
+  confirmation_email_sent?: boolean | null;
+  rejection_email_sent?: boolean | null;
   created_at: string | null;
 };
 
@@ -202,6 +204,18 @@ export function registrationsExportBuffer(rows: RegistrationExportRow[]) {
       breakout_track: row.breakout_track ?? "",
       challenges: (row.challenges ?? []).join("|"),
       need_timeline: row.need_timeline ?? "",
+      confirmation_email_sent:
+        row.confirmation_email_sent === undefined
+          ? ""
+          : row.confirmation_email_sent
+            ? "Sent"
+            : "Not sent",
+      rejection_email_sent:
+        row.rejection_email_sent === undefined
+          ? ""
+          : row.rejection_email_sent
+            ? "Sent"
+            : "Not sent",
       created_at: row.created_at ?? "",
     })),
     "registrations",

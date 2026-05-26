@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     let query = supabase
       .from("registrations")
       .select(
-        "id, first_name, last_name, email, mobile_number, job_title, company, industry, breakout_track, challenges, need_timeline, created_at",
+        "id, first_name, last_name, email, mobile_number, job_title, company, industry, breakout_track, challenges, need_timeline, confirmation_email_sent, rejection_email_sent, created_at",
       )
       .order("created_at", { ascending: false })
       .limit(10000);

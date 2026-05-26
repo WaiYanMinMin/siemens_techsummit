@@ -52,6 +52,55 @@ export async function PUT(request: Request, context: Context) {
   }
 }
 
+export async function PATCH(request: Request, context: Context) {
+  try {
+    const { id } = await context.params;
+    const payload = (await request.json()) as {
+      confirmationEmailSent?: boolean;
+      rejectionEmailSent?: boolean;
+    };
+
+    const hasConfirmationEmailSent =
+      typeof payload.confirmationEmailSent === "boolean";
+    const hasRejectionEmailSent = typeof payload.rejectionEmailSent === "boolean";
+
+    if (hasConfirmationEmailSent === hasRejectionEmailSent) {
+      return NextResponse.json(
+        {
+          error:
+            "Send exactly one status field: confirmationEmailSent or rejectionEmailSent.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const supabase = getSupabaseAdminClient();
+    let query = supabase
+      .from("registrations")
+      .update(
+        hasConfirmationEmailSent
+          ? { confirmation_email_sent: payload.confirmationEmailSent }
+          : { rejection_email_sent: payload.rejectionEmailSent },
+      )
+      .eq("id", id);
+
+    query = hasConfirmationEmailSent
+      ? query.eq("approval_status", "approved")
+      : query.eq("approval_status", "rejected");
+
+    const { data, error } = await query.select("*").single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ registration: data });
+  } catch (error) {
+    console.error("Admin registrations PATCH error:", error);
+    return NextResponse.json({ error: "Unexpected server error." }, { status: 500 });
+  }
+}
+
 export async function DELETE(_request: Request, context: Context) {
   try {
     const { id } = await context.params;

@@ -926,9 +926,9 @@ export function RegistrationsAdmin() {
         {loading ? (
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
-          <div className="mt-3 overflow-x-auto">
+          <div className="mt-3 max-h-[65vh] overflow-auto rounded border border-slate-200">
             <table className="min-w-[1940px] text-left text-sm">
-              <thead>
+              <thead className="sticky top-0 z-10 bg-white">
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>
                   {activeTab === "approved" ? (
@@ -985,6 +985,13 @@ export function RegistrationsAdmin() {
                     onToggleSort={onToggleSort}
                   />
                   <SortableHeader
+                    label="Breakout track"
+                    columnKey="breakout_track"
+                    sortKey={sortKey}
+                    sortDirection={sortDirection}
+                    onToggleSort={onToggleSort}
+                  />
+                  <SortableHeader
                     label="Job title"
                     columnKey="job_title"
                     sortKey={sortKey}
@@ -1001,13 +1008,6 @@ export function RegistrationsAdmin() {
                   <SortableHeader
                     label="Industry"
                     columnKey="industry"
-                    sortKey={sortKey}
-                    sortDirection={sortDirection}
-                    onToggleSort={onToggleSort}
-                  />
-                  <SortableHeader
-                    label="Breakout track"
-                    columnKey="breakout_track"
                     sortKey={sortKey}
                     sortDirection={sortDirection}
                     onToggleSort={onToggleSort}
@@ -1127,10 +1127,10 @@ export function RegistrationsAdmin() {
                     <td className="px-2 py-2 align-top">{row.last_name}</td>
                     <td className="px-2 py-2 align-top">{row.email}</td>
                     <td className="px-2 py-2 align-top">{row.mobile_number || "-"}</td>
+                    <td className="px-2 py-2 align-top">{row.breakout_track || "-"}</td>
                     <td className="px-2 py-2 align-top">{row.job_title || "-"}</td>
                     <td className="px-2 py-2 align-top">{row.company}</td>
                     <td className="px-2 py-2 align-top">{row.industry || "-"}</td>
-                    <td className="px-2 py-2 align-top">{row.breakout_track || "-"}</td>
                     <td
                       className="max-w-[260px] px-2 py-2 align-top overflow-hidden text-ellipsis whitespace-nowrap"
                       title={

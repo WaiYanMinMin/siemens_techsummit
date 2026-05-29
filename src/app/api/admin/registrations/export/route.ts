@@ -46,7 +46,13 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const file = registrationsExportBuffer(data ?? []);
+    const dateColumnKey =
+      filterByStatus === "approved"
+        ? "approved_date"
+        : filterByStatus === "rejected"
+          ? "rejected_date"
+          : "created_at";
+    const file = registrationsExportBuffer(data ?? [], { dateColumnKey });
     const filename =
       filterByStatus === "approved"
         ? confirmationEmailParam === "sent"

@@ -62,10 +62,15 @@ export async function POST(request: Request) {
     }
 
     const pendingIds = pendingRows.map((row) => row.id);
+    const reviewedAt = new Date().toISOString();
     const updatePayload =
       action === "reject"
-        ? { approval_status: newStatus, rejection_email_sent: false }
-        : { approval_status: newStatus };
+        ? {
+            approval_status: newStatus,
+            rejection_email_sent: false,
+            created_at: reviewedAt,
+          }
+        : { approval_status: newStatus, created_at: reviewedAt };
     const { error: updateError } = await supabase
       .from("registrations")
       .update(updatePayload)

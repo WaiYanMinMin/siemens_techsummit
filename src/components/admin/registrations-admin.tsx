@@ -612,6 +612,12 @@ export function RegistrationsAdmin() {
       : activeTab === "approved"
         ? "Approved"
         : "Rejected";
+  const dateColumnLabel =
+    activeTab === "approved"
+      ? "Approved date"
+      : activeTab === "rejected"
+        ? "Rejected date"
+        : "Created";
 
   return (
     <div className="space-y-6">
@@ -1034,7 +1040,7 @@ export function RegistrationsAdmin() {
                     onToggleSort={onToggleSort}
                   />
                   <SortableHeader
-                    label="Created"
+                    label={dateColumnLabel}
                     columnKey="created_at"
                     sortKey={sortKey}
                     sortDirection={sortDirection}
@@ -1259,7 +1265,7 @@ export function RegistrationsAdmin() {
                   : "-"}
               </p>
               <p className="sm:col-span-2">
-                <strong>Created:</strong>{" "}
+                <strong>{dateColumnLabel}:</strong>{" "}
                 {detailRow.created_at
                   ? new Date(detailRow.created_at).toLocaleString()
                   : "-"}

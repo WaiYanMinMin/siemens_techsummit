@@ -190,34 +190,45 @@ type RegistrationExportRow = {
   created_at: string | null;
 };
 
-export function registrationsExportBuffer(rows: RegistrationExportRow[]) {
+export function registrationsExportBuffer(
+  rows: RegistrationExportRow[],
+  options?: { dateColumnKey?: "created_at" | "approved_date" | "rejected_date" },
+) {
+  const dateColumnKey = options?.dateColumnKey ?? "created_at";
+
   return toWorkbookBuffer(
-    rows.map((row) => ({
-      id: row.id,
-      first_name: row.first_name,
-      last_name: row.last_name,
-      email: row.email,
-      mobile_number: row.mobile_number ?? "",
-      job_title: row.job_title ?? "",
-      company: row.company ?? "",
-      industry: row.industry ?? "",
-      breakout_track: row.breakout_track ?? "",
-      challenges: (row.challenges ?? []).join("|"),
-      need_timeline: row.need_timeline ?? "",
-      confirmation_email_sent:
-        row.confirmation_email_sent === undefined
-          ? ""
-          : row.confirmation_email_sent
-            ? "Sent"
-            : "Not sent",
-      rejection_email_sent:
-        row.rejection_email_sent === undefined
-          ? ""
-          : row.rejection_email_sent
-            ? "Sent"
-            : "Not sent",
-      created_at: row.created_at ?? "",
-    })),
+    rows.map((row) => {
+      const exportRow = {
+        id: row.id,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        email: row.email,
+        mobile_number: row.mobile_number ?? "",
+        job_title: row.job_title ?? "",
+        company: row.company ?? "",
+        industry: row.industry ?? "",
+        breakout_track: row.breakout_track ?? "",
+        challenges: (row.challenges ?? []).join("|"),
+        need_timeline: row.need_timeline ?? "",
+        confirmation_email_sent:
+          row.confirmation_email_sent === undefined
+            ? ""
+            : row.confirmation_email_sent
+              ? "Sent"
+              : "Not sent",
+        rejection_email_sent:
+          row.rejection_email_sent === undefined
+            ? ""
+            : row.rejection_email_sent
+              ? "Sent"
+              : "Not sent",
+      };
+
+      return {
+        ...exportRow,
+        [dateColumnKey]: row.created_at ?? "",
+      };
+    }),
     "registrations",
   );
 }

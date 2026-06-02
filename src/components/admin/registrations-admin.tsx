@@ -780,11 +780,24 @@ export function RegistrationsAdmin() {
               <button
                 type="button"
                 onClick={() => {
-                  window.location.href = "/api/admin/registrations/export";
+                  const statusParam =
+                    activeTab === "rejected"
+                      ? "rejected"
+                      : activeTab === "registrants"
+                        ? "pending"
+                        : "";
+                  const suffix = statusParam
+                    ? `?approval_status=${encodeURIComponent(statusParam)}`
+                    : "";
+                  window.location.href = `/api/admin/registrations/export${suffix}`;
                 }}
                 className="rounded border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
               >
-                Export registrations
+                {activeTab === "rejected"
+                  ? "Export rejected"
+                  : activeTab === "registrants"
+                    ? "Export pending"
+                    : "Export registrations"}
               </button>
             )}
             <button

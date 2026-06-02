@@ -208,6 +208,12 @@ In this session, we show you how Siemens moves beyond traditional building manag
         company: "Siemens Smart Infrastructure Buildings",
         image: "/speaker-vardaan-arora2.png",
       },
+      {
+        name: "Tulasidharan Mudiliar",
+        title: "Global Cybersecurity Portfolio Growth Manager",
+        company: "Siemens Smart Infrastructure Buildings",
+        image: "/speaker_mulliar.png",
+      },
     ],
   },
   {

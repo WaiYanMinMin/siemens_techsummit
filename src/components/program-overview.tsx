@@ -221,18 +221,24 @@ In this session, we show you how Siemens moves beyond traditional building manag
     time: "3.15 – 3.45pm",
   },
   {
-    title:
-      "Presentation + Panel Discussion: Beyond Quick Wins: Scaling Decarbonisation for Real Impact",
+    title: "Beyond Quick Wins: Scaling Decarbonisation for Real Impact",
     description:
       "After the low-hanging fruit—how Siemens Sustainability Advisory defines Net Zero pathways and turns ambition into scalable impact.",
     detailSynopsis: `What happens after the low-hanging fruit of decarbonization is picked? That's where Siemens steps in. Our Sustainability Advisory Services engage with organizations at the C-suite level to define credible Net Zero pathways, and help them to translate ambition into scalable, measurable impact. This session provides insights to Siemens' role as a long-term Energy Transition partner, going well beyond audits to enable implementation, value creation, and sustained performance.`,
     time: "3.45 – 4.15pm",
     speakers: [
       {
-        name: "Bjorn Burbach (presenter + moderator)",
+        name: "Bjorn Burbach",
         title: "Head of Sustainability",
         company: "Siemens",
         image: "/speaker-bjoern-burbach.png",
+      },
+      {
+        name: "Nilesh Jadhav",
+        title: "Head of Sustainability Advisory ",
+        company: "Siemens",
+        image: "/speaker_Nilesh.jpeg",
+        imageClassName: "object-top",
       },
     ],
   },
@@ -289,7 +295,7 @@ const afternoonTrack2Agenda: AgendaItem[] = [
     detailSynopsis: `Industrial automation is evolving beyond traditional systems into intelligent, connected, and data-driven environments. Discover how digitalization, industrial AI, and digital twins are shaping the next generation of manufacturing.
 
 Through real-world insights, Siemens Digital Industries highlights how integrating the physical and digital worlds enables smarter decision-making, resilient production, and more sustainable operations — opening new possibilities for the future of industrial automation.`,
-    time: "2.15 – 2.30pm",
+    time: "2.15 – 2.35pm",
     speakers: [
       {
         name: "Isabel Chong",
@@ -300,21 +306,13 @@ Through real-world insights, Siemens Digital Industries highlights how integrati
     ],
   },
   {
-    title:
-      "Generative AI Transforms Automation Engineering with Eigen Engineering Agent",
-    description:
-      "From experimentation to enterprise-wide AI—productivity, resilience, adaptability, and sustainable growth.",
-    detailSynopsis: `Discover how Generative AI is reshaping automation engineering with the Eigen Engineering Agent. This session explores how AI-powered automation streamlines engineering workflows, accelerates system development, reduces manual effort, and enhances operational efficiency. Learn how intelligent agents enable faster decision-making, adaptive engineering processes, and scalable industrial innovation across the digital enterprise.`,
-    time: "2.30 – 2.45pm",
-  },
-  {
     title: "Autonomous Manufacturing: Intelligence on the Factory Floor",
     description:
       "Industrial AI, digital twins, and automation for self-optimizing systems—efficiency, resilience, and flexibility.",
     detailSynopsis: `Autonomous manufacturing is redefining industrial production through intelligent, self-optimizing systems. By integrating industrial AI, digital twins, and advanced automation, manufacturers can enable factories that monitor, analyze, and adapt operations with minimal human intervention.
 
 This session highlights how autonomous technologies drive greater efficiency, resilience, and flexibility—accelerating the transformation toward the next generation of smart manufacturing.`,
-    time: "2.45 – 3.00pm",
+    time: "2.35 – 2:55pm",
     speakers: [
       {
         name: "Sascha Maennl",
@@ -325,13 +323,26 @@ This session highlights how autonomous technologies drive greater efficiency, re
     ],
   },
   {
+    title:
+      "Generative AI Transforms Automation Engineering with Eigen Engineering Agent",
+    description:
+      "From experimentation to enterprise-wide AI—productivity, resilience, adaptability, and sustainable growth.",
+    detailSynopsis: `Discover how Generative AI is reshaping automation engineering with the Eigen Engineering Agent. This session explores how AI-powered automation streamlines engineering workflows, accelerates system development, reduces manual effort, and enhances operational efficiency. Learn how intelligent agents enable faster decision-making, adaptive engineering processes, and scalable industrial innovation across the digital enterprise.`,
+    time: "2.55 – 3.15pm",
+  },
+
+  {
+    title: "Coffee Break Networking",
+    time: "3.15 – 3.45pm",
+  },
+  {
     title: "Software-Defined Automation: Powering Agile Manufacturing",
     description:
       "Virtualized control, open architectures, and integrated engineering for agile, adaptable factories.",
     detailSynopsis: `Software-defined automation is transforming industrial operations by decoupling hardware from software and enabling greater flexibility, scalability, and faster innovation. By leveraging virtualized control, open architectures, and integrated engineering environments, manufacturers can rapidly adapt production systems to changing demands while reducing complexity and downtime.
 
 This session explores how software-defined automation enables agile manufacturing, accelerates digital transformation, and empowers organizations to build smarter, more adaptable factories.`,
-    time: "3.00 – 3.15pm",
+    time: "3.45 – 4.05pm",
     speakers: [
       {
         name: "Govin Manickam",
@@ -342,17 +353,13 @@ This session explores how software-defined automation enables agile manufacturin
     ],
   },
   {
-    title: "Coffee Break Networking",
-    time: "3.15 – 3.45pm",
-  },
-  {
     title: "A Single Pane of Glass for Smarter Operational Decisions",
     description:
       "Unified data and operations—visibility, collaboration, and faster responses across the industrial enterprise.",
     detailSynopsis: `A "Single Pane of Glass" approach brings together data, systems, and operations into one unified view, enabling greater visibility and control across the industrial enterprise. By integrating production, engineering, and operational data into a centralized platform, organizations can simplify decision-making, improve collaboration, and respond faster to changing conditions.
 
 This session explores how unified digital environments help manufacturers streamline operations, enhance transparency, and drive more efficient, data-driven industrial performance.`,
-    time: "3.45 – 4.00pm",
+    time: "4.05 – 4.25pm",
     speakers: [
       {
         name: "Licheng Yan",
@@ -362,16 +369,7 @@ This session explores how unified digital environments help manufacturers stream
       },
     ],
   },
-  {
-    title:
-      "Customer Panel Discussion: Overcoming Challenges in the Adoption of Smart Manufacturing Advanced Technologies",
-    description:
-      "Legacy systems, skills, cost, and change—strategies, partnerships, and scalable adoption of industrial AI and automation.",
-    detailSynopsis: `As industries worldwide continue to embrace Industry 4.0, organizations are increasingly integrating technologies such as digital twins, Industrial AI and advanced analytics into manufacturing operations. While these technologies offer significant benefits in efficiency, productivity, quality, and sustainability, many companies still face substantial barriers to adoption.
 
-Today, our distinguished panelists will share insights, experiences, and practical strategies to help organizations navigate these challenges and accelerate successful digital transformation.”`,
-    time: "4.00 – 4.30pm",
-  },
   {
     title: "Cybersecure Industry: Protecting the Digital Factory",
     description:
@@ -379,7 +377,7 @@ Today, our distinguished panelists will share insights, experiences, and practic
     detailSynopsis: `As industrial systems become increasingly connected, cybersecurity is essential to ensure both secure and safe operations. Protecting industrial assets, production processes, and critical infrastructure requires a comprehensive approach that integrates cybersecurity across the entire automation lifecycle.
 
 This session explores how manufacturers can strengthen resilience through secure-by-design architectures, continuous monitoring, and integrated security strategies—enabling organizations to protect operations while confidently advancing digital transformation.`,
-    time: "4.30 – 4.45pm",
+    time: "4.25 – 4.45pm",
     speakers: [
       {
         name: "Sander Rotmensen",

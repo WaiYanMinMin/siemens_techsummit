@@ -3,23 +3,50 @@ import { NextResponse } from "next/server";
 import { toRegistrationInsertPayload } from "@/lib/admin-registration";
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-export async function GET() {
-  try {
-    const supabase = getSupabaseAdminClient();
+const PAGE_SIZE = 1000;
+
+async function fetchAllRegistrations() {
+  const supabase = getSupabaseAdminClient();
+  const registrations = [];
+  let from = 0;
+
+  while (true) {
     const { data, error } = await supabase
       .from("registrations")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(1000);
+      .range(from, from + PAGE_SIZE - 1);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      throw error;
     }
 
-    return NextResponse.json({ registrations: data ?? [] });
+    if (!data?.length) {
+      break;
+    }
+
+    registrations.push(...data);
+
+    if (data.length < PAGE_SIZE) {
+      break;
+    }
+
+    from += PAGE_SIZE;
+  }
+
+  return registrations;
+}
+
+export async function GET() {
+  try {
+    const registrations = await fetchAllRegistrations();
+
+    return NextResponse.json({ registrations });
   } catch (error) {
     console.error("Admin registrations GET error:", error);
-    return NextResponse.json({ error: "Unexpected server error." }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Unexpected server error.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 

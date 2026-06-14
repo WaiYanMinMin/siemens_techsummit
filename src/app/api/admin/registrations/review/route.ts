@@ -2,7 +2,58 @@ import { NextResponse } from "next/server";
 
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
 
-type ReviewAction = "approve" | "reject";
+type ReviewAction = "approve" | "reject" | "pending";
+type ApprovalStatus = "pending" | "approved" | "rejected";
+
+const ACTION_TO_STATUS: Record<ReviewAction, ApprovalStatus> = {
+  approve: "approved",
+  reject: "rejected",
+  pending: "pending",
+};
+
+const VALID_SOURCE_STATUSES: Record<ReviewAction, ApprovalStatus[]> = {
+  approve: ["pending", "rejected"],
+  reject: ["pending", "approved"],
+  pending: ["approved", "rejected"],
+};
+
+function buildUpdatePayload(newStatus: ApprovalStatus, reviewedAt: string) {
+  if (newStatus === "pending") {
+    return {
+      approval_status: newStatus,
+      confirmation_email_sent: false,
+      rejection_email_sent: false,
+    };
+  }
+
+  if (newStatus === "approved") {
+    return {
+      approval_status: newStatus,
+      rejection_email_sent: false,
+      created_at: reviewedAt,
+    };
+  }
+
+  return {
+    approval_status: newStatus,
+    confirmation_email_sent: false,
+    rejection_email_sent: false,
+    created_at: reviewedAt,
+  };
+}
+
+function actionMessage(action: ReviewAction, processed: number): string {
+  const countLabel = `${processed} registration${processed === 1 ? "" : "s"}`;
+
+  switch (action) {
+    case "approve":
+      return `${countLabel} approved. No confirmation email was sent automatically.`;
+    case "reject":
+      return `${countLabel} rejected. No rejection email was sent automatically.`;
+    case "pending":
+      return `${countLabel} moved back to pending.`;
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -23,15 +74,16 @@ export async function POST(request: Request) {
       );
     }
 
-    if (action !== "approve" && action !== "reject") {
+    if (action !== "approve" && action !== "reject" && action !== "pending") {
       return NextResponse.json(
-        { error: "action must be approve or reject." },
+        { error: "action must be approve, reject, or pending." },
         { status: 400 },
       );
     }
 
     const supabase = getSupabaseAdminClient();
-    const newStatus = action === "approve" ? "approved" : "rejected";
+    const newStatus = ACTION_TO_STATUS[action];
+    const allowedSources = VALID_SOURCE_STATUSES[action];
 
     const { data: registrations, error } = await supabase
       .from("registrations")
@@ -50,43 +102,43 @@ export async function POST(request: Request) {
       );
     }
 
-    const pendingRows = rows.filter((row) => row.approval_status === "pending");
-    if (pendingRows.length === 0) {
+    const eligibleRows = rows.filter((row) =>
+      allowedSources.includes(row.approval_status as ApprovalStatus),
+    );
+
+    if (eligibleRows.length === 0) {
+      const sourceLabel =
+        action === "approve"
+          ? "pending or rejected"
+          : action === "reject"
+            ? "pending or approved"
+            : "approved or rejected";
       return NextResponse.json(
         {
-          error:
-            "Selected registrations are not in the registrants queue (already approved or rejected).",
+          error: `Selected registrations cannot be changed with this action. Only ${sourceLabel} registrations are eligible.`,
         },
         { status: 400 },
       );
     }
 
-    const pendingIds = pendingRows.map((row) => row.id);
+    const skippedCount = rows.length - eligibleRows.length;
+    const eligibleIds = eligibleRows.map((row) => row.id);
     const reviewedAt = new Date().toISOString();
-    const updatePayload =
-      action === "reject"
-        ? {
-            approval_status: newStatus,
-            rejection_email_sent: false,
-            created_at: reviewedAt,
-          }
-        : { approval_status: newStatus, created_at: reviewedAt };
+    const updatePayload = buildUpdatePayload(newStatus, reviewedAt);
     const { error: updateError } = await supabase
       .from("registrations")
       .update(updatePayload)
-      .in("id", pendingIds);
+      .in("id", eligibleIds);
 
     if (updateError) {
       return NextResponse.json({ error: updateError.message }, { status: 500 });
     }
 
     return NextResponse.json({
-      message:
-        action === "approve"
-          ? "Selected registrations approved."
-          : "Selected registrations rejected. No rejection emails were sent.",
+      message: actionMessage(action, eligibleRows.length),
       action,
-      processed: pendingRows.length,
+      processed: eligibleRows.length,
+      skipped: skippedCount,
     });
   } catch (error) {
     console.error("Admin registrations review error:", error);

@@ -52,6 +52,8 @@ type SortKey =
 
 type SortDirection = "asc" | "desc";
 
+type StatusAction = "approve" | "reject" | "pending";
+
 type RegistrationFormState = {
   firstName: string;
   lastName: string;
@@ -76,6 +78,7 @@ export function RegistrationsAdmin() {
     string | number | null
   >(null);
   const [processingReview, setProcessingReview] = useState(false);
+  const [changingStatusId, setChangingStatusId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [form, setForm] = useState<RegistrationFormState | null>(null);
@@ -421,23 +424,55 @@ export function RegistrationsAdmin() {
     setInfo("");
   }
 
-  async function onReview(action: "approve" | "reject") {
-    if (selectedIds.length === 0) {
-      setError("Please select at least one registrant.");
+  function getStatusActionLabel(action: StatusAction): string {
+    if (action === "approve") {
+      return "Approve";
+    }
+    if (action === "reject") {
+      return "Reject";
+    }
+    return "Move to pending";
+  }
+
+  function confirmStatusChange(action: StatusAction, count: number): boolean {
+    if (action === "reject") {
+      return window.confirm(
+        `Reject ${count} registration${count === 1 ? "" : "s"}? No rejection email will be sent automatically.`,
+      );
+    }
+
+    if (action === "pending") {
+      return window.confirm(
+        `Move ${count} registration${count === 1 ? "" : "s"} back to pending? Email status flags will be reset.`,
+      );
+    }
+
+    if (count > 1) {
+      return window.confirm(
+        `Approve ${count} registrations? No confirmation email will be sent automatically.`,
+      );
+    }
+
+    return true;
+  }
+
+  async function onChangeStatus(ids: string[], action: StatusAction) {
+    if (ids.length === 0) {
+      setError("Please select at least one registration.");
       setInfo("");
       return;
     }
 
-    if (action === "reject") {
-      const confirmed = window.confirm(
-        `Reject ${selectedIds.length} registrant(s)? No rejection email will be sent automatically.`,
-      );
-      if (!confirmed) {
-        return;
-      }
+    if (!confirmStatusChange(action, ids.length)) {
+      return;
     }
 
-    setProcessingReview(true);
+    if (ids.length === 1) {
+      setChangingStatusId(ids[0]);
+    } else {
+      setProcessingReview(true);
+    }
+
     setError("");
     setInfo("");
     try {
@@ -445,7 +480,7 @@ export function RegistrationsAdmin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ids: selectedIds,
+          ids,
           action,
         }),
       });
@@ -454,6 +489,7 @@ export function RegistrationsAdmin() {
         error?: string;
         message?: string;
         processed?: number;
+        skipped?: number;
       };
 
       if (!response.ok) {
@@ -462,22 +498,28 @@ export function RegistrationsAdmin() {
       }
 
       const processed = body.processed ?? 0;
-      if (action === "approve") {
-        setInfo(
-          body.message ??
-            `${processed} registrant(s) approved. No email was sent — you can email them manually later.`,
-        );
-      } else {
-        setInfo(body.message ?? `${processed} registrant(s) rejected. Email status is Not sent.`);
+      const skipped = body.skipped ?? 0;
+      let message =
+        body.message ??
+        `${processed} registration${processed === 1 ? "" : "s"} updated to ${getStatusActionLabel(action).toLowerCase()}.`;
+
+      if (skipped > 0) {
+        message += ` ${skipped} could not be changed and were skipped.`;
       }
 
-      setSelectedIds([]);
+      setInfo(message);
+      setSelectedIds((prev) => prev.filter((id) => !ids.includes(id)));
       await loadRegistrations();
     } catch {
       setError("Network error while updating registrations.");
     } finally {
       setProcessingReview(false);
+      setChangingStatusId(null);
     }
+  }
+
+  async function onReview(action: "approve" | "reject") {
+    await onChangeStatus(selectedIds, action);
   }
 
   async function onSendEmails() {
@@ -717,8 +759,8 @@ export function RegistrationsAdmin() {
           {activeTab === "registrants"
             ? "Pending applications. Select rows and approve or reject. Rejections do not send email automatically."
             : activeTab === "approved"
-              ? "Approved registrants. Track confirmation email status and mark each row as Sent or Not sent."
-              : "Rejected registrants. Send rejection emails manually, or mark each row as Sent or Not sent."}
+              ? "Approved registrants. Track confirmation email status, change status individually or in bulk, and mark rows as Sent or Not sent."
+              : "Rejected registrants. Send rejection emails manually, change status individually or in bulk, and mark rows as Sent or Not sent."}
         </p>
         {activeTab === "approved" ? (
           <div
@@ -836,8 +878,58 @@ export function RegistrationsAdmin() {
           </div>
         ) : null}
 
+        {activeTab === "approved" ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <button
+              type="button"
+              onClick={() => onChangeStatus(selectedIds, "pending")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded border border-amber-400 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-100 disabled:opacity-60"
+            >
+              {processingReview
+                ? "Processing..."
+                : `Move to pending (${selectedIds.length})`}
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeStatus(selectedIds, "reject")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded bg-red-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-600 disabled:opacity-60"
+            >
+              {processingReview
+                ? "Processing..."
+                : `Reject selected (${selectedIds.length})`}
+            </button>
+            <span className="text-xs text-slate-500">
+              {selectedIds.length === 0
+                ? "Select rows to change status in bulk, or use the status menu on each row."
+                : `${selectedIds.length} row(s) selected`}
+            </span>
+          </div>
+        ) : null}
+
         {activeTab === "rejected" ? (
           <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            <button
+              type="button"
+              onClick={() => onChangeStatus(selectedIds, "approve")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
+            >
+              {processingReview
+                ? "Processing..."
+                : `Approve selected (${selectedIds.length})`}
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeStatus(selectedIds, "pending")}
+              disabled={processingReview || selectedIds.length === 0}
+              className="rounded border border-amber-400 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-100 disabled:opacity-60"
+            >
+              {processingReview
+                ? "Processing..."
+                : `Move to pending (${selectedIds.length})`}
+            </button>
             <button
               type="button"
               onClick={onSendEmails}
@@ -849,7 +941,9 @@ export function RegistrationsAdmin() {
                 : `Send rejection email (${selectedIds.length})`}
             </button>
             <span className="text-xs text-slate-500">
-              Successful sends are marked as Sent. You can also update each row manually.
+              {selectedIds.length === 0
+                ? "Select rows for bulk actions, or use the status menu on each row."
+                : `${selectedIds.length} row(s) selected`}
             </span>
           </div>
         ) : null}
@@ -1177,6 +1271,32 @@ export function RegistrationsAdmin() {
                     </td>
                     <td className="px-2 py-2 align-top">
                       <div className="flex flex-wrap items-center gap-2">
+                        {activeTab === "approved" ? (
+                          <StatusChangeSelect
+                            currentStatus="approved"
+                            disabled={
+                              processingReview ||
+                              changingStatusId === String(row.id)
+                            }
+                            isUpdating={changingStatusId === String(row.id)}
+                            onChange={(action) =>
+                              onChangeStatus([String(row.id)], action)
+                            }
+                          />
+                        ) : null}
+                        {activeTab === "rejected" ? (
+                          <StatusChangeSelect
+                            currentStatus="rejected"
+                            disabled={
+                              processingReview ||
+                              changingStatusId === String(row.id)
+                            }
+                            isUpdating={changingStatusId === String(row.id)}
+                            onChange={(action) =>
+                              onChangeStatus([String(row.id)], action)
+                            }
+                          />
+                        ) : null}
                         <button
                           onClick={() => setDetailRow(row)}
                           className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
@@ -1297,6 +1417,58 @@ type InputProps = {
   onChange: (value: string) => void;
   type?: "text" | "email";
 };
+
+type StatusChangeSelectProps = {
+  currentStatus: "approved" | "rejected";
+  disabled?: boolean;
+  isUpdating?: boolean;
+  onChange: (action: StatusAction) => void;
+};
+
+function StatusChangeSelect({
+  currentStatus,
+  disabled = false,
+  isUpdating = false,
+  onChange,
+}: StatusChangeSelectProps) {
+  const options =
+    currentStatus === "approved"
+      ? ([
+          ["", "Change status…"],
+          ["pending", "Move to pending"],
+          ["reject", "Reject"],
+        ] as const)
+      : ([
+          ["", "Change status…"],
+          ["approve", "Approve"],
+          ["pending", "Move to pending"],
+        ] as const);
+
+  return (
+    <label className="inline-flex items-center gap-1">
+      <span className="sr-only">Change registration status</span>
+      <select
+        value=""
+        disabled={disabled || isUpdating}
+        onChange={(event) => {
+          const action = event.target.value as StatusAction | "";
+          if (!action) {
+            return;
+          }
+          onChange(action);
+          event.target.value = "";
+        }}
+        className="h-7 min-w-[132px] rounded border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-700 outline-none ring-[#00d7c7] focus:ring-2 disabled:opacity-60"
+      >
+        {options.map(([value, label]) => (
+          <option key={value || "placeholder"} value={value}>
+            {isUpdating ? "Updating…" : label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
 
 function Input({ label, value, onChange, type = "text" }: InputProps) {
   return (

@@ -78,7 +78,6 @@ export function RegistrationsAdmin() {
     string | number | null
   >(null);
   const [processingReview, setProcessingReview] = useState(false);
-  const [changingStatusId, setChangingStatusId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [form, setForm] = useState<RegistrationFormState | null>(null);
@@ -467,11 +466,7 @@ export function RegistrationsAdmin() {
       return;
     }
 
-    if (ids.length === 1) {
-      setChangingStatusId(ids[0]);
-    } else {
-      setProcessingReview(true);
-    }
+    setProcessingReview(true);
 
     setError("");
     setInfo("");
@@ -514,7 +509,6 @@ export function RegistrationsAdmin() {
       setError("Network error while updating registrations.");
     } finally {
       setProcessingReview(false);
-      setChangingStatusId(null);
     }
   }
 
@@ -759,8 +753,8 @@ export function RegistrationsAdmin() {
           {activeTab === "registrants"
             ? "Pending applications. Select rows and approve or reject. Rejections do not send email automatically."
             : activeTab === "approved"
-              ? "Approved registrants. Track confirmation email status, change status individually or in bulk, and mark rows as Sent or Not sent."
-              : "Rejected registrants. Send rejection emails manually, change status individually or in bulk, and mark rows as Sent or Not sent."}
+              ? "Approved registrants. Track confirmation email status, change status in bulk, and mark rows as Sent or Not sent."
+              : "Rejected registrants. Send rejection emails manually, change status in bulk, and mark rows as Sent or Not sent."}
         </p>
         {activeTab === "approved" ? (
           <div
@@ -902,7 +896,7 @@ export function RegistrationsAdmin() {
             </button>
             <span className="text-xs text-slate-500">
               {selectedIds.length === 0
-                ? "Select rows to change status in bulk, or use the status menu on each row."
+                ? "Select rows to change status in bulk."
                 : `${selectedIds.length} row(s) selected`}
             </span>
           </div>
@@ -942,7 +936,7 @@ export function RegistrationsAdmin() {
             </button>
             <span className="text-xs text-slate-500">
               {selectedIds.length === 0
-                ? "Select rows for bulk actions, or use the status menu on each row."
+                ? "Select rows for bulk actions."
                 : `${selectedIds.length} row(s) selected`}
             </span>
           </div>
@@ -1271,32 +1265,6 @@ export function RegistrationsAdmin() {
                     </td>
                     <td className="px-2 py-2 align-top">
                       <div className="flex flex-wrap items-center gap-2">
-                        {activeTab === "approved" ? (
-                          <StatusChangeSelect
-                            currentStatus="approved"
-                            disabled={
-                              processingReview ||
-                              changingStatusId === String(row.id)
-                            }
-                            isUpdating={changingStatusId === String(row.id)}
-                            onChange={(action) =>
-                              onChangeStatus([String(row.id)], action)
-                            }
-                          />
-                        ) : null}
-                        {activeTab === "rejected" ? (
-                          <StatusChangeSelect
-                            currentStatus="rejected"
-                            disabled={
-                              processingReview ||
-                              changingStatusId === String(row.id)
-                            }
-                            isUpdating={changingStatusId === String(row.id)}
-                            onChange={(action) =>
-                              onChangeStatus([String(row.id)], action)
-                            }
-                          />
-                        ) : null}
                         <button
                           onClick={() => setDetailRow(row)}
                           className="rounded border border-slate-300 px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100"
@@ -1417,58 +1385,6 @@ type InputProps = {
   onChange: (value: string) => void;
   type?: "text" | "email";
 };
-
-type StatusChangeSelectProps = {
-  currentStatus: "approved" | "rejected";
-  disabled?: boolean;
-  isUpdating?: boolean;
-  onChange: (action: StatusAction) => void;
-};
-
-function StatusChangeSelect({
-  currentStatus,
-  disabled = false,
-  isUpdating = false,
-  onChange,
-}: StatusChangeSelectProps) {
-  const options =
-    currentStatus === "approved"
-      ? ([
-          ["", "Change status…"],
-          ["pending", "Move to pending"],
-          ["reject", "Reject"],
-        ] as const)
-      : ([
-          ["", "Change status…"],
-          ["approve", "Approve"],
-          ["pending", "Move to pending"],
-        ] as const);
-
-  return (
-    <label className="inline-flex items-center gap-1">
-      <span className="sr-only">Change registration status</span>
-      <select
-        value=""
-        disabled={disabled || isUpdating}
-        onChange={(event) => {
-          const action = event.target.value as StatusAction | "";
-          if (!action) {
-            return;
-          }
-          onChange(action);
-          event.target.value = "";
-        }}
-        className="h-7 min-w-[132px] rounded border border-slate-300 bg-white px-2 text-xs font-semibold text-slate-700 outline-none ring-[#00d7c7] focus:ring-2 disabled:opacity-60"
-      >
-        {options.map(([value, label]) => (
-          <option key={value || "placeholder"} value={value}>
-            {isUpdating ? "Updating…" : label}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}
 
 function Input({ label, value, onChange, type = "text" }: InputProps) {
   return (

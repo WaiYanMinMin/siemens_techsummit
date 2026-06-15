@@ -662,7 +662,7 @@ export function RegistrationsAdmin() {
         : "Created";
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-6">
       {error ? (
         <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
@@ -673,7 +673,7 @@ export function RegistrationsAdmin() {
           {info}
         </p>
       ) : null}
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold text-slate-900">
@@ -726,7 +726,7 @@ export function RegistrationsAdmin() {
           </div>
         ) : null}
       </section>
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div
           role="tablist"
           aria-label="Registration status"
@@ -1039,8 +1039,8 @@ export function RegistrationsAdmin() {
         {loading ? (
           <p className="mt-3 text-sm text-slate-600">Loading registrations...</p>
         ) : (
-          <div className="mt-3 max-h-[65vh] overflow-auto rounded border border-slate-200">
-            <table className="min-w-[1940px] text-left text-sm">
+          <div className="mt-3 w-full min-w-0 max-h-[65vh] overflow-auto rounded border border-slate-200">
+            <table className="w-max min-w-full text-left text-sm">
               <thead className="sticky top-0 z-10 bg-white">
                 <tr className="border-b border-slate-200 text-slate-600">
                   <th className="px-2 py-2">Select</th>

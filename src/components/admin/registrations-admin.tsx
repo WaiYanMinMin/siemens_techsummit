@@ -1,6 +1,11 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  matchesTrackFilter,
+  trackFilterOptions,
+  type TrackFilterValue,
+} from "@/lib/breakout-track";
 
 type ApprovalStatus = "pending" | "approved" | "rejected";
 
@@ -89,6 +94,7 @@ export function RegistrationsAdmin() {
   const [filterName, setFilterName] = useState("");
   const [filterEmail, setFilterEmail] = useState("");
   const [filterCompany, setFilterCompany] = useState("");
+  const [filterTrack, setFilterTrack] = useState<TrackFilterValue>("");
   const [sortKey, setSortKey] = useState<SortKey>("created_at");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [detailRow, setDetailRow] = useState<Registration | null>(null);
@@ -160,10 +166,11 @@ export function RegistrationsAdmin() {
       return (
         (!nameFilter || fullName.includes(nameFilter)) &&
         (!emailFilter || email.includes(emailFilter)) &&
-        (!companyFilter || company.includes(companyFilter))
+        (!companyFilter || company.includes(companyFilter)) &&
+        matchesTrackFilter(row.breakout_track, filterTrack)
       );
     });
-  }, [tabRows, filterName, filterEmail, filterCompany]);
+  }, [tabRows, filterName, filterEmail, filterCompany, filterTrack]);
   const filteredIds = useMemo(
     () => filteredRows.map((row) => String(row.id)),
     [filteredRows],
@@ -942,7 +949,7 @@ export function RegistrationsAdmin() {
           </div>
         ) : null}
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <input
             placeholder="Filter by name"
             value={filterName}
@@ -961,6 +968,20 @@ export function RegistrationsAdmin() {
             onChange={(event) => setFilterCompany(event.target.value)}
             className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
           />
+          <select
+            aria-label="Filter by track"
+            value={filterTrack}
+            onChange={(event) =>
+              setFilterTrack(event.target.value as TrackFilterValue)
+            }
+            className="h-9 rounded border border-slate-300 bg-white px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+          >
+            {trackFilterOptions.map((option) => (
+              <option key={option.value || "all"} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {isEditing && form ? (

@@ -228,15 +228,9 @@ In this session, we show you how Siemens moves beyond traditional building manag
     time: "3.45 – 4.15pm",
     speakers: [
       {
-        name: "Bjorn Burbach",
-        title: "Head of Sustainability",
-        company: "Siemens",
-        image: "/speaker-bjoern-burbach.png",
-      },
-      {
         name: "Nilesh Jadhav",
         title: "Head of Sustainability Advisory ",
-        company: "Siemens",
+        company: "Siemens Smart Infrastructure Buildings",
         image: "/speaker_Nilesh.jpeg",
         imageClassName: "object-top",
       },
@@ -252,13 +246,33 @@ In this session, we show you how Siemens moves beyond traditional building manag
 This presentation reveals how forward-thinking organizations are designing and retrofitting data centers with intelligence built into their very foundation. We'll examine how autonomous operations - where AI independently optimizes every aspect from cooling to power distribution - represent the next frontier in data center excellence, and reveal the architectural principles and technologies needed to make this vision reality.
 
 Learn how Siemens is helping organizations worldwide create intelligent infrastructure that doesn't just respond to AI workloads - but harnesses AI to achieve unprecedented levels of efficiency, sustainability, and operational excellence. With integrated technology solutions and Siemens Financial Services, we remove both technical and financial barriers to transformation.`,
-    time: "4.15 – 4.30pm",
+    time: "4.00 – 4.30pm",
     speakers: [
       {
         name: "Imelda Zhang",
         title: "Data Center Lead - ASEAN",
         company: "Siemens Smart Infrastructure",
         image: "/speaker-imelda-zhang.png",
+      },
+      {
+        name: "Andy Fong",
+        title: "Simulation & Test Practice Director – Asia Pacific",
+        company: "Siemens Digital Industries Software",
+        image: "/speaker_AndyFong.jpg",
+        imageClassName: "object-top",
+      },
+      {
+        name: "Nilesh Jadhav",
+        title: "Head of Sustainability Advisory – ASEAN",
+        company: "Siemens Smart Infrastructure Buildings",
+        image: "/speaker_Nilesh.jpeg",
+        imageClassName: "object-top",
+      },
+      {
+        name: "Wee Xian Bin",
+        title: "Business Development Manager for Data Centers – Asia Pacific",
+        company: "Siemens Digital Industries",
+        image: "/speaker_WeeXianBin.JPG",
       },
     ],
   },

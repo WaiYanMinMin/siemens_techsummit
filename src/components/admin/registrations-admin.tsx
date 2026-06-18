@@ -6,6 +6,7 @@ import {
   trackFilterOptions,
   type TrackFilterValue,
 } from "@/lib/breakout-track";
+import { breakoutTracks } from "@/lib/constants";
 
 type ApprovalStatus = "pending" | "approved" | "rejected";
 
@@ -66,6 +67,7 @@ type RegistrationFormState = {
   mobileNumber: string;
   jobTitle: string;
   company: string;
+  breakoutTrack: string;
 };
 
 export function RegistrationsAdmin() {
@@ -321,6 +323,7 @@ export function RegistrationsAdmin() {
       mobileNumber: row.mobile_number || "",
       jobTitle: row.job_title || "",
       company: row.company || "",
+      breakoutTrack: row.breakout_track || breakoutTracks[0],
     });
   }
 
@@ -1032,6 +1035,25 @@ export function RegistrationsAdmin() {
                 setForm((prev) => (prev ? { ...prev, company: value } : prev))
               }
             />
+            <label className="flex flex-col gap-1 text-sm text-slate-700 sm:col-span-2">
+              Breakout track
+              <select
+                required
+                value={form.breakoutTrack}
+                onChange={(event) =>
+                  setForm((prev) =>
+                    prev ? { ...prev, breakoutTrack: event.target.value } : prev,
+                  )
+                }
+                className="h-10 rounded border border-slate-300 bg-white px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              >
+                {breakoutTracks.map((track) => (
+                  <option key={track} value={track}>
+                    {track}
+                  </option>
+                ))}
+              </select>
+            </label>
             <div className="sm:col-span-2 flex items-center gap-2 pt-1">
               <button
                 type="submit"

@@ -303,19 +303,36 @@ The session will highlight common gaps and considerations, prompting organisatio
 
 const afternoonTrack2Agenda: AgendaItem[] = [
   {
-    title: "The Future of Automation with Industrial AI",
+    title: "Welcome address : Smart Manufacturing with Industrial AI",
     description:
       "How digitalization, industrial AI, and digital twins are reshaping automation—smarter decisions, resilient production, sustainable operations.",
     detailSynopsis: `Industrial automation is evolving beyond traditional systems into intelligent, connected, and data-driven environments. Discover how digitalization, industrial AI, and digital twins are shaping the next generation of manufacturing.
 
 Through real-world insights, Siemens Digital Industries highlights how integrating the physical and digital worlds enables smarter decision-making, resilient production, and more sustainable operations — opening new possibilities for the future of industrial automation.`,
-    time: "2.15 – 2.35pm",
+    time: "2.15 – 2.20pm",
     speakers: [
       {
         name: "Isabel Chong",
         title: "SVP Siemens Digital Industries, ASEAN",
 
         image: "/speaker-isabel-chong.jpg",
+      },
+    ],
+  },
+  {
+    title:
+      "Industrial AI in Manufacturing: Trends Shaping the Future of Industry",
+    description:
+      "Industrial AI is reshaping manufacturing by transforming data into intelligence, enabling smarter decisions, autonomous operations, and greater business agility. This session explores the key trends driving AI adoption—from generative AI and digital twins to intelligent automation and predictive operations—and how leading manufacturers are leveraging these technologies to boost productivity, resilience, quality, and sustainability at scale.",
+    detailSynopsis: ` Industrial AI is reshaping manufacturing by transforming data into intelligence, enabling smarter decisions, autonomous operations, and greater business agility. This session explores the key trends driving AI adoption—from generative AI and digital twins to intelligent automation and predictive operations—and how leading manufacturers are leveraging these technologies to boost productivity, resilience, quality, and sustainability at scale.`,
+    time: "2.20 – 2.35pm",
+    speakers: [
+      {
+        name: "Bob Gill",
+        title: "ARC",
+
+        image: "/speaker-bob-gill.jpeg",
+        imageClassName: "object-top",
       },
     ],
   },

@@ -20,7 +20,7 @@ body {
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: #00d7c7 #000029;
+  scrollbar-color: #00c1b6 #000029;
 }
 
 html::-webkit-scrollbar {
@@ -105,7 +105,7 @@ button:active {
 
 .program-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #00d7c7 #000029;
+  scrollbar-color: #00c1b6 #000029;
 }
 
 .program-scroll::-webkit-scrollbar {

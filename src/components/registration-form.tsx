@@ -186,7 +186,7 @@ export function RegistrationForm() {
       </label>
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
-        <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
+        <legend className="px-2 text-sm font-semibold text-[#00c1b6]">
           Breakout Selection (Select One) *
         </legend>
         {breakoutTracks.map((track) => (
@@ -214,7 +214,7 @@ export function RegistrationForm() {
       </fieldset>
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
-        <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
+        <legend className="px-2 text-sm font-semibold text-[#00c1b6]">
           What digital transformation challenges are you facing? *
         </legend>
         {digitalChallenges.map((challenge) => (
@@ -234,7 +234,7 @@ export function RegistrationForm() {
       </fieldset>
 
       <fieldset className="space-y-3 rounded-lg border border-white/15 bg-white/5 p-4">
-        <legend className="px-2 text-sm font-semibold text-[#00d7c7]">
+        <legend className="px-2 text-sm font-semibold text-[#00c1b6]">
           Do you need digitalization solutions? *
         </legend>
         {timelineNeeds.map((option, index) => (

@@ -20,7 +20,7 @@ export function SiteHeader() {
           className="h-14 w-auto sm:h-16"
         />
 
-        <nav className="hidden items-center gap-7 text-base font-semibold text-[#00d7c7] sm:flex sm:text-lg">
+        <nav className="hidden items-center gap-7 text-base font-semibold text-[#00c1b6] sm:flex sm:text-lg">
           <a
             href="#highlights"
             className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
@@ -54,7 +54,7 @@ export function SiteHeader() {
 
       {isOpen && (
         <div className="border-t border-white/10 bg-[#000029] px-4 pb-4 pt-2 sm:hidden">
-          <div className="flex flex-col gap-2 text-sm font-semibold text-[#00d7c7]">
+          <div className="flex flex-col gap-2 text-sm font-semibold text-[#00c1b6]">
             <a
               href="#highlights"
               onClick={closeMenu}

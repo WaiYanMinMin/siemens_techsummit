@@ -678,11 +678,11 @@ export function ProgramOverview() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="agenda-detail-title"
-              className="relative z-10 flex max-h-[min(90vh,880px)] w-full max-w-2xl flex-col rounded-xl border border-[#00d7c7]/30 bg-[#000029] shadow-[0_0_0_1px_rgba(0,215,199,0.08),0_24px_80px_rgba(0,0,0,0.55)]"
+              className="relative z-10 flex max-h-[min(90vh,880px)] w-full max-w-2xl flex-col rounded-xl border border-[#00c1b6]/30 bg-[#000029] shadow-[0_0_0_1px_rgba(0,215,199,0.08),0_24px_80px_rgba(0,0,0,0.55)]"
             >
               <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/10 bg-[#02023e]/90 px-5 py-4 sm:px-6">
                 <div className="min-w-0 pr-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00c1b6]">
                     Session synopsis
                   </p>
                   <h2
@@ -693,7 +693,7 @@ export function ProgramOverview() {
                   </h2>
                   <p className="mt-2 flex items-center gap-2 text-sm text-white/85">
                     <span
-                      className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#00d7c7]"
+                      className="inline-block h-2 w-2 shrink-0 rounded-full bg-[#00c1b6]"
                       aria-hidden
                     />
                     {detailItem.time}
@@ -703,7 +703,7 @@ export function ProgramOverview() {
                   ref={detailCloseRef}
                   type="button"
                   onClick={() => setDetailItem(null)}
-                  className="hitech-interactive shrink-0 rounded border border-white/25 px-3 py-1.5 text-sm font-semibold text-white transition hover:border-[#00d7c7]/60 hover:text-[#00d7c7]"
+                  className="hitech-interactive shrink-0 rounded border border-white/25 px-3 py-1.5 text-sm font-semibold text-white transition hover:border-[#00c1b6]/60 hover:text-[#00c1b6]"
                 >
                   Close
                 </button>
@@ -716,7 +716,7 @@ export function ProgramOverview() {
                 )}
                 {detailItem.speakers && detailItem.speakers.length > 0 && (
                   <div className="mt-8 border-t border-white/10 pt-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00d7c7]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#00c1b6]">
                       Speakers
                     </p>
                     <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -896,7 +896,7 @@ export function ProgramOverview() {
                   key={`${activeTab}-${activeTrack}-${index}-${item.time}`}
                   className="agenda-item border-b border-white/35 py-6 first:pt-0"
                 >
-                  <h3 className="text-lg font-semibold leading-tight text-[#00d7c7] sm:text-xl">
+                  <h3 className="text-lg font-semibold leading-tight text-[#00c1b6] sm:text-xl">
                     {item.title}
                   </h3>
 
@@ -904,14 +904,14 @@ export function ProgramOverview() {
                     <button
                       type="button"
                       onClick={() => setDetailItem(item)}
-                      className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00d7c7] underline decoration-[#00d7c7]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
+                      className="hitech-interactive mt-3 inline-flex items-center text-sm font-semibold text-[#00c1b6] underline decoration-[#00c1b6]/50 underline-offset-4 transition hover:text-[#7de6d5] hover:decoration-[#7de6d5]"
                     >
                       View synopsis
                     </button>
                   )}
 
                   <div className="mt-3 flex items-center gap-3 text-sm sm:text-base">
-                    <span className="inline-block h-3 w-3 rounded-full bg-[#00d7c7] shadow-[0_0_10px_rgba(0,215,199,0.55)]" />
+                    <span className="inline-block h-3 w-3 rounded-full bg-[#00c1b6] shadow-[0_0_10px_rgba(0,215,199,0.55)]" />
                     <span>{item.time}</span>
                   </div>
 

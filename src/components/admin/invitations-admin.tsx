@@ -370,7 +370,7 @@ export function InvitationsAdmin() {
                   event.target.value as "default" | "csuites" | "associates",
                 )
               }
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             >
               <option value="default">General invitation template</option>
               <option value="csuites">C-Suites invitation template</option>
@@ -469,7 +469,7 @@ export function InvitationsAdmin() {
                   event.target.value as "default" | "csuites" | "associates",
                 )
               }
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             >
               <option value="default">General invitation template</option>
               <option value="csuites">C-Suites invitation template</option>
@@ -483,7 +483,7 @@ export function InvitationsAdmin() {
               required
               value={individualFirstName}
               onChange={(event) => setIndividualFirstName(event.target.value)}
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1 text-sm text-slate-700">
@@ -493,7 +493,7 @@ export function InvitationsAdmin() {
               required
               value={individualEmail}
               onChange={(event) => setIndividualEmail(event.target.value)}
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1 text-sm text-slate-700">
@@ -503,7 +503,7 @@ export function InvitationsAdmin() {
               required
               value={individualAssociationName}
               onChange={(event) => setIndividualAssociationName(event.target.value)}
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             />
           </label>
           <div className="sm:col-span-3">
@@ -644,7 +644,7 @@ function SortableHeader({
         onClick={() => onToggleSort(columnKey)}
         className={`inline-flex items-center gap-1 whitespace-nowrap rounded border px-2 py-1 text-left text-xs font-semibold transition ${
           isActive
-            ? "border-[#00d7c7] bg-[#e9fffb] text-slate-900"
+            ? "border-[#00c1b6] bg-[#e9fffb] text-slate-900"
             : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"
         }`}
         aria-label={`Sort by ${label}`}

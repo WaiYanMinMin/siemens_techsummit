@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
               required
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+              className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
             />
           </label>
 

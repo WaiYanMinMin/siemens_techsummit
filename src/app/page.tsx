@@ -34,7 +34,7 @@ export default function Home() {
 
               <div className="relative z-10 flex min-h-[min(480px,78svh)] flex-col justify-start px-6 py-12 sm:px-10 sm:py-14 lg:min-h-[560px] lg:justify-center lg:bg-[#000029] lg:pl-12 lg:pr-10 lg:py-16 xl:pl-16">
                 <h1 className="max-lg:[text-shadow:0_2px_24px_rgba(0,0,41,0.95)] text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[52px] xl:text-[58px]">
-                  Make <span className="text-[#00d7c7]">AI</span> Real
+                  Make <span className="text-[#00c1b6]">AI</span> Real
                 </h1>
                 <p className="mt-4 max-lg:[text-shadow:0_1px_16px_rgba(0,0,41,0.92)] text-xl font-medium leading-snug text-white sm:text-2xl lg:text-[26px]">
                   Siemens Tech Summit 2026
@@ -46,7 +46,7 @@ export default function Home() {
                 </p>
                 <a
                   href="#register"
-                  className="blink-cta hitech-interactive mt-10 inline-flex h-12 w-fit items-center rounded-sm bg-[#00d7c7] px-8 text-sm font-bold text-[#000029] transition hover:brightness-95 sm:text-base"
+                  className="blink-cta hitech-interactive mt-10 inline-flex h-12 w-fit items-center rounded-sm bg-[#00c1b6] px-8 text-sm font-bold text-[#000029] transition hover:brightness-95 sm:text-base"
                 >
                   Register today
                 </a>
@@ -71,7 +71,7 @@ export default function Home() {
             <div className="mx-auto w-full max-w-6xl lg:max-w-[88rem] xl:max-w-[96rem]">
               <div className="flex flex-col gap-6 md:gap-10 lg:grid lg:grid-cols-[minmax(0,1.62fr)_minmax(0,1fr)] lg:items-start lg:gap-12 xl:gap-14">
                 <h2 className="text-center text-3xl font-bold leading-[1.08] tracking-tight text-white sm:text-4xl lg:col-start-2 lg:row-start-1 lg:text-left lg:text-5xl">
-                  Make <span className="text-[#00d7c7]">AI</span> Real
+                  Make <span className="text-[#00c1b6]">AI</span> Real
                 </h2>
 
                 <div className="lg:col-start-1 lg:row-span-2 lg:row-start-1">
@@ -102,28 +102,28 @@ export default function Home() {
                     uncertainty, companies must accelerate innovation, boost
                     productivity, and scale rapidly with confidence. The game
                     changer:{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Industrial AI.
                     </span>
                   </p>
 
                   <p>
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Siemens Tech Summit 2026
                     </span>{" "}
                     brings together forward-thinking leaders ready to turn{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Industrial AI
                     </span>{" "}
                     into real impact for industry and infrastructure. At this
                     event, we empower organizations to become true{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Digital Enterprises
                     </span>{" "}
                     by combining the real and digital worlds with Siemens
                     expertise in industrial software, automation,
                     electrification, and{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Industrial AI
                     </span>
                     .
@@ -133,11 +133,11 @@ export default function Home() {
                     Through immersive live demonstrations, expert-led deep dive
                     sessions, and proven customer success stories, you will gain
                     actionable strategies to bring{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       industrial intelligence
                     </span>{" "}
                     into the{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       digital enterprise
                     </span>
                     , so as to design, manufacture, and build products and
@@ -147,12 +147,12 @@ export default function Home() {
 
                   <p>
                     Are you looking to discover what you can do with{" "}
-                    <span className="font-semibold text-[#00d7c7]">
+                    <span className="font-semibold text-[#00c1b6]">
                       Industrial AI
                     </span>{" "}
                     today?
                   </p>
-                  <p className="border-l-2 border-[#00d7c7] pl-4 text-base font-semibold leading-relaxed text-[#00d7c7] sm:text-lg">
+                  <p className="border-l-2 border-[#00c1b6] pl-4 text-base font-semibold leading-relaxed text-[#00c1b6] sm:text-lg">
                     Join us at Siemens Tech Summit 2026 to accelerate
                     innovation, enable smarter decision-making, and prepare your
                     organization for an AI-powered future
@@ -199,7 +199,7 @@ export default function Home() {
                     <div className="mt-auto flex min-h-[3.25rem] flex-col justify-end pt-6">
                       <a
                         href="#agenda-morning"
-                        className="hitech-interactive inline-flex rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+                        className="hitech-interactive inline-flex rounded px-1 text-xl font-semibold text-[#00c1b6] transition hover:text-[#7de6d5]"
                       >
                         &#8250; View morning plenary program
                       </a>
@@ -229,7 +229,7 @@ export default function Home() {
                     <div className="mt-auto flex min-h-[3.25rem] flex-col justify-end pt-6">
                       <a
                         href="#agenda-afternoon"
-                        className="hitech-interactive inline-flex rounded px-1 text-xl font-semibold text-[#00d7c7] transition hover:text-[#7de6d5]"
+                        className="hitech-interactive inline-flex rounded px-1 text-xl font-semibold text-[#00c1b6] transition hover:text-[#7de6d5]"
                       >
                         &#8250; View afternoon breakout tracks
                       </a>
@@ -305,7 +305,7 @@ export default function Home() {
             className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
           >
             <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-[#00d7c7]">
+              <h2 className="text-2xl font-bold text-[#00c1b6]">
                 Summit Registration
               </h2>
               <p className="mt-2 text-sm text-white/85">

@@ -957,19 +957,19 @@ export function RegistrationsAdmin() {
             placeholder="Filter by name"
             value={filterName}
             onChange={(event) => setFilterName(event.target.value)}
-            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00c1b6] focus:ring-2"
           />
           <input
             placeholder="Filter by email"
             value={filterEmail}
             onChange={(event) => setFilterEmail(event.target.value)}
-            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00c1b6] focus:ring-2"
           />
           <input
             placeholder="Filter by company"
             value={filterCompany}
             onChange={(event) => setFilterCompany(event.target.value)}
-            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+            className="h-9 rounded border border-slate-300 px-3 text-xs outline-none ring-[#00c1b6] focus:ring-2"
           />
           <select
             aria-label="Filter by track"
@@ -977,7 +977,7 @@ export function RegistrationsAdmin() {
             onChange={(event) =>
               setFilterTrack(event.target.value as TrackFilterValue)
             }
-            className="h-9 rounded border border-slate-300 bg-white px-3 text-xs outline-none ring-[#00d7c7] focus:ring-2"
+            className="h-9 rounded border border-slate-300 bg-white px-3 text-xs outline-none ring-[#00c1b6] focus:ring-2"
           >
             {trackFilterOptions.map((option) => (
               <option key={option.value || "all"} value={option.value}>
@@ -1045,7 +1045,7 @@ export function RegistrationsAdmin() {
                     prev ? { ...prev, breakoutTrack: event.target.value } : prev,
                   )
                 }
-                className="h-10 rounded border border-slate-300 bg-white px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+                className="h-10 rounded border border-slate-300 bg-white px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
               >
                 {breakoutTracks.map((track) => (
                   <option key={track} value={track}>
@@ -1438,7 +1438,7 @@ function Input({ label, value, onChange, type = "text" }: InputProps) {
         required={label === "First name" || label === "Last name" || label === "Email"}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00d7c7] focus:ring-2"
+        className="h-10 rounded border border-slate-300 px-3 text-sm outline-none ring-[#00c1b6] focus:ring-2"
       />
     </label>
   );
@@ -1469,7 +1469,7 @@ function SortableHeader({
         onClick={() => onToggleSort(columnKey)}
         className={`inline-flex items-center gap-1 whitespace-nowrap rounded border px-2 py-1 text-left text-xs font-semibold transition ${
           isActive
-            ? "border-[#00d7c7] bg-[#e9fffb] text-slate-900"
+            ? "border-[#00c1b6] bg-[#e9fffb] text-slate-900"
             : "border-slate-300 bg-white text-slate-600 hover:border-slate-400 hover:text-slate-900"
         }`}
         aria-label={`Sort by ${label}`}

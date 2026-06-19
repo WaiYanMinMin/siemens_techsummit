@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getSupabaseAdminClient } from "@/lib/supabase-admin";
+import { IS_REGISTRATION_OPEN } from "@/lib/site-config";
 import { registrationSchema } from "@/lib/validation";
 
 const registrationSuccessMessage =
@@ -8,6 +9,13 @@ const registrationSuccessMessage =
 
 export async function POST(request: Request) {
   try {
+    if (!IS_REGISTRATION_OPEN) {
+      return NextResponse.json(
+        { error: "Registration for Siemens Tech Summit 2026 is now closed." },
+        { status: 403 },
+      );
+    }
+
     const isDev = process.env.NODE_ENV !== "production";
     const serviceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
 

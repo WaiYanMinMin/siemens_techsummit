@@ -5,6 +5,7 @@ import { ProgramOverview } from "@/components/program-overview";
 import { RegistrationFormShell } from "@/components/registration-form-shell";
 import { SiteHeader } from "@/components/site-header";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { IS_REGISTRATION_OPEN } from "@/lib/site-config";
 
 export default function Home() {
   return (
@@ -44,12 +45,14 @@ export default function Home() {
                   <br />
                   Raffles City Convention Centre
                 </p>
-                <a
-                  href="#register"
-                  className="blink-cta hitech-interactive mt-10 inline-flex h-12 w-fit items-center rounded-sm bg-[#00c1b6] px-8 text-sm font-bold text-[#000029] transition hover:brightness-95 sm:text-base"
-                >
-                  Register today
-                </a>
+                {IS_REGISTRATION_OPEN && (
+                  <a
+                    href="#register"
+                    className="blink-cta hitech-interactive mt-10 inline-flex h-12 w-fit items-center rounded-sm bg-[#00c1b6] px-8 text-sm font-bold text-[#000029] transition hover:brightness-95 sm:text-base"
+                  >
+                    Register today
+                  </a>
+                )}
               </div>
 
               <div className="relative hidden min-h-[560px] lg:col-start-2 lg:block">
@@ -87,12 +90,14 @@ export default function Home() {
                     </video>
                   </div>
 
-                  <a
-                    href="#register"
-                    className="hitech-interactive mt-4 inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:mt-6 md:mt-8 sm:h-11 sm:px-7 sm:text-sm"
-                  >
-                    Register Now
-                  </a>
+                  {IS_REGISTRATION_OPEN && (
+                    <a
+                      href="#register"
+                      className="hitech-interactive mt-4 inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:mt-6 md:mt-8 sm:h-11 sm:px-7 sm:text-sm"
+                    >
+                      Register Now
+                    </a>
+                  )}
                 </div>
 
                 <div className="space-y-6 text-left text-sm leading-7 text-white/95 sm:text-base lg:col-start-2 lg:row-start-2">
@@ -266,57 +271,86 @@ export default function Home() {
             </section>
           </ScrollReveal>
 
-          <div
-            id="sticky-start-marker"
-            className="flex justify-center px-5 py-2 sm:px-8 sm:py-6 lg:px-12"
-          >
-            <a
-              href="#register"
-              className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
-            >
-              Register Now
-            </a>
-          </div>
+          {IS_REGISTRATION_OPEN && (
+            <>
+              <div
+                id="sticky-start-marker"
+                className="flex justify-center px-5 py-2 sm:px-8 sm:py-6 lg:px-12"
+              >
+                <a
+                  href="#register"
+                  className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
+                >
+                  Register Now
+                </a>
+              </div>
+            </>
+          )}
 
           <ScrollReveal>
             <ProgramOverview />
           </ScrollReveal>
 
-          <div
-            id="sticky-end-marker"
-            className="flex justify-center px-5 py-4 sm:px-8 sm:py-8 lg:px-12"
-          >
-            <a
-              href="#register"
-              className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
-            >
-              Register Now
-            </a>
-          </div>
-        </div>
-        <FloatingRegisterCta
-          startId="sticky-start-marker"
-          endId="sticky-end-marker"
-        />
-
-        <ScrollReveal>
-          <section
-            id="register"
-            className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
-          >
-            <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-[#00c1b6]">
-                Summit Registration
-              </h2>
-              <p className="mt-2 text-sm text-white/85">
-                Please complete the form below.
-              </p>
-              <div className="mt-6">
-                <RegistrationFormShell />
+          {IS_REGISTRATION_OPEN && (
+            <>
+              <div
+                id="sticky-end-marker"
+                className="flex justify-center px-5 py-4 sm:px-8 sm:py-8 lg:px-12"
+              >
+                <a
+                  href="#register"
+                  className="hitech-interactive inline-flex h-10 items-center rounded-sm bg-[#7de6d5] px-6 text-xs font-bold text-[#00153b] transition hover:brightness-95 sm:h-11 sm:px-8 sm:text-sm"
+                >
+                  Register Now
+                </a>
               </div>
-            </div>
-          </section>
-        </ScrollReveal>
+            </>
+          )}
+        </div>
+        {IS_REGISTRATION_OPEN && (
+          <FloatingRegisterCta
+            startId="sticky-start-marker"
+            endId="sticky-end-marker"
+          />
+        )}
+
+        {IS_REGISTRATION_OPEN ? (
+          <ScrollReveal>
+            <section
+              id="register"
+              className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
+            >
+              <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 sm:p-8">
+                <h2 className="text-2xl font-bold text-[#00c1b6]">
+                  Summit Registration
+                </h2>
+                <p className="mt-2 text-sm text-white/85">
+                  Please complete the form below.
+                </p>
+                <div className="mt-6">
+                  <RegistrationFormShell />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+        ) : (
+          <ScrollReveal>
+            <section
+              id="register"
+              className="bg-[#000029] px-5 py-12 text-white sm:px-8 sm:py-14 lg:px-12"
+            >
+              <div className="mx-auto w-full max-w-6xl rounded-xl border border-white/20 bg-[#02023e] p-6 text-center sm:p-8">
+                <h2 className="text-2xl font-bold text-[#00c1b6]">
+                  Registration Closed
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/85 sm:text-base">
+                  Registration for Siemens Tech Summit 2026 is now closed. Thank
+                  you for your interest.
+                </p>
+              </div>
+            </section>
+          </ScrollReveal>
+        )}
       </main>
       <footer className="border-t border-white/10 bg-[#000029] px-5 py-5 text-center text-sm text-white/80 sm:px-8 lg:px-12">
         <p>Siemens Tech Summit 2026. All Rights Reserved.</p>

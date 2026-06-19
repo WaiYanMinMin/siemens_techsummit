@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { IS_REGISTRATION_OPEN } from "@/lib/site-config";
+
 export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,12 +35,14 @@ export function SiteHeader() {
           >
             Program
           </a>
-          <a
-            href="#register"
-            className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
-          >
-            Register Now
-          </a>
+          {IS_REGISTRATION_OPEN && (
+            <a
+              href="#register"
+              className="hitech-interactive rounded px-2 py-1 transition hover:text-[#7de6d5]"
+            >
+              Register Now
+            </a>
+          )}
         </nav>
 
         <button
@@ -69,13 +73,15 @@ export function SiteHeader() {
             >
               Program
             </a>
-            <a
-              href="#register"
-              onClick={closeMenu}
-              className="hitech-interactive rounded px-3 py-2 hover:text-[#7de6d5]"
-            >
-              Register Now
-            </a>
+            {IS_REGISTRATION_OPEN && (
+              <a
+                href="#register"
+                onClick={closeMenu}
+                className="hitech-interactive rounded px-3 py-2 hover:text-[#7de6d5]"
+              >
+                Register Now
+              </a>
+            )}
           </div>
         </div>
       )}

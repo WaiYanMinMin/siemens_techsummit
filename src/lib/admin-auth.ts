@@ -1,6 +1,6 @@
 export const ADMIN_COOKIE_NAME = "siemens_admin_session";
 
-const DEFAULT_ADMIN_PASSWORD = "SiemensSummit@2026";
+const DEFAULT_ADMIN_PASSWORD = "SiemensSummitAdmin";
 
 /** Separate area: confirmation emails + QR attachment import (env override recommended). */
 export const CONFIRMATIONS_ADMIN_COOKIE_NAME = "siemens_confirmations_admin_session";

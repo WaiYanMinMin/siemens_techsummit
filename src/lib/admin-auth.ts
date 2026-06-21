@@ -3,9 +3,10 @@ export const ADMIN_COOKIE_NAME = "siemens_admin_session";
 const DEFAULT_ADMIN_PASSWORD = "SiemensSummitAdmin";
 
 /** Separate area: confirmation emails + QR attachment import (env override recommended). */
-export const CONFIRMATIONS_ADMIN_COOKIE_NAME = "siemens_confirmations_admin_session";
+export const CONFIRMATIONS_ADMIN_COOKIE_NAME =
+  "siemens_confirmations_admin_session";
 
-const DEFAULT_CONFIRMATIONS_ADMIN_PASSWORD = "SiemensAdmin@2026";
+const DEFAULT_CONFIRMATIONS_ADMIN_PASSWORD = "SiemensSummitAdmin";
 
 export function getAdminPassword() {
   return process.env.ADMIN_PASSWORD?.trim() || DEFAULT_ADMIN_PASSWORD;
@@ -42,7 +43,9 @@ export function isValidConfirmationsAdminPassword(password: string) {
   return password.trim() === getConfirmationsAdminPassword();
 }
 
-export function isConfirmationsAuthenticatedCookie(cookieValue: string | undefined) {
+export function isConfirmationsAuthenticatedCookie(
+  cookieValue: string | undefined,
+) {
   if (!cookieValue) {
     return false;
   }

@@ -59,11 +59,10 @@ const morningAgenda: AgendaItem[] = [
     ],
   },
   {
-    title: "Keynote: Singapore’s Strategy for AI and Advanced Manufacturing",
-    description:
-      "Singapore’s national AI strategy, advanced manufacturing, and how organizations can align for long-term competitiveness.",
+    title: "Keynote: AI in Manufacturing in Singapore",
+    description: "Learn more about Singapore’s efforts in leveraging AI",
     detailSynopsis:
-      "Learn more about Singapore’s strategy in spearheading AI development and advanced manufacturing, and how organizations can align with these strategies in AI and advanced manufacturing to accelerate transformation and long-term competitiveness.",
+      "Learn more about Singapore’s efforts in leveraging AI for advanced manufacturing, and how organisations can tap on these efforts in AI for advanced manufacturing to accelerate transformation and long-term competitiveness.",
     time: "10.45 – 11.05am",
     speakers: [
       {

@@ -564,6 +564,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
         name: "Dr Ng Huey Yuen",
         title: "Assistant Chief Executive",
         company: "A*STAR Advanced Remanufacturing and Technology Centre",
+        image: "/speaker_nghuey.jpg",
       },
     ],
   },

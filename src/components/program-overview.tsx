@@ -30,25 +30,22 @@ const morningAgenda: AgendaItem[] = [
     time: "9.00 – 10.00am",
   },
   {
-    title: "Welcome address",
-    time: "10.15 – 10.25am",
+    title: "Welcome address Singapore Tech Summit 2026",
+    time: "10.00 – 10.10am",
     speakers: [
       {
         name: "Dr Thai-Lai Pham",
         title: "President & CEO, Siemens ASEAN",
-
         image: "/speaker-dr-thai-lai-pham.png",
       },
     ],
   },
   {
     title:
-      "Paving the way to the data- and AI-driven future of industry and infrastructure",
-    description:
-      "How data and AI are shaping industry and infrastructure—and what organizations can do today to stay competitive.",
+      "Opening remarks: Paving the way to the data- and AI-driven future of industry and infrastructure",
     detailSynopsis:
       "Understand how data and AI are shaping the future of industry and infrastructure and gain practical strategies to what organizations can do today to stay competitive in an increasingly digital landscape.",
-    time: "10.25 – 10.45am",
+    time: "10.10 – 10.45am",
     speakers: [
       {
         name: "Dr Dirk Didascalou",
@@ -59,28 +56,10 @@ const morningAgenda: AgendaItem[] = [
     ],
   },
   {
-    title: "Keynote: AI in Manufacturing in Singapore",
-    description: "Learn more about Singapore’s efforts in leveraging AI",
-    detailSynopsis:
-      "Learn more about Singapore’s efforts in leveraging AI for advanced manufacturing, and how organisations can tap on these efforts in AI for advanced manufacturing to accelerate transformation and long-term competitiveness.",
-    time: "10.45 – 11.05am",
-    speakers: [
-      {
-        name: "Cindy Koh",
-        title: "Executive Vice President & Member of the Executive Committee",
-        company: "Singapore Economic Development Board",
-        image: "/speaker-cindy.png",
-        imageClassName: "scale-[1.35]",
-      },
-    ],
-  },
-  {
-    title: "The launch of Eigen Engineering Agent",
-    description:
-      "Our AI-powered engineering assistant for design, automation, and decision-making across industrial and infrastructure workflows.",
+    title: "Launch of Eigen Engineering Agent",
     detailSynopsis:
       "Witness our AI-powered engineering assistant designed to accelerate design, automation, and decision-making across industrial and infrastructure workflows.",
-    time: "11.05 – 11.20am",
+    time: "10.45 – 11.00am",
     speakers: [
       {
         name: "Michael Schrapp",
@@ -91,22 +70,59 @@ const morningAgenda: AgendaItem[] = [
     ],
   },
   {
+    title: "Keynote: AI in Manufacturing in Singapore",
+    detailSynopsis:
+      "Learn more about Singapore’s efforts in leveraging AI for advanced manufacturing, and how organisations can tap on these efforts in AI for advanced manufacturing to accelerate transformation and long-term competitiveness.",
+    time: "11.00 – 11.10am",
+    speakers: [
+      {
+        name: "Cindy Koh",
+        title: "Executive Vice President",
+        company: "EDB",
+        image: "/speaker-cindy.png",
+        imageClassName: "scale-[1.35]",
+      },
+    ],
+  },
+  {
     title:
       "Executive panel discussion: Industrial AI at Scale: Powering Smart, Sustainable Manufacturing",
-    description:
-      "From pilots to scale—smarter factories, sustainability, data silos, legacy systems, and an AI-ready workforce.",
-    detailSynopsis: `Industrial AI is redefining manufacturing — unlocking new levels of operational excellence while advancing sustainability at scale. In this executive panel, we explore how AI-powered factories are becoming smarter, more autonomous, and more resilient — driving productivity gains while reducing environmental impact.
+    detailSynopsis: `Industrial AI is redefining manufacturing—unlocking new levels of operational excellence while advancing sustainability at scale. In this executive panel, we explore how AI-powered factories are becoming smarter, more autonomous, and more resilient—driving productivity gains while reducing environmental impact.
 
 Moving beyond pilots, the discussion focuses on how organizations can successfully scale AI across the enterprise, overcoming challenges like data silos, legacy systems, and preparing the workforce for AI-driven operations. In line with the priorities of the World Economic Forum, this session highlights how Industrial AI is enabling more sustainable operations, strengthening supply chain resilience, and accelerating the transition to future-ready manufacturing.`,
-    time: "11.20 – 11.50am",
+    time: "11.10 – 11.40am",
+    speakers: [
+      {
+        name: "Isabel Chong",
+        title: "SVP Siemens Digital Industries, ASEAN",
+        image: "/speaker-isabel-chong.jpg",
+      },
+      {
+        name: "Cindy Koh",
+        title: "Executive Vice President",
+        company: "EDB",
+        image: "/speaker-cindy.png",
+        imageClassName: "scale-[1.35]",
+      },
+      {
+        name: "Ang Wee Seng",
+        title: "Executive Director",
+        company: "Singapore Semiconductor Industry Association",
+        image: "/speaker_angwee.jpg",
+      },
+      {
+        name: "Dr Wang Wei",
+        title:
+          "Centre Director Sectoral AI Centre of Excellence for Manufacturing",
+        company: "ARTC",
+      },
+    ],
   },
   {
     title: "Beyond Simulation: How Industrial AI Supercharges the Digital Twin",
-    description:
-      "From fragmented data to high-fidelity digital twins—connectivity, simulation, and real-time validation for faster decisions.",
     detailSynopsis:
       "Industrial AI turns fragmented engineering data into high fidelity digital twins, enabling seamless data connectivity, rapid simulation, automated insights, intelligent behavior and real time validation for quicker, reliable decisions and smarter operations.",
-    time: "11.50 – 12.10pm",
+    time: "11.40 – 12.00pm",
     speakers: [
       {
         name: "Simon Guerin",
@@ -118,22 +134,20 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
   },
   {
     title: "Enabling Industrial AI: Financing sustainable infrastructure",
-    description:
-      "Why financing matters for AI-enabled sustainable infrastructure—and how Siemens Financial Services bridges ambition and delivery.",
     detailSynopsis:
       "Industrial AI is transforming the factories, buildings and power grids that keep our economies running, but realizing its full potential demands more than technology. It demands smart investment. This presentation explores why financing is critical to deploying AI-enabled sustainable infrastructure, examines the strategies and models that help organizations invest while managing risk and preserving capital, and shows how Siemens Financial Services — with its unique combination of technology understanding and financial expertise — can bridge the gap between ambition and implementation, helping customers turn sustainable infrastructure visions into reality.",
-    time: "12.10 – 12.30pm",
+    time: "12.00 – 12.30pm",
     speakers: [
       {
         name: "Atul Kawatra",
         title: "GM, Head of Corporate Lending and Project Finance",
-        company: "Siemens Bank / Siemens Financial Services",
+        company: "Siemens Bank / SFS",
         image: "/speaker-atul-kawatra.jpg",
       },
       {
         name: "Mark Ee",
         title: "Head of Equity Finance Asia/Australia",
-        company: "Siemens Financial Services",
+        company: "SFS",
         image: "/speaker-mark-ee.jpg",
       },
     ],
@@ -192,6 +206,12 @@ In this session, we show you how Siemens moves beyond traditional building manag
         company: "Siemens Smart Infrastructure",
         image: "/speaker-norman-ng.png",
       },
+      {
+        name: "Ju Jin Tan",
+        title: "Head, Customer Service",
+        company: "Siemens Electrification & Automation",
+        image: "/speaker_tanjujin.png",
+      },
     ],
   },
   {
@@ -248,10 +268,10 @@ Learn how Siemens is helping organizations worldwide create intelligent infrastr
     time: "4.00 – 4.30pm",
     speakers: [
       {
-        name: "Imelda Zhang",
-        title: "Data Center Lead - ASEAN",
+        name: "Samir Borkar",
+        title: "Head, Data Center Vertical Market, Asia Pacific",
         company: "Siemens Smart Infrastructure",
-        image: "/speaker-imelda-zhang.png",
+        image: "/speaker_placeholder.png",
       },
       {
         name: "Andy Fong",
@@ -521,11 +541,30 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
   },
   {
     title:
-      "Panel Discussion: Beyond the Pilot: How Singapore is Scaling Industrial AI for Measurable Impact Across Diverse Industries",
-    description:
-      "ROI, upskilling, and autonomous operations—how Singapore organizations deploy Industrial AI for tangible value.",
-    detailSynopsis: `Join our expert panel to explore how leading companies in Singapore are actively deploying Industrial AI to achieve tangible business value. This discussion will delve into real-world applications, focusing on how AI is driving significant returns on investment (ROI), facilitating crucial upskilling initiatives, and paving the way for more autonomous industrial operations. Gain insights from industry leaders on navigating the AI landscape.`,
+      "Panel Discussion: Beyond the Pilot: How Companies are Scaling Industrial AI for Measurable Impact Across Diverse Industries",
+    detailSynopsis:
+      "Join our expert panel to explore how leading companies are actively deploying Industrial AI to achieve tangible business value. This discussion will delve into real-world applications, focusing on how AI is driving significant returns on investment (ROI), facilitating crucial upskilling initiatives, and paving the way for more autonomous industrial operations. Gain insights from industry leaders on navigating the AI landscape.",
     time: "3.45 – 4.15pm",
+    speakers: [
+      {
+        name: "Gerardo Artavia",
+        title: "Plant General Manager",
+        company: "Coca Cola",
+        image: "/speaker_placeholder.png",
+      },
+      {
+        name: "Sandro Straetemans",
+        title: "MD, High Tech Portfolio Lead & Global Client Account Lead",
+        company: "Accenture",
+        image: "/speaker_placeholder.png",
+      },
+      {
+        name: "Dr Ng Huey Yuen",
+        title: "Assistant Chief Executive",
+        company: "A*STAR Advanced Remanufacturing and Technology Centre",
+        image: "/speaker_placeholder.png",
+      },
+    ],
   },
   {
     title: "AI Fabric for Industrial",

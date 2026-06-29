@@ -109,12 +109,14 @@ Moving beyond pilots, the discussion focuses on how organizations can successful
         title: "Executive Director",
         company: "Singapore Semiconductor Industry Association",
         image: "/speaker_angwee.jpg",
+        imageClassName: "object-top",
       },
       {
         name: "Dr Wang Wei",
         title:
           "Centre Director Sectoral AI Centre of Excellence for Manufacturing",
         company: "ARTC",
+        image: "/speaker_wangwei.webp",
       },
     ],
   },
@@ -271,7 +273,7 @@ Learn how Siemens is helping organizations worldwide create intelligent infrastr
         name: "Samir Borkar",
         title: "Head, Data Center Vertical Market, Asia Pacific",
         company: "Siemens Smart Infrastructure",
-        image: "/speaker_placeholder.png",
+        image: "/speaker_samir.jpg",
       },
       {
         name: "Andy Fong",
@@ -528,10 +530,10 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
     time: "3.00 – 3.15pm",
     speakers: [
       {
-        name: "Winston Vigil, Manuel Raj",
+        name: "Hari Hara Shanmugam",
         title: "Solutions Consultant",
         company: "Siemens Digital Industries Software",
-        image: "/speaker-winston-vigil.png",
+        image: "/speaker_hara.png",
       },
     ],
   },
@@ -541,7 +543,7 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
   },
   {
     title:
-      "Panel Discussion: Beyond the Pilot: How Companies are Scaling Industrial AI for Measurable Impact Across Diverse Industries",
+      "Panel Discussion: Beyond the Pilot: How Singapore is Scaling Industrial AI for Measurable Impact Across Diverse Industries",
     detailSynopsis:
       "Join our expert panel to explore how leading companies are actively deploying Industrial AI to achieve tangible business value. This discussion will delve into real-world applications, focusing on how AI is driving significant returns on investment (ROI), facilitating crucial upskilling initiatives, and paving the way for more autonomous industrial operations. Gain insights from industry leaders on navigating the AI landscape.",
     time: "3.45 – 4.15pm",
@@ -550,19 +552,18 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
         name: "Gerardo Artavia",
         title: "Plant General Manager",
         company: "Coca Cola",
-        image: "/speaker_placeholder.png",
+        image: "/speaker_gerardo.jpg",
       },
       {
         name: "Sandro Straetemans",
         title: "MD, High Tech Portfolio Lead & Global Client Account Lead",
         company: "Accenture",
-        image: "/speaker_placeholder.png",
+        image: "/speaker_sandro.png",
       },
       {
         name: "Dr Ng Huey Yuen",
         title: "Assistant Chief Executive",
         company: "A*STAR Advanced Remanufacturing and Technology Centre",
-        image: "/speaker_placeholder.png",
       },
     ],
   },
@@ -574,10 +575,10 @@ By moving beyond metadata to the full visual context of the plant, DTC enables f
     time: "4.15 – 4.30pm",
     speakers: [
       {
-        name: "Shidan Murphy",
-        title: "Presales Head, Banking & Financial Services APAC",
+        name: "Alvinn Yeo ",
+        title: "Principal Presales Solution Consultant",
         company: "Siemens Digital Industries Software",
-        image: "/speaker-shidan-murphy.png",
+        image: "/speaker_alvin.png",
       },
     ],
   },
